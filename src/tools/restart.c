@@ -6,9 +6,19 @@
 /*   By: yzheng <yzheng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 12:08:50 by yzheng            #+#    #+#             */
-/*   Updated: 2024/09/20 12:12:37 by yzheng           ###   ########.fr       */
+/*   Updated: 2024/09/20 12:42:58 by yzheng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./shell.h"
+#include "./minishell.h"
 
+void restart(int ex)
+{
+    free(ms()->prompt);
+    free(ms()->input);
+    if(ex)
+    {
+        free(ms()->cwd);
+        exit(ms()->exit);
+    }
+}

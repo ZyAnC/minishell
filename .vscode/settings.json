@@ -2,6 +2,11 @@
     "files.associations": {
         "get_next_line.h": "c",
         "shell.h": "c",
-        "history.h": "c"
+        "history.h": "c",
+        "libft.h": "c",
+        "readline.h": "c",
+        "stdbool.h": "c",
+        "minishell.h": "c",
+        "printf.h": "c"
     }
 }

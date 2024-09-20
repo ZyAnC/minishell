@@ -3,27 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jingwu <jingwu@student.hive.fi>            +#+  +:+       +#+        */
+/*   By: yzheng <yzheng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/20 10:59:44 by yzheng            #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2024/09/20 11:23:40 by jingwu           ###   ########.fr       */
+/*   Created: 2024/09/20 12:23:30 by yzheng            #+#    #+#             */
+/*   Updated: 2024/09/20 12:43:12 by yzheng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #include "../include/minishell.h"
 
-int main()
-=======
-/*   Updated: 2024/09/20 12:08:08 by yzheng           ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
 
-#include "../include/shell.h"
-# include <readline/readline.h>
-# include <readline/history.h>
+
 t_ms    *ms(void)
->>>>>>> b6b61a2 (yan)
 {
     static t_ms ms;
     return(&ms);
@@ -53,14 +45,21 @@ void    buildshell()
     {
         ms()->prompt = prompt();
         ms()->input = readline(ms()->prompt);
-
-        restart
+        ms()->lines++;
+        if(!ms()->input)
+        {
+            ft_printf("exit\n");
+            restart(1);
+        }
+        add_history(ms()->input);
+        restart(0);
     }
 }
 
 static void init_ms()
 {
     ft_bzero(ms(),sizeof(t_ms));
+    ms()->exit = 0;
     ms()->in_fd = STDIN_FILENO;
     ms()->out_fd = STDOUT_FILENO;
     ms()->cwd = getcwd(NULL, 2048);
@@ -80,6 +79,7 @@ int main(int  ac, char **av)
     }
     (void)av;
     init_ms();
+
     buildshell();
     return (0);
 }

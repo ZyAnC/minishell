@@ -3,15 +3,19 @@ NAME = minishell
 CC := cc
 CFLAGS := -Wall -Wextra -Werror \
 	-I ./include -I ./libft/libft -I ./libft/printf -I ./libft/get_next_line
+
 LIBFT := ./libft/libft
 PRINTF := ./libft/printf
 GETNEXTLINE := ./libft/get_next_line
 LIBS := $(LIBFT)/libft.a $(PRINTF)/libftprintf.a $(GETNEXTLINE)/get_next_line.a -lreadline
 
-SRCS := ./src/main.c
-OBJS := ${SRCS:.c=.o}
+SRCS_DIR = ./src
+SRCS_SUBDIR = tools
+VPATH = $(SRCS_DIR) $(addprefix $(SRCS_DIR)/, $(SRCS_SUBDIR))
 
 
+SRCS = $(wildcard $(SRCS_DIR)/*.c) $(wildcard $(SRCS_DIR)/$(SRCS_SUBDIR)/*.c)
+OBJS = $(SRCS:.c=.o)
 
 all: $(NAME)
 
@@ -22,9 +26,7 @@ $(NAME): $(OBJS)
 	@${MAKE} -C ${LIBFT}
 	@${MAKE} -C ${PRINTF}
 	@${MAKE} -C ${GETNEXTLINE}
-	@$(CC) $(CFLAGS) $(OBJS) $(LIBS) -o $(NAME) 
-
-
+	@$(CC) $(CFLAGS) $(OBJS) $(LIBS) -o $(NAME)
 
 clean:
 	@rm -rf $(OBJS)
@@ -32,13 +34,11 @@ clean:
 	@${MAKE} -C ${PRINTF} clean
 	@${MAKE} -C ${GETNEXTLINE} clean
 
-
 fclean: clean
 	@rm -rf $(NAME)
 	@${MAKE} -C ${LIBFT} fclean
 	@${MAKE} -C ${PRINTF} fclean
-	@${MAKE} -C ${GETNEXTLINE} clean
-
+	@${MAKE} -C ${GETNEXTLINE} fclean
 
 re: fclean all
 
