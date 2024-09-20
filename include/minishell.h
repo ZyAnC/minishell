@@ -1,19 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jingwu <jingwu@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/20 10:59:44 by yzheng            #+#    #+#             */
-/*   Updated: 2024/09/20 11:23:40 by jingwu           ###   ########.fr       */
+/*   Created: 2024/09/20 11:00:09 by yzheng            #+#    #+#             */
+/*   Updated: 2024/09/20 11:23:27 by jingwu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/minishell.h"
+#ifndef MINISHELL_H
+# define MINISHELL_H
+# include "../libft/libft/libft.h"
+# include "../libft/printf/printf.h"
+# include "../libft/get_next_line/get_next_line.h"
+# include "structs.h"
 
-int main()
-{
-    ft_printf("aa\n");
-    return (0);
-}
+# endif
