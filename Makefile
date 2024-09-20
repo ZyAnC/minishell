@@ -6,7 +6,7 @@ CFLAGS := -Wall -Wextra -Werror \
 LIBFT := ./libft/libft
 PRINTF := ./libft/printf
 GETNEXTLINE := ./libft/get_next_line
-LIBS := $(LIBFT)/libft.a $(PRINTF)/libftprintf.a $(GETNEXTLINE)/get_next_line.a 
+LIBS := $(LIBFT)/libft.a $(PRINTF)/libftprintf.a $(GETNEXTLINE)/get_next_line.a -lreadline
 
 SRCS := ./src/main.c
 OBJS := ${SRCS:.c=.o}
@@ -22,7 +22,7 @@ $(NAME): $(OBJS)
 	@${MAKE} -C ${LIBFT}
 	@${MAKE} -C ${PRINTF}
 	@${MAKE} -C ${GETNEXTLINE}
-	@$(CC) $(CFLAGS) $(OBJS) $(LIBS) -o $(NAME)
+	@$(CC) $(CFLAGS) $(OBJS) $(LIBS) -o $(NAME) 
 
 
 
