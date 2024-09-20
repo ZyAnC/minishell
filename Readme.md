@@ -51,7 +51,12 @@ for <infile ls | grep "txt" > outfile
         outfile = "outfile"
         ispipe = 0;
    
-    
+for cat <1 <4 >3 <2
+should same with <2 cat >3
+so save the last < and >
+also save first symbol <1 in (cat <1 <4 >3 <2) for report error
+so errorfilename = command[0];
+other in and out symbol same with previous
 } t_cmd;
 
 token type for lexer
