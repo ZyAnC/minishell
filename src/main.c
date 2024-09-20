@@ -6,7 +6,7 @@
 /*   By: yzheng <yzheng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 12:23:30 by yzheng            #+#    #+#             */
-/*   Updated: 2024/09/20 12:43:12 by yzheng           ###   ########.fr       */
+/*   Updated: 2024/09/20 13:26:23 by yzheng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ void    buildshell()
         add_history(ms()->input);
         restart(0);
     }
+    rl_clear_history();
 }
 
 static void init_ms()

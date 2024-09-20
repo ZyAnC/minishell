@@ -6,7 +6,7 @@
 /*   By: yzheng <yzheng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 10:57:07 by jingwu            #+#    #+#             */
-/*   Updated: 2024/09/20 12:36:42 by yzheng           ###   ########.fr       */
+/*   Updated: 2024/09/20 14:19:50 by yzheng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,5 +76,11 @@ typedef struct s_ms
    char	*prompt;
    char	*input;
 }   t_ms;
+
+typedef struct s_cmd
+{
+	char	**cmd;
+	char	type;
+}	t_cmd;
 
 # endif
