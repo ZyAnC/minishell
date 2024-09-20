@@ -16,6 +16,7 @@ typedef struct s_cmd {
     t_token_type intype;
     t_token_type outype; 
     int ispipe;
+    struct s_cmd *next;
 
 Default setting
     infile = NULL;
