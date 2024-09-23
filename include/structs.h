@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   structs.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yzheng <yzheng@student.hive.fi>            +#+  +:+       +#+        */
+/*   By: jingwu <jingwu@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 10:57:07 by jingwu            #+#    #+#             */
-/*   Updated: 2024/09/20 14:19:50 by yzheng           ###   ########.fr       */
+/*   Updated: 2024/09/23 11:17:54 by jingwu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,19 +14,25 @@
 # define STRUCTS_H
 #include "minishell.h"
 # include <stdbool.h>
-typedef enum s_tokens
+
+typedef enum e_token_type
 {
-	PIPE,
-	IN_RDRCT,
-	OUT_RDRCT,
-	HERE_DOC,
-	APPEND_RDRCT,
-}	e_tokens;
+	TK_NONE,
+    TK_PIPE,
+	TK_IN_RE,
+	TK_OUT_RE,
+	TK_HDOC,
+	TK_APPEND,
+	TK_SINGLE_QT,
+	TK_DOUBLE_QT,
+	TK_KEYWORD,
+	TK_LOC_V,
+}	t_token_type;
 
 typedef struct s_lexer
 {
 	char			*str;
-	e_tokens		token;
+	t_token_type	token;
 	int				index;
 	struct s_lexer	*next;
 	struct s_lexer	*pre;
@@ -40,31 +46,20 @@ typedef struct s_parser
 	struct s_tools	*tools;
 }	t_parser;
 
-typedef struct s_simple_cmds
-{
-	char					**str;
-	//int						(*builtin)(t_tools, struct s_cmds *);
-	int						*hd_file_name;
-	t_lexer					*redirections;
-	struct s_simple_cmds	*next;
-	struct s_simple_cmds	*pre;
-}	t_cmds;
-
-typedef struct s_tools
-{
-	char					*args;
-	char					**paths;
-	char					**envp;
-	struct s_simple_cmds	*simple_cmds;
-	t_lexer					*lexer_list;
-	char					*pwd;
-	char					*old_pwd;
-	int						num_pipe;
-	int						*pid;
-	bool					heredoc;
-	bool					reset;
-}	t_tools;
-
+// typedef struct s_tools
+// {
+// 	char					*args;
+// 	char					**paths;
+// 	char					**envp;
+// 	struct s_simple_cmds	*simple_cmds;
+// 	t_lexer					*lexer_list;
+// 	char					*pwd;
+// 	char					*old_pwd;
+// 	int						num_pipe;
+// 	int						*pid;
+// 	bool					heredoc;
+// 	bool					reset;
+// }	t_tools;
 
 typedef struct s_ms
 {
@@ -79,8 +74,13 @@ typedef struct s_ms
 
 typedef struct s_cmd
 {
-	char	**cmd;
-	char	type;
+	char			**cmd;
+    char			*infile;
+    char			*outfile;
+    t_token_type	intype;
+    t_token_type	outype;
+    int				ispipe;
+    struct s_cmd	*next;
 }	t_cmd;
 
 # endif
