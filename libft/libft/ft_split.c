@@ -3,73 +3,64 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yzheng <yzheng@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jingwu <jingwu@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/16 11:50:46 by yzheng            #+#    #+#             */
-/*   Updated: 2024/08/14 17:47:00 by yzheng           ###   ########.fr       */
+/*   Created: 2024/04/24 13:55:50 by jingwu            #+#    #+#             */
+/*   Updated: 2024/05/07 11:54:56 by jingwu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 #include "libft.h"
-#include <stdio.h>
 
-static	int	countstring(char *str, char charset)
+static size_t	count_words(char const *s, char c)
 {
-	int	i;
-	int	count;
-	int	isprevsep;
+	size_t	count;
 
-	i = 0;
 	count = 0;
-	isprevsep = 1;
-	while (str[i])
+	while (*s && s)
 	{
-		if (str[i] == charset)
-		{
-			isprevsep = 1;
-		}
-		else if (isprevsep)
-		{
-			count++;
-			isprevsep = 0;
-		}
-		i++;
+		if (*s != c && (*(s + 1) == c || !*(s + 1)))
+			count += 1;
+		s++;
 	}
 	return (count);
 }
 
-static int	sp(char **result, char *str, char charset, int j)
+static void	*free_memory(char **str)
 {
-	t_ParseContext	ctx;
-	int				i;
+	size_t	i;
 
 	i = 0;
-	ctx.result = result;
-	ctx.str = str;
-	ctx.charset = charset;
-	ctx.i = &i;
-	ctx.j = &j;
-	if (!result || !str)
-		return (-1);
-	if (!process_string(&ctx))
-		return (0);
-	result[j] = NULL;
-	return (1);
+	while (str[i])
+		free(str[i++]);
+	free(str);
+	return (NULL);
 }
 
-char	**ft_split(char *str, char charset)
+char	**ft_split(char const *s, char c)
 {
-	char	**result;
-	int		size;
+	char	**split_s;
+	size_t	words;
+	size_t	i;
+	size_t	j;
 
-	if (!str)
+	words = count_words(s, c);
+	split_s = (char **)malloc(sizeof(char *) * (words + 1));
+	if (!split_s)
 		return (NULL);
-	size = countstring(str, charset);
-	result = malloc((size + 1) * sizeof(char *));
-	if (result == NULL)
-		return (NULL);
-	if (sp(result, str, charset, 0))
-		return (result);
-	else
-		return (NULL);
+	i = 0;
+	while (*s && i < words)
+	{
+		j = 0;
+		while (*s == c)
+			s++;
+		while (*(s + j) && *(s + j) != c)
+			j++;
+		split_s[i] = ft_substr(s, 0, j);
+		if (!split_s[i])
+			return (free_memory(split_s));
+		i++;
+		s = s + j;
+	}
+	split_s[words] = 0;
+	return (split_s);
 }
