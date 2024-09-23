@@ -6,14 +6,13 @@
 /*   By: jingwu <jingwu@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 10:57:07 by jingwu            #+#    #+#             */
-/*   Updated: 2024/09/23 11:17:54 by jingwu           ###   ########.fr       */
+/*   Updated: 2024/09/23 13:12:14 by jingwu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef STRUCTS_H
 # define STRUCTS_H
 #include "minishell.h"
-# include <stdbool.h>
 
 typedef enum e_token_type
 {
@@ -29,37 +28,21 @@ typedef enum e_token_type
 	TK_LOC_V,
 }	t_token_type;
 
-typedef struct s_lexer
+typedef enum e_err_type
 {
-	char			*str;
-	t_token_type	token;
-	int				index;
-	struct s_lexer	*next;
-	struct s_lexer	*pre;
-}	t_lexer;
+	COMMAND,
+	SYNTAX,
+}	t_err_type;
 
-typedef struct s_parser
+/*
+	tk_str: the chararters of the token, such as "|", "<<", ans so on;
+	type:  the type of the token, such as "TK_PIPE", "TK_APPEND";
+*/
+typedef struct s_token
 {
-	t_lexer			*s_lexer_list;
-	t_lexer			*redirections;
-	int				num_rdrct;
-	struct s_tools	*tools;
-}	t_parser;
-
-// typedef struct s_tools
-// {
-// 	char					*args;
-// 	char					**paths;
-// 	char					**envp;
-// 	struct s_simple_cmds	*simple_cmds;
-// 	t_lexer					*lexer_list;
-// 	char					*pwd;
-// 	char					*old_pwd;
-// 	int						num_pipe;
-// 	int						*pid;
-// 	bool					heredoc;
-// 	bool					reset;
-// }	t_tools;
+	char			*tk_str;
+	t_token_type	type;
+}	t_token;
 
 typedef struct s_ms
 {

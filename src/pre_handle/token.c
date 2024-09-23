@@ -1,45 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   checker.c                                          :+:      :+:    :+:   */
+/*   token.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jingwu <jingwu@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/23 09:55:19 by jingwu            #+#    #+#             */
-/*   Updated: 2024/09/23 12:34:57 by jingwu           ###   ########.fr       */
+/*   Created: 2024/09/23 13:32:38 by jingwu            #+#    #+#             */
+/*   Updated: 2024/09/23 13:39:50 by jingwu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./minishell.h"
 
-/*
-	flag:
-		false: unclosed quote;
-		true: closed quote;
-*/
-bool	check_quote(void)
-{
-	int		i;
-	char	quote;	
-	bool	flag;
 
-	i = 0;
-	flag = true;
-	while (ms()->input[i])
-	{
-		if (flag && ft_strchr("\"\'", ms()->input[i]))
-		{
-			quote = ms()->input[i];
-			flag = false;
-		}
-		else if (!flag && ms()->input[i] == quote)
-			flag = true;
-		i++;
-	}
-	if (!flag)
-	{
-		ft_err("Unclosed quote!", SYNTAX, 1);
-		return(false);
-	}
-	return (true);
+int	add_token(char *tk_str, t_token_type type, bool mergeable)
+{
+	t_token	*token;
+
+	if (!tk_str || !*tk_str)
+		return (0);
+	token = new_token(tk_str, type, mergeable);
+	if (!token)
+
 }
