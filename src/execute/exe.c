@@ -6,13 +6,24 @@
 /*   By: yzheng <yzheng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 12:48:48 by yzheng            #+#    #+#             */
-/*   Updated: 2024/09/23 13:05:08 by yzheng           ###   ########.fr       */
+/*   Updated: 2024/09/23 13:23:24 by yzheng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 #include "./minishell.h"
 #include "./structs.h"
+void	exe(t_cmd *cm)
+{
+	int i;
+	i=0;
+	while(cm->cmd[i])
+		ft_printf("%s\n",cm->cmd[i++]);
+	i=0;
+	while(cm->cmd[i])
+		ft_printf("%s ",cm->next->cmd[i++]);
+
+}
 
 t_cmd *create_node(char *infile, char *outfile, t_token_type intype, t_token_type outype, int ispipe) {
     t_cmd *new_node = malloc(sizeof(t_cmd));
@@ -44,15 +55,4 @@ void	test()
     }
 
 	exe(head);
-}
-void	exe(t_cmd *cm)
-{
-	int i;
-	i=0;
-	while(cm->cmd[i])
-		ft_printf("%s\n",cm->cmd[i++]);
-	i=0;
-	while(cm->cmd[i])
-		ft_printf("%s ",cm->next->cmd[i++]);
-
 }
