@@ -6,7 +6,7 @@ t_cmd *cmds = malloc(sizeof(t_cmd));
 ```
 ### Heading CMD
 
-Every single cmd should save in `cmd`.
+Every single cmd e in `cmd`.
 
 ```c
 typedef struct s_cmd {
