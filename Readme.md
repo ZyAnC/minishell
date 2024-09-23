@@ -1,20 +1,20 @@
 # Heading Requirement from Parse
 ## Passing parameters as
-  
+
 ```c
 t_cmd *cmds = malloc(sizeof(t_cmd));
 ```
 ### Heading CMD
 
-Every single cmd e in `cmd`. // add the content
+Every single cmd should save in `cmd`.
 
 ```c
 typedef struct s_cmd {
-    char **cmd; 
+    char **cmd;
     char    *infile;
     char    *outfile;
     t_token_type intype;
-    t_token_type outype; 
+    t_token_type outype;
     int ispipe;
     struct s_cmd *next;
 
@@ -24,17 +24,17 @@ Default setting
     intype = tk_none;
     outtype = tk_none;
     ispipe = 0;
-    
 
-    
+
+
 Example
     cmd = split(input,' ');
     input = "ls -l"
     cmd[0]="ls";
     cmd[1]="-l"
-    
-   
-   
+
+
+
 for <infile ls | grep "txt" > outfile
     1st half <infile ls |
 
@@ -50,7 +50,7 @@ for <infile ls | grep "txt" > outfile
         infile = NULL
         outfile = "outfile"
         ispipe = 0;
-   
+
 for cat <1 <4 >3 <2
 should same with <2 cat >3
 so save the last < and >
