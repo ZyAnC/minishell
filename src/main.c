@@ -6,7 +6,7 @@
 /*   By: jingwu <jingwu@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 12:23:30 by yzheng            #+#    #+#             */
-/*   Updated: 2024/09/23 12:46:55 by jingwu           ###   ########.fr       */
+/*   Updated: 2024/09/24 11:17:46 by jingwu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,9 @@ void	buildshell()
 			restart(1);
 		}
 		add_history(ms()->input);
-		if (pre_handler() == true);
-            execute_cmd?????;
+		if (!pre_handler());
+			return_error // unfinished
+		execute_the_cmd// unfinished
 		restart(0);
 	}
 	rl_clear_history();

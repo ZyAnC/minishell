@@ -6,7 +6,7 @@
 /*   By: jingwu <jingwu@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 10:57:07 by jingwu            #+#    #+#             */
-/*   Updated: 2024/09/23 13:12:14 by jingwu           ###   ########.fr       */
+/*   Updated: 2024/09/24 11:39:11 by jingwu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,21 +38,31 @@ typedef enum e_err_type
 	tk_str: the chararters of the token, such as "|", "<<", ans so on;
 	type:  the type of the token, such as "TK_PIPE", "TK_APPEND";
 */
-typedef struct s_token
+// typedef struct s_token
+// {
+// 	char			*tk_str;
+// 	t_token_type	type;
+// }	t_token;
+
+typedef struct s_lexer
 {
-	char			*tk_str;
-	t_token_type	type;
-}	t_token;
+	char			*str;
+	t_token_type	token;
+	int				index;
+	struct s_lexer	*next;
+	struct s_lexer	*pre;
+}	t_lexer;
 
 typedef struct s_ms
 {
-   int	in_fd;
-   int	out_fd;
-   int	exit;
-   int	lines;
-   char	*cwd;
-   char	*prompt;
-   char	*input;
+   int		in_fd;
+   int		out_fd;
+   int		exit;
+   int		lines;
+   char		*cwd;
+   char		*prompt;
+   char		*input;
+   t_lexer	*lexer_list; // added by sherry, Sep 24
 }   t_ms;
 
 typedef struct s_cmd
