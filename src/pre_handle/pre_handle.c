@@ -6,7 +6,7 @@
 /*   By: jingwu <jingwu@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 12:48:19 by jingwu            #+#    #+#             */
-/*   Updated: 2024/09/23 13:35:25 by jingwu           ###   ########.fr       */
+/*   Updated: 2024/09/24 11:32:56 by jingwu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,16 +19,16 @@ static int	read_token(int i);
 bool	pre_handle(void)
 {
 	if (!check_quote()) // it will check if the input is quoted correctly
-		return (false);
+		return (false);// should return an error message here
 	if (!lexer())
-		return (false);
+		return (false); // should return an error message here
 	if (!check_synatx())
-		return (false);
+		return (false); // should return an error message here
 	expander();
 	if (!parser())
-		return (false);
+		return (false); // should return an error message here
 	if (check_all_local()) // what's this for?????
-		return (false);
+		return (false); // should return an error message here
 	return (true);
 }
 
@@ -77,14 +77,14 @@ static int	read_token(int i)
 
 	j = 0;
 	if (ms()->input[i] == '|')
-		j = add_token(ft_strdup("|"), TK_PIPE, false);
+		j = add_lexer(ft_strdup("|"), TK_PIPE);
 	else if (!ft_strncmp(&(ms()->input[i]), "<<", 2))
-		j = add_token(ft_strdup("<<"), TK_HDOC, false);
+		j = add_lexer(ft_strdup("<<"), TK_HDOC);
 	else if (!ft_strncmp(&(ms()->input[i]), ">>", 2))
-		j =  add_token(ft_strdup(">>"), TK_APPEND, false);
+		j =  add_lexer(ft_strdup(">>"), TK_APPEND);
 	else if (ms()->input[i] == '<')
-		j = add_token(ft_strdup("<"), TK_IN_RE, false);
-	else
-		j = add_token(ft_strdup(">"), TK_OUT_RE, false);
+		j = add_lexer(ft_strdup("<"), TK_IN_RE);
+	else if (ms()->input[i] == '>')
+		j = add_lexer(ft_strdup(">"), TK_OUT_RE);
 	return (j);
 }
