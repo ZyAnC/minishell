@@ -6,7 +6,7 @@
 /*   By: jingwu <jingwu@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 12:23:30 by yzheng            #+#    #+#             */
-/*   Updated: 2024/09/24 11:17:46 by jingwu           ###   ########.fr       */
+/*   Updated: 2024/09/25 08:22:51 by jingwu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,7 @@ static void init_ms()
 		perror("getcwd() error");
 		exit(1);
 	}
+	ms()->lexer_list = NULL; // added by sherry
 }
 
 int	main(int ac, char **av)

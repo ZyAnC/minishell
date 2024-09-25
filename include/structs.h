@@ -6,7 +6,7 @@
 /*   By: jingwu <jingwu@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 10:57:07 by jingwu            #+#    #+#             */
-/*   Updated: 2024/09/24 11:39:11 by jingwu           ###   ########.fr       */
+/*   Updated: 2024/09/25 13:55:04 by jingwu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 typedef enum e_token_type
 {
 	TK_NONE,
-    TK_PIPE,
+	TK_PIPE,
 	TK_IN_RE,
 	TK_OUT_RE,
 	TK_HDOC,
@@ -53,27 +53,36 @@ typedef struct s_lexer
 	struct s_lexer	*pre;
 }	t_lexer;
 
+/*
+	prompt: the message showing in the shell
+	input: the commands that user input from terminal;
+*/
 typedef struct s_ms
 {
-   int		in_fd;
-   int		out_fd;
-   int		exit;
-   int		lines;
-   char		*cwd;
-   char		*prompt;
-   char		*input;
-   t_lexer	*lexer_list; // added by sherry, Sep 24
-}   t_ms;
+	int				in_fd;
+	int				out_fd;
+	int				fd[2];
+	int				exit;
+	int				lines;
+	char				**env;
+	char				*cwd;
+	char				*prompt;
+	char				*input;
+	char				*path;
+	struct s_lexer	*lexer_list;
+	struct s_cmd		*cmds;
+}	t_ms;
 
 typedef struct s_cmd
 {
 	char			**cmd;
-    char			*infile;
-    char			*outfile;
-    t_token_type	intype;
-    t_token_type	outype;
-    int				ispipe;
-    struct s_cmd	*next;
+	char			*infile;
+	char			**outfile; // one single command might has more than 1 output files.
+	t_token_type	intype;
+	t_token_type	outype;
+	int				ispipe;
+	int				prepipe; // default is 0;
+	struct s_cmd	*next;
 }	t_cmd;
 
 # endif
