@@ -6,7 +6,7 @@
 /*   By: yzheng <yzheng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 10:57:07 by jingwu            #+#    #+#             */
-/*   Updated: 2024/09/26 15:25:19 by yzheng           ###   ########.fr       */
+/*   Updated: 2024/09/26 17:45:00 by yzheng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,6 +99,10 @@ typedef enum e_error
 	NFILE,
 	COMMAND,
 	ERR,
+	MALLOC,
+	PIPE,
+	FORK,
+	PREMISSON,
 }	t_error;
 
 # endif

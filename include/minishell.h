@@ -6,7 +6,7 @@
 /*   By: yzheng <yzheng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 11:00:09 by yzheng            #+#    #+#             */
-/*   Updated: 2024/09/26 15:21:47 by yzheng           ###   ########.fr       */
+/*   Updated: 2024/09/26 17:57:51 by yzheng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,8 @@
 t_ms	*ms(void);
 
 /*For error*/
-void	applyerror();
-void	ex_error();
+
+void	ex_error(char *message, t_error type, int err_status);
 /*For shell*/
 void	restart(int exit);
 void	test();

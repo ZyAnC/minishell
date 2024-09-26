@@ -6,7 +6,7 @@
 /*   By: yzheng <yzheng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 09:49:16 by yzheng            #+#    #+#             */
-/*   Updated: 2024/09/26 16:29:27 by yzheng           ###   ########.fr       */
+/*   Updated: 2024/09/26 17:56:55 by yzheng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ pid_t exe_pipe(t_cmd *cm)
 	int		fd;
 	pid = fork();
  	if (pid == -1)
-		applyerror();
+		ex_error("Fork", FORK, EXIT_FAILURE);
 	if (pid == 0)
 	{
 		i = 0;
@@ -31,11 +31,10 @@ pid_t exe_pipe(t_cmd *cm)
 			fd = open(cm->infile[i++], O_RDONLY , 0444);
 			if (fd == -1)
 			{
-				ft_putstr_fd("minishell: ", 2);
 				if (!access(cm->inf, F_OK))
-					applyerror(); // permisson
+					ex_error(cm->inf, PREMISSON, 126);
 				else
-					applyerror(); // no such file
+					ex_error(cm->inf,NFILE,2);
 				restart(true);
 			}
 			close(fd);
@@ -55,7 +54,7 @@ pid_t exe_pipe2(t_cmd *cm)
 
 	pid = fork();
  	if (pid == -1)
-		applyerror();
+		ex_error("Fork", FORK, EXIT_FAILURE);
 	if (pid == 0)
 	{
 		dup2(ms()->in_fd,STDIN_FILENO);
@@ -76,7 +75,7 @@ pid_t exe_pipe3(t_cmd *cm)
 
 	pid = fork();
  	if (pid == -1)
-		applyerror();
+		ex_error("Fork", FORK, EXIT_FAILURE);
 	if (pid == 0)
 	{
 		i = 0;

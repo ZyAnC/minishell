@@ -6,7 +6,7 @@
 /*   By: yzheng <yzheng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 13:53:13 by yzheng            #+#    #+#             */
-/*   Updated: 2024/09/26 16:29:28 by yzheng           ###   ########.fr       */
+/*   Updated: 2024/09/26 18:05:44 by yzheng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,11 +35,10 @@ void	set_fd(t_cmd *cm)
 	//	(ms()->in_fd) = heredoc(cm->infile);
 	if (ms()->in_fd == -1)
 	{
-		ft_putstr_fd("minishell: ", 2);
 		if (!access(cm->inf, F_OK))
-			applyerror(); // permisson
+			ex_error(cm->inf, PREMISSON, 126);
 		else
-			applyerror(); // no such file
+			ex_error(cm->inf,NFILE,2);
 		restart(true);
 	}
 	else if (cm->outype  == TK_OUT_RE)
@@ -50,25 +49,31 @@ void	set_fd(t_cmd *cm)
 		(ms()->out_fd) = STDOUT_FILENO;
 	if (ms()->out_fd == -1)
 	{
-		ft_putstr_fd("minishell: ", 2);
 		if (!access(cm->inf, F_OK))
-			applyerror(); // permisson
+			ex_error(cm->inf, PREMISSON, 126);
 		else
-			applyerror(); // no such file
+			ex_error(cm->inf,NFILE,2);
 		restart(true);
 	}
 }
 void	ex_error(char *message, t_error type, int err_status)
 {
+	ft_putstr_fd("minishell: ", 2);
 	if(message)
 		ft_putstr_fd(message, 2);
-	if (type == DIRECTORY)
+	else if (type == DIRECTORY)
 		ft_putstr_fd(": Is a directory", 2);
-	if (type == COMMAND)
+	else if (type == COMMAND)
 		ft_putstr_fd(": command not found", 2);
-	if (type == NFILE)
+	else if  (type == NFILE)
 		ft_putstr_fd(": No such file or directory", 2);
-	if (type == ERR)
+	else if  (type == PREMISSON)
+		ft_putstr_fd("Permission denied", 2);
+	else if  (type == FORK)
+		ft_putstr_fd("fork failed", 2);
+	else if  (type == PIPE)
+		ft_putstr_fd("pipe failed", 2);
+	else if  (type == ERR)
 		ft_putstr_fd(strerror(errno), 2);
 	ft_putchar_fd('\n', 2);
 	ms()->exit = err_status;
@@ -186,7 +191,7 @@ void exe(t_cmd *cm)
 		if (cm->outype == TK_PIPE)
 		{
 			if (pipe(ms()->fd) == -1)
-				applyerror();
+				ex_error("Pipe", PIPE, EXIT_FAILURE);
 			pipeid = exe_pipe(cm);
 			close(ms()->fd[1]);
 			if (prev_fd != -1)
@@ -235,38 +240,42 @@ t_cmd *create_node( t_token_type intype, t_token_type outype) {
 }
 void	test()
 {
-	t_cmd *head = create_node(TK_IN_RE, TK_PIPE);
+	t_cmd *head = create_node(TK_NONE, TK_NONE);
 
-	t_cmd *second = create_node(TK_IN_RE,TK_NONE);
+	t_cmd *second = create_node(TK_NONE,TK_NONE);
 
 
-t_cmd *third = create_node(TK_IN_RE,TK_NONE);
-		head->next = third;
+t_cmd *third = create_node(TK_NONE,TK_NONE);
+		//head->next = third;
 		//second->next = third;
-	char *str[] = {"cat",NULL};
-	char *str2[] = {"ls",NULL};
-	char *str3[] = {"cat",NULL};
-	char *file[] = {"6",NULL};
+	char *str[] = {"cat","1",NULL};
+	char *str2[] = {NULL};
+	char *str3[] = {NULL};
+	char *file[] = {NULL};
 	char *file2[] = {NULL,NULL};
 	char *file3[] = {NULL,NULL};
+
 		head->cmd=str;
 		head->outfile = file;
-		head->of = "6";
-		head->ofnum = 1;
-		head->inf = "9";
-		head->ifnum = 3;
+		head->of = NULL;
+		head->ofnum = 0;
+		head->inf = NULL;
+		head->ifnum = 0;
+
 	second->ofnum =0;
-		head->next->cmd=str2;
-		head->next->outfile = file2;
+		second->cmd=str2;
+		second->outfile = file2;
+
 		third->cmd = str3;
 		third->outfile = file3;
 		third->ofnum = 0;
-		third->ifnum = 3;
-		third->inf = "8";
+		third->ifnum = 0;
+		third->inf = 0;
 
 		char *infile3[] = {"9","10","8",NULL};
-	char *infile[] = {"7","8","9",NULL};
-		head->infile = infile;
+	//char *infile[] = {"7","8","9",NULL};
+		//head->infile = infile;
 			third->infile = infile3;
+
 	exe(head);
 }
