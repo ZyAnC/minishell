@@ -6,7 +6,7 @@
 /*   By: jingwu <jingwu@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 10:02:38 by jingwu            #+#    #+#             */
-/*   Updated: 2024/09/25 10:41:06 by jingwu           ###   ########.fr       */
+/*   Updated: 2024/09/26 10:45:29 by jingwu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,10 @@ static int	handle_quotes(int i, char quote)
 	}
 	return (j);
 }
-
-static bool	is_token(i)
+/*
+	In this program, the meta_characters are: |, <, >, <<, >>.
+*/
+static bool	is_meta_char(i)
 {
 	if((ms() ->input[i]) == '|' || ms() ->input[i] == '<'
 			|| ms() ->input[i] == '>')
@@ -54,7 +56,7 @@ static int	read_words(int i)
 	int	j;
 
 	j = 0;
-	while (ms() ->input[i + j] && !is_token(ms() ->input[i + j]))
+	while (ms() ->input[i + j] && !is_meta_char(ms() ->input[i + j]))
 	{
 		j += handle_quotes((i + j), '\"');
 		j += handle_quotes((i + j), '\'');
@@ -62,7 +64,7 @@ static int	read_words(int i)
 			break ;
 		j++;
 	}
-	if (!add_lexer(ft_substr(ms() ->input, i , j), TK_NONE))
+	if (!add_token(ft_substr(ms() ->input, i , j), TK_WORD))
 		return (-1);
 	return (j);
 }
@@ -79,21 +81,21 @@ static int	read_words(int i)
 	1. "echo "hello" >>> file.txt" -----> bash: syntax error near unexpected token `>'
 	3. echo hello ||| echo dog ----> bash: syntax error near unexpected token `|'
 */
-static int	read_token(int i)
+static int	read_meta_char(int i)
 {
 	int	j;
 
 	j = 0;
 	if (ms()->input[i] == '|')
-		j = add_lexer(ft_strdup("|"), TK_PIPE);
+		j = add_token(ft_strdup("|"), TK_PIPE);
 	else if (!ft_strncmp(&(ms()->input[i]), "<<", 2))
-		j = add_lexer(ft_strdup("<<"), TK_HDOC);
+		j = add_token(ft_strdup("<<"), TK_HDOC);
 	else if (!ft_strncmp(&(ms()->input[i]), ">>", 2))
-		j =  add_lexer(ft_strdup(">>"), TK_APPEND);
+		j =  add_token(ft_strdup(">>"), TK_APPEND);
 	else if (ms() ->input[i] == '<')
-		j = add_lexer(ft_strdup("<"), TK_IN_RE);
+		j = add_token(ft_strdup("<"), TK_IN_RE);
 	else if (ms() ->input[i] == '>')
-		j = add_lexer(ft_strdup(">"), TK_OUT_RE);
+		j = add_token(ft_strdup(">"), TK_OUT_RE);
 	return (j);
 }
 /*
@@ -113,8 +115,8 @@ bool	lexer(void)
 		j = 0;
 		while (ms() ->input[i] == ' ')
 			j++;
-		if (is_token(ms() ->input[i]))
-			j = read_token(i);
+		if (is_meta_char(ms() ->input[i]))
+			j = read_meta_char(i);
 		else
 			j = read_words(i);
 		if (j < 0)
