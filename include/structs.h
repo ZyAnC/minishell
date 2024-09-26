@@ -6,7 +6,7 @@
 /*   By: yzheng <yzheng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 10:57:07 by jingwu            #+#    #+#             */
-/*   Updated: 2024/09/26 11:27:26 by yzheng           ###   ########.fr       */
+/*   Updated: 2024/09/26 15:25:19 by yzheng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 # define STRUCTS_H
 #include "minishell.h"
 # include <stdbool.h>
-
+#include <fcntl.h>
 typedef enum e_token_type
 {
 	TK_NONE,
@@ -79,17 +79,21 @@ pid_t	pipeid[2];
 typedef struct s_cmd
 {
 	char			**cmd;
-	char			*infile;
+	char			**infile;
 	char			**outfile;
+	char			*of;
+	char			*inf;
+
 	t_token_type	intype;
 	t_token_type	outype;
-	int				ispipe;
-	int				prepipe;
 	int				ofnum;
+	int				ifnum;
+	int				prepipe;
 	struct s_cmd	*next;
 }	t_cmd;
 
-typedef enum s_error
+
+typedef enum e_error
 {
 	DIRECTORY,
 	NFILE,

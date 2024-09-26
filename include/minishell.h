@@ -6,7 +6,7 @@
 /*   By: yzheng <yzheng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 11:00:09 by yzheng            #+#    #+#             */
-/*   Updated: 2024/09/26 10:23:25 by yzheng           ###   ########.fr       */
+/*   Updated: 2024/09/26 15:21:47 by yzheng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	test();
 /*<-----pipe && redirect----->*/
 void	set_fd(t_cmd *cm);
 pid_t	exe_pipe(t_cmd *cm);
-
+pid_t	exe_pipe2(t_cmd *cm);
 pid_t	exe_pipe3(t_cmd *cm);
 pid_t 	pp_right_out(t_cmd *cm);
 /*<-----exe----->*/

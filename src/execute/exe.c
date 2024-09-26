@@ -6,7 +6,7 @@
 /*   By: yzheng <yzheng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 13:53:13 by yzheng            #+#    #+#             */
-/*   Updated: 2024/09/26 11:27:47 by yzheng           ###   ########.fr       */
+/*   Updated: 2024/09/26 16:29:28 by yzheng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,31 +26,32 @@ void	pp_free(char **fly)
 void	set_fd(t_cmd *cm)
 {
 
-	if(cm->prepipe == 1)
-		ms()->in_fd = ms()->fd[0];
+
 	if (cm->intype == TK_IN_RE)
-		(ms()->in_fd) = open(cm->infile, O_RDONLY, 0444);
+		(ms()->in_fd) = open(cm->inf, O_RDONLY, 0444);
+	if (cm->intype == TK_PIPE)
+		(ms()->in_fd) = ms()->fd[0];
 	//else if (cm->intype  == TK_HDOC)
 	//	(ms()->in_fd) = heredoc(cm->infile);
 	if (ms()->in_fd == -1)
 	{
 		ft_putstr_fd("minishell: ", 2);
-		if (!access(cm->infile, F_OK))
+		if (!access(cm->inf, F_OK))
 			applyerror(); // permisson
 		else
 			applyerror(); // no such file
 		restart(true);
 	}
 	else if (cm->outype  == TK_OUT_RE)
-		(ms()->out_fd) = open(cm->outfile, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+		(ms()->out_fd) = open(cm->of, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	else if (cm->outype == TK_APPEND)
-		(ms()->out_fd) = open(cm->outfile, O_WRONLY | O_CREAT | O_APPEND, 0644);
+		(ms()->out_fd) = open(cm->of, O_WRONLY | O_CREAT | O_APPEND, 0644);
 	else if (cm->outype == TK_NONE)
 		(ms()->out_fd) = STDOUT_FILENO;
 	if (ms()->out_fd == -1)
 	{
 		ft_putstr_fd("minishell: ", 2);
-		if (!access(cm->infile, F_OK))
+		if (!access(cm->inf, F_OK))
 			applyerror(); // permisson
 		else
 			applyerror(); // no such file
@@ -143,6 +144,7 @@ void	real_execute(t_cmd *cm)
 	path = findvalidcmd(cm->cmd);
 	if (!path)
 		ex_error(cm->cmd[0],COMMAND,127);
+
 	execve(path, cm->cmd, ms()->env);
 
 
@@ -173,42 +175,48 @@ void	free_cm(t_cmd *cm)
 		current = next_node; // Move to the next node
 	}
 }
-void	exe(t_cmd *cm)
+void exe(t_cmd *cm)
 {
+	pid_t pipeid;
+	int prev_fd = -1;
+	while (cm)
+	{
+		set_fd(cm);
 
-		pid_t pipeid;
-		while (cm)
+		if (cm->outype == TK_PIPE)
 		{
-			set_fd(cm);
-			if (cm->ispipe == 1 && cm->prepipe == 0)
-			{
-					if(pipe(ms()->fd) == -1 )
-						applyerror();
-					pipeid = exe_pipe(cm);
-					cm->next->prepipe = 1;
-			}
-		//else if (cm->outype == TK_PIPE && cm->prepipe == 1)
-			//exe_pipe2(cm);
-			else if (cm->ispipe != 1 && cm->prepipe == 1)
-				pipeid = exe_pipe3(cm);
-		//else if (cm->outype != TK_PIPE && cm->prepipe == 0)
-			//exe_simple(cm);
-			cm = cm->next;
+			if (pipe(ms()->fd) == -1)
+				applyerror();
+			pipeid = exe_pipe(cm);
+			close(ms()->fd[1]);
+			if (prev_fd != -1)
+				close(prev_fd);
+			prev_fd = ms()->fd[0];
 		}
-		if(ms()->in_fd != 0)
-			close(ms()->in_fd);
-		if(ms()->out_fd != 1)
-			close(ms()->out_fd);
-		close(ms()->fd[1]);
-		close(ms()->fd[0]);
-		waitpid(pipeid, NULL, 0);
+		else if((cm->intype == TK_IN_RE || cm->intype == TK_NONE) && (cm->outype == TK_OUT_RE || cm->outype == TK_NONE))
+		{
+			pipeid = exe_pipe2(cm);
+		}
+		else if (cm->intype == TK_PIPE &&
+				(cm->outype == TK_OUT_RE || cm->outype == TK_NONE || cm->outype == TK_APPEND))
+		{
+			pipeid = exe_pipe3(cm);
+			close(ms()->fd[0]);
+		}
+		cm = cm->next;
+	}
 
-
-	//free_cm(cm);
+	if (prev_fd != -1)
+		close(prev_fd);
+	if (ms()->in_fd != 0)
+		close(ms()->in_fd);
+	if (ms()->out_fd != 1)
+		close(ms()->out_fd);
+	while (wait(NULL) > 0);
 }
 
 
-t_cmd *create_node(char *infile, char *outfile, t_token_type intype, t_token_type outype, int ispipe) {
+t_cmd *create_node( t_token_type intype, t_token_type outype) {
 	t_cmd *new_node = malloc(sizeof(t_cmd));
 	if (!new_node) {
 		perror("Failed to allocate memory");
@@ -216,11 +224,10 @@ t_cmd *create_node(char *infile, char *outfile, t_token_type intype, t_token_typ
 	}
 
 	new_node->cmd = NULL;
-	new_node->infile = infile;
-	new_node->outfile = outfile;
+
+
 	new_node->intype = intype;
 	new_node->outype = outype;
-	new_node->ispipe = ispipe;
 	new_node->prepipe = 0;
 	new_node->next = NULL;
 
@@ -228,24 +235,38 @@ t_cmd *create_node(char *infile, char *outfile, t_token_type intype, t_token_typ
 }
 void	test()
 {
-	t_cmd *head = create_node(NULL, NULL, TK_NONE, TK_NONE, 1);
+	t_cmd *head = create_node(TK_IN_RE, TK_PIPE);
 
-	t_cmd *second = create_node(NULL, "9", TK_NONE, TK_OUT_RE, 0);
+	t_cmd *second = create_node(TK_IN_RE,TK_NONE);
 
 
-
-		head->next = second;
-	char *str[] = {"echo","asda",NULL};
-	char *str2[] = {"cat",NULL};
-	char *file[] = {NULL,NULL};
-	char *file2[] = {"7","8","9",NULL};
+t_cmd *third = create_node(TK_IN_RE,TK_NONE);
+		head->next = third;
+		//second->next = third;
+	char *str[] = {"cat",NULL};
+	char *str2[] = {"ls",NULL};
+	char *str3[] = {"cat",NULL};
+	char *file[] = {"6",NULL};
+	char *file2[] = {NULL,NULL};
+	char *file3[] = {NULL,NULL};
 		head->cmd=str;
 		head->outfile = file;
-		head->ofnum = 0;
-		head->next->ofnum = 3;
+		head->of = "6";
+		head->ofnum = 1;
+		head->inf = "9";
+		head->ifnum = 3;
+	second->ofnum =0;
 		head->next->cmd=str2;
 		head->next->outfile = file2;
+		third->cmd = str3;
+		third->outfile = file3;
+		third->ofnum = 0;
+		third->ifnum = 3;
+		third->inf = "8";
 
-
+		char *infile3[] = {"9","10","8",NULL};
+	char *infile[] = {"7","8","9",NULL};
+		head->infile = infile;
+			third->infile = infile3;
 	exe(head);
 }
