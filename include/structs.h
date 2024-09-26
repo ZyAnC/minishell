@@ -6,7 +6,7 @@
 /*   By: yzheng <yzheng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 10:57:07 by jingwu            #+#    #+#             */
-/*   Updated: 2024/09/25 11:47:20 by yzheng           ###   ########.fr       */
+/*   Updated: 2024/09/26 11:27:26 by yzheng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,28 +63,38 @@ typedef struct s_parser
 
 typedef struct s_ms
 {
-   int	in_fd;
-   int	out_fd;
-   int	fd[2];
-   int	exit;
-   int	lines;
-   char **env;
-   char	*cwd;
-   char	*prompt;
-   char	*input;
-   char *path;
+int	in_fd;
+int	out_fd;
+int	fd[2];
+int	exit;
+int	lines;
+char **env;
+char	*cwd;
+char	*prompt;
+char	*input;
+char *path;
+pid_t	pipeid[2];
 }   t_ms;
 
 typedef struct s_cmd
 {
 	char			**cmd;
-    char			*infile;
-    char			*outfile;
-    t_token_type	intype;
-    t_token_type	outype;
-    int				ispipe;
+	char			*infile;
+	char			**outfile;
+	t_token_type	intype;
+	t_token_type	outype;
+	int				ispipe;
 	int				prepipe;
-    struct s_cmd	*next;
+	int				ofnum;
+	struct s_cmd	*next;
 }	t_cmd;
+
+typedef enum s_error
+{
+	DIRECTORY,
+	NFILE,
+	COMMAND,
+	ERR,
+}	t_error;
 
 # endif

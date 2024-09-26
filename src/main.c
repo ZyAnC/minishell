@@ -6,7 +6,7 @@
 /*   By: yzheng <yzheng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 12:23:30 by yzheng            #+#    #+#             */
-/*   Updated: 2024/09/25 11:47:23 by yzheng           ###   ########.fr       */
+/*   Updated: 2024/09/25 19:20:51 by yzheng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,9 @@ void    buildshell()
 			restart(1);
 		}
 		add_history(ms()->input);
+
 		test();
+		/*should free list in restart*/
 		restart(0);
 	}
 	rl_clear_history();
@@ -75,6 +77,8 @@ static void init_ms(char **env)
 	ms()->cwd = getcwd(NULL, 2048);
 	ms()->path = findpath(env);
 	ms()->env = env;
+	ms()->fd[0] = -1;
+	ms()->fd[1] = -1;
 	if(!(ms()->cwd))
 	{
 		perror("getcwd() error");
