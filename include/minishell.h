@@ -6,7 +6,7 @@
 /*   By: jingwu <jingwu@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 11:00:09 by yzheng            #+#    #+#             */
-/*   Updated: 2024/09/26 14:20:49 by jingwu           ###   ########.fr       */
+/*   Updated: 2024/09/27 08:44:34 by jingwu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,10 +32,15 @@
 # include <readline/history.h>
 
 /*                                             err_type                                         */
-# define MEMORY_ERROR	"Unable to allocate memory."
-# define UNQUOTED		"The input is quoted incorrectly."
+# define MEMORY_ERROR		"Unable to allocate memory."
+# define UNQUOTED			"The input is quoted incorrectly."
 # define ADD_TOKEN_FAILED	"Failed when trying to add a new node to token list."
-# define PIPE_STX_ERR	"bash: syntax error near unexpected token `|'"
+# define PIPE_STX_ERR		"minishell: syntax error near unexpected token `|'"
+# define NL_STX_ERR			"minishell: syntax error near unexpected token `newline'"
+# define IN_RE_STX_ERR		"minishell: syntax error near unexpected token `<'"
+# define OUT_RE_STX_ERR		"minishell: syntax error near unexpected token `>'"
+# define HDOC_STX_ERR		"minishell: syntax error near unexpected token `<<'"
+# define APED_STX_ERR		"minishell: syntax error near unexpected token `>>'"
 
 
 /*For global*/
@@ -60,9 +65,13 @@ t_token	*tk_list_manager(t_list_position psn);
 bool	check_syntax(void);
 bool	check_quote(void);
 
+// expander.c
+void	expander(void);
+
 /*                                              tools                                                    */
 // handle_error.c
 bool	print_error(char *err_type, int err_fd);
+bool	stx_error(t_token *node);
 
 // utils.c
 bool	is_pipe(t_token *token);

@@ -6,7 +6,7 @@
 /*   By: jingwu <jingwu@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 11:28:56 by jingwu            #+#    #+#             */
-/*   Updated: 2024/09/26 14:29:43 by jingwu           ###   ########.fr       */
+/*   Updated: 2024/09/27 08:26:39 by jingwu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,9 +65,9 @@ t_token	*tk_list_manager(t_list_position psn)
 		tk_list = ms() ->tokens;
 	else if (psn == NEXT)
 		tk_list = tk_list->next;
-	else if (psn == CUR_COT && tk_list)
+	else if (psn == CUR_CNT && tk_list)
 		return (tk_list->content);
-	else if (psn == NEXT_COT && tk_list->next)
+	else if (psn == NEXT_CNT && tk_list->next)
 		return (tk_list->next->content);
 	return (NULL);
 }
