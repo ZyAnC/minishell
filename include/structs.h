@@ -6,7 +6,7 @@
 /*   By: jingwu <jingwu@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 10:57:07 by jingwu            #+#    #+#             */
-/*   Updated: 2024/09/26 14:28:00 by jingwu           ###   ########.fr       */
+/*   Updated: 2024/09/27 08:10:53 by jingwu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,8 @@ typedef enum e_list_position
 {
 	RESET,
 	NEXT,
-	CUR_COT,
-	NEXT_COT,
+	CUR_CNT,
+	NEXT_CNT,
 }	t_list_position;
 
 /*

@@ -1,5 +1,7 @@
 https://github.com/maiadegraaf/minishell/blob/main/src/utils/minishell_loop.c
 
+https://github.com/nenieiri-42Yerevan/Minishell/blob/master/srcs/tokens_array.c#L98
+
 1. ~$ cat <minishell.h>./outfiles/outfile
 	bash: minishell.h: No such file or directory
 
@@ -17,13 +19,10 @@ Summary, error handling before execution:
 1. if the command start with '|'								--DONE
 	error: bash: syntax error near unexpected token `|'
 
-2. cmd: meta_char (space) meta_char1 (nothing at the back of meta_char 1)
+2. cmd: meta_char (space) meta_char1 (nothing at the back of meta_char 1) -- DONE
 	error: bash: syntax error near unexpected token `meta_char1'
 
-3. cmd: meta_char (space) meta_char1 (somthing at the back of meta_char 1)
-	error: bash: syntax error near unexpected token `meta_char'
-
-4.	cmd: meta_char (except '|')
+4.	cmd: meta_char (except '|')										-- DONE
 	cmd: meta_char(except '|') infile.txt meta_char1
 	erro: bash: syntax error near unexpected token `newline'
 
