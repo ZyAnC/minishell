@@ -54,4 +54,9 @@ We DON'T consider implement these conditions:
 3. don't consider this condition: meta_char(no space)meta_char1 .
 
 
+Error when execute:
+
+1. name=abc
+jingwu@c2r5p1:~$ $name
+Command 'abc' not found, but there are 17 similar ones.
 

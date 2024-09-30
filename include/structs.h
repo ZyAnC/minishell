@@ -6,7 +6,7 @@
 /*   By: jingwu <jingwu@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 10:57:07 by jingwu            #+#    #+#             */
-/*   Updated: 2024/09/27 08:10:53 by jingwu           ###   ########.fr       */
+/*   Updated: 2024/09/30 08:04:05 by jingwu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,12 @@ typedef enum e_list_position
 	NEXT_CNT,
 }	t_list_position;
 
+
+typedef struct e_env
+{
+	char	*name;
+	char	*value;
+}	t_env;
 /*
 	@What is a token?
 	It might be a command, a word or a redirector,and so on. Such as "echo", "hello", "<";
@@ -84,6 +90,7 @@ typedef struct s_ms
 	char			*input;
 	char			*path;
 	struct s_list	*tokens;
+	struct s_list	*env_list;
 	struct s_cmd	*cmds;
 }	t_ms;
 
