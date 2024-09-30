@@ -6,7 +6,7 @@
 /*   By: jingwu <jingwu@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 11:00:09 by yzheng            #+#    #+#             */
-/*   Updated: 2024/09/27 08:44:34 by jingwu           ###   ########.fr       */
+/*   Updated: 2024/09/30 08:54:53 by jingwu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,5 +77,9 @@ bool	stx_error(t_token *node);
 bool	is_pipe(t_token *token);
 bool	is_dir(t_token *token);
 bool	is_dir_or_pipe(t_token *token);
+bool	is_seperator(char c);
+
+// env_list.c
+char	*get_env_value(char *env_name);
 
 # endif

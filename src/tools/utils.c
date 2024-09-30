@@ -6,7 +6,7 @@
 /*   By: jingwu <jingwu@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 13:47:08 by jingwu            #+#    #+#             */
-/*   Updated: 2024/09/26 14:20:22 by jingwu           ###   ########.fr       */
+/*   Updated: 2024/09/30 08:53:54 by jingwu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,4 +38,16 @@ bool	is_dir_or_pipe(t_token *token)
 	if (is_pipe(token) || is_dir(token))
 		return (true);
 	return (false);
+}
+/*
+	Here the seperators contain:|, <,>,',", space, \0,
+*/
+bool	is_seperator(char c)
+{
+	char	*sep;
+
+	sep = "|<>\'\"\0 ";
+	if (!ft_strchr(sep, c))
+		return (false);
+	return (true);
 }
