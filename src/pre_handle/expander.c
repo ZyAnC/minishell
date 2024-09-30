@@ -6,7 +6,7 @@
 /*   By: jingwu <jingwu@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 08:43:11 by jingwu            #+#    #+#             */
-/*   Updated: 2024/09/30 10:42:31 by jingwu           ###   ########.fr       */
+/*   Updated: 2024/09/30 10:48:38 by jingwu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,9 @@ static char *get_env_name(char *str)
 		i++;
 	return (ft_substr(str, 0 , i));
 }
-
+/*
+	The function will replace name with value, then return the newstr.
+*/
 static char	*replace(char *str, char *name, char *value)
 {
 	int		len;
