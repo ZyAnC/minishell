@@ -5,6 +5,9 @@ Thinking of these cases:
 
 2. When there is no input, then just simply showing prompt in the newline.
 
+3. cat file1.txt file2.txt | grep "pattern" > output1.txt > output2.txt | sort >> log1.txt >> log2.txt | uniq > final_output.txt
+
+
 
 Test   1: ✅ echo hello world
 Test   2: ✅ echo "hello world"

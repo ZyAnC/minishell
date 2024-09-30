@@ -6,7 +6,7 @@
 /*   By: jingwu <jingwu@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 11:28:56 by jingwu            #+#    #+#             */
-/*   Updated: 2024/09/27 08:26:39 by jingwu           ###   ########.fr       */
+/*   Updated: 2024/09/30 11:30:50 by jingwu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ t_token	*new_token(char *str, t_token_type tk_type)
 		return (NULL);
 	node->str = str;
 	node->tk_type = tk_type;
+	node->idx++;
 	return (node);
 }
 

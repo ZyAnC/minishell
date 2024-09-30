@@ -6,7 +6,7 @@
 /*   By: jingwu <jingwu@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 12:48:19 by jingwu            #+#    #+#             */
-/*   Updated: 2024/09/27 08:42:53 by jingwu           ###   ########.fr       */
+/*   Updated: 2024/09/30 10:49:30 by jingwu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,9 @@ bool	pre_handle(void)
 	if (!check_syntax())
 		return (false); // should return an error message here
 	expander();
+	if (!parsing())
+		return (false);
 
-	
 	if (check_all_local()) // what's this for?????
 		return (false); // should return an error message here
 	return (true);

@@ -6,7 +6,7 @@
 /*   By: jingwu <jingwu@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 10:57:07 by jingwu            #+#    #+#             */
-/*   Updated: 2024/09/30 08:04:05 by jingwu           ###   ########.fr       */
+/*   Updated: 2024/09/30 13:59:30 by jingwu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,14 @@ typedef enum e_err_type
 	CMD,
 	STX,
 	F_NAME,
+	DIRECTORY,
+	NFILE,
+	COMMAND,
+	ERR,
+	MALLOC,
+	PIPE,
+	FORK,
+	PREMISSON,
 }	t_err_type;
 
 /*
@@ -63,11 +71,13 @@ typedef struct e_env
 	@param
 	str:	the content of a token, such as "echo", "abd" or "|";
 	token:	the type of a token, such as "TK_PIPE" or "TK_APPEND"
+	idx:	the index of the token;
 */
 typedef struct s_token
 {
 	char			*str;
 	t_token_type	tk_type;
+	int				idx;
 }	t_token;
 
 /*
@@ -104,12 +114,15 @@ typedef struct s_cmd
 {
 	char			**cmd;
 	char			**infile;
-	char			**outfile; // one single command might has more than 1 output files.
+	char			**outfile;
+	char			*of; // the last output file
+	char			*inf; // the last input file
 	t_token_type	intype;
 	t_token_type	outype;
-	int				i_amt;
-	int				o_amt;
+	int				ofnum;
+	int				ifnum;
 	int				prepipe; // default is 0;
+	char			*delimiter; //for '<<'
 	struct s_cmd	*next;
 }	t_cmd;
 
