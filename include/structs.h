@@ -6,7 +6,7 @@
 /*   By: yzheng <yzheng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 10:57:07 by jingwu            #+#    #+#             */
-/*   Updated: 2024/09/26 17:45:00 by yzheng           ###   ########.fr       */
+/*   Updated: 2024/09/30 11:33:57 by yzheng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,7 @@ char	*prompt;
 char	*input;
 char *path;
 pid_t	pipeid[2];
+struct s_list	*env_list;
 }   t_ms;
 
 typedef struct s_cmd
@@ -90,6 +91,7 @@ typedef struct s_cmd
 	int				ifnum;
 	int				prepipe;
 	struct s_cmd	*next;
+
 }	t_cmd;
 
 
