@@ -6,7 +6,7 @@
 /*   By: jingwu <jingwu@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 11:28:56 by jingwu            #+#    #+#             */
-/*   Updated: 2024/09/30 11:30:50 by jingwu           ###   ########.fr       */
+/*   Updated: 2024/10/02 09:58:41 by jingwu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,4 +71,34 @@ t_token	*tk_list_manager(t_list_position psn)
 	else if (psn == NEXT_CNT && tk_list->next)
 		return (tk_list->next->content);
 	return (NULL);
+}
+
+/*
+	@how to delete a node?
+	 1. If the node is at the beginning:
+	    You need to update the head of the list.
+	 2. If the node is in the middle or at the end:
+	    loop the list to find the node right before the delete_node, then update the list.
+*/
+void	del_node(t_list **list, t_list *node)
+{
+	t_list	*tmp;
+
+	if (!list || !*list || !node)
+		return ;
+	tmp = *list;
+	if (*list == node)
+	{
+		*list = (*list) ->next;
+		free(((t_token *)(node->content)));
+		free(tmp);
+	}
+	else
+	{
+		while (!(tmp->next) && (tmp->next) != node)
+			tmp = tmp->next;
+		tmp ->next = node ->next;
+		free(((t_token *)(node->content)) ->str);
+		free(node);
+	}
 }

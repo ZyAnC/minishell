@@ -6,41 +6,11 @@
 /*   By: jingwu <jingwu@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 12:24:17 by jingwu            #+#    #+#             */
-/*   Updated: 2024/09/30 14:31:01 by jingwu           ###   ########.fr       */
+/*   Updated: 2024/10/02 12:59:13 by jingwu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./minishell.h"
-
-static void	count_in_out_dir(t_cmd **cmd, t_list *tk_lt, int start, int end)
-{
-	t_token	*token;
-
-	while (tk_lt)
-	{
-		token = tk_lt->content;
-		if (token->idx >= start && token->idx <= end)
-		{
-			if (token->tk_type == TK_IN_RE)
-				(*cmd) ->ifnum++;
-			else if (token->tk_type == TK_OUT_RE)
-				(*cmd) ->ofnum++;
-		}
-		tk_lt = tk_lt->next;
-	}
-}
-/*
-	Allocate memory for infile an outfile in each command node.
-*/
-static void	allocate_mem(t_cmd **cmd)
-{
-	(*cmd) ->infile = ft_calloc(((*cmd) ->ofnum + 1), sizeof(char *)); //
-	if (!(*cmd) ->infile)
-		return ;
-	(*cmd) ->outfile = ft_calloc(((*cmd) ->ofnum + 1), sizeof(char *));
-	if (!(*cmd) ->outfile)
-		return ;
-}
 
 static t_cmd	*new_cmd(int start, int end)
 {
@@ -48,30 +18,26 @@ static t_cmd	*new_cmd(int start, int end)
 	t_token	*token;
 	t_cmd	*cmd_nd;
 
-	allocate_mem(&cmd_nd);
 	tmp = ms() ->tokens;
 	cmd_nd = ft_calloc(1, sizeof(t_cmd));
-	count_in_out_dir(&cmd_nd, tmp, start, end); // implement the function
+	count(&cmd_nd, tmp, start, end);
+	if (!allocate_mem(&cmd_nd))
+		return (ft_strdup(""));
 	while (tmp)
 	{
 		token = tmp->content;
 		if (token->idx >= start && token->idx <= end)
 		{
-			if (token->tk_type)
-			if (token->tk_type == TK_IN_RE)
-			{
-				cmd_nd->intype = TK_IN_RE;
-			}
+			if (is_dir(token->tk_type))
+				process_re(&cmd_nd, tmp); // index how to increase?????
 			else if (token->tk_type == TK_WORD)
-				cmd_nd->cmd = ft_split(token->str, ' ');
-
-
+				cmd_nd->cmd[cmd_nd->ct_w] = token->str;
 		}
 		tmp = tmp->next;
 	}
-	cmd_nd->prepipe = 0;
 	cmd_nd->next = NULL;
 }
+
 /*
 	This function will group tokens seperated by '|', then add them into cmd_list;
 */
@@ -88,13 +54,13 @@ bool	parsing(void)
 	while (tmp)
 	{
 		token = tmp->content;
-		if (token->tk_type == TK_PIPE)
+		if (token->tk_type == TK_PIPE && tmp->next)
 		{
 			add_cmd(new_cmd((i + 1), token->idx)); // token's index start from 1, right????
 			i = token->idx;
 		}
+		if (!tmp->next)
+			add_cmd(new_cmd((i + 1), ((t_token *)tmp->content) ->idx));
 		tmp = tmp->next;
 	}
-	add_cmd(new_cmd((i + 1),
-		((t_token *)((ft_lstlast(ms() ->tokens)) ->content)) ->idx)); // the last command part.
 }

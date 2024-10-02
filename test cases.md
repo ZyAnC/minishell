@@ -29,7 +29,7 @@ Test  17: ✅ echo "$"
 Test  18: ✅ echo '$'
 Test  19: ✅ echo $
 Test  20: ✅ echo $?
-Test  21: ✅ echo $?HELLO
+Test  21: ✅ echo $?HELLO	
 Test  22: ✅ pwd
 Test  23: ✅ pwd oi
 Test  24: ✅ export hello

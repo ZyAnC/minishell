@@ -6,7 +6,7 @@
 /*   By: jingwu <jingwu@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 10:57:07 by jingwu            #+#    #+#             */
-/*   Updated: 2024/09/30 13:59:30 by jingwu           ###   ########.fr       */
+/*   Updated: 2024/10/02 12:57:41 by jingwu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,12 +71,14 @@ typedef struct e_env
 	@param
 	str:	the content of a token, such as "echo", "abd" or "|";
 	token:	the type of a token, such as "TK_PIPE" or "TK_APPEND"
+	arg:	saving the file name(for <, > or <<) or delimiter (for <<)
 	idx:	the index of the token;
 */
 typedef struct s_token
 {
 	char			*str;
 	t_token_type	tk_type;
+	char			*arg;
 	int				idx;
 }	t_token;
 
@@ -107,22 +109,51 @@ typedef struct s_ms
 /*
 	@param
 	cmd:	the dyadic array of cmds. like "ls -l" will be stored as cmd[0]="ls", cmd[1]="-l"
-	i_amt:	the amount of infiles;
-	o_amt:	the amount of outfiles;
+	infile:	the dyadic array of infiles;
+	limiter:	the dyadic array of delimiters, coming with '<<';
+	outfile:	the dyadic array of outfiles;
+	of:		the last outfile name in the part of input seperated by '|'.
+			For example, the input :"echo a >3 >>4 >5 | ...."
+			in this case, of = "5";
+
+	inf:	the last infile name in the part of input seperated by '|'.
+			For exapmle,
+			1. the input: "<<end <infile <<sp <infile2 cat | ..."
+			   in this case, inf = "infile2";
+			2. the input: "<<end <infile <<sp cat | ..."
+			   in this case, inf = NULL; (becasue the last one is '<<' there is no name)
+
+	intype:	the last < or << in the part of input seperated by '|'.
+			For exapmle, the input :"<<end <infile <<sp cat | ..."
+			in this case, intype = TK_HDOC, becase it is the last one.
+
+	outype:	the last > or >> in the part of input seperated by '|';
+	ifnum:	the amount of input redirection '<';
+	ofnum:	the amount of output redirection '>';
+	herenum:	the amount of heredoc '<<';
+	ct_in:	the index of infile dyadic array;
+	ct_out:	the index of outfile dyadic array;
+	ct_del:	the index of limiter dyadic array;
+	ct_w:	the index of cmd dyadic array;
 */
 typedef struct s_cmd
 {
 	char			**cmd;
 	char			**infile;
+	char			**limiter;
 	char			**outfile;
-	char			*of; // the last output file
-	char			*inf; // the last input file
+	char			*of;
+	char			*inf;
 	t_token_type	intype;
 	t_token_type	outype;
 	int				ofnum;
 	int				ifnum;
-	int				prepipe; // default is 0;
-	char			*delimiter; //for '<<'
+	int				herenum;
+	int				word;
+	int				ct_in;
+	int				ct_out;
+	int				ct_del;
+	int				ct_w;
 	struct s_cmd	*next;
 }	t_cmd;
 
