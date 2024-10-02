@@ -6,7 +6,7 @@
 /*   By: yzheng <yzheng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 13:53:13 by yzheng            #+#    #+#             */
-/*   Updated: 2024/09/26 18:05:44 by yzheng           ###   ########.fr       */
+/*   Updated: 2024/10/02 08:33:05 by yzheng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ void	ex_error(char *message, t_error type, int err_status)
 	ft_putstr_fd("minishell: ", 2);
 	if(message)
 		ft_putstr_fd(message, 2);
-	else if (type == DIRECTORY)
+	if (type == DIRECTORY)
 		ft_putstr_fd(": Is a directory", 2);
 	else if (type == COMMAND)
 		ft_putstr_fd(": command not found", 2);
@@ -149,7 +149,7 @@ void	real_execute(t_cmd *cm)
 	path = findvalidcmd(cm->cmd);
 	if (!path)
 		ex_error(cm->cmd[0],COMMAND,127);
-
+	ft_printf("%s\n",cm->cmd[0]);
 	execve(path, cm->cmd, ms()->env);
 
 
@@ -180,13 +180,57 @@ void	free_cm(t_cmd *cm)
 		current = next_node; // Move to the next node
 	}
 }
+void	getdoc(char *av,int hfd)
+{
+	char	*doc_in;
+
+
+	while (1)
+	{
+		doc_in = get_next_line(0);
+		if (ft_strncmp(doc_in, av, ft_strlen(av)) == 0)
+		{
+			free(doc_in);
+			break;
+		}
+		ft_putstr_fd(doc_in, hfd);
+		free(doc_in);
+	}
+}
 void exe(t_cmd *cm)
 {
 	pid_t pipeid;
 	int prev_fd = -1;
+	int i;
+
+	i = 0;
+	ms()->hfd = -1;
 	while (cm)
 	{
 		set_fd(cm);
+		if(cm->intype == TK_HDOC)
+		{
+
+			while(cm->herenum--)
+			{
+
+				ms()->hfd = open("here_doc", O_CREAT | O_RDWR | O_TRUNC, 0644);
+				if (ms()->hfd == -1)
+				{
+					if (!access("here_doc", F_OK))
+						ex_error("here_doc", PREMISSON, 126);
+					else
+						ex_error("here_doc",NFILE,2);
+					restart(0);
+				}
+				getdoc(cm->limiter[i++],ms()->hfd);
+				close(ms()->hfd);
+
+			}
+			cm->intype = TK_IN_RE;
+			cm->inf = "here_doc";
+			set_fd(cm);
+		}
 
 		if (cm->outype == TK_PIPE)
 		{
@@ -198,10 +242,13 @@ void exe(t_cmd *cm)
 				close(prev_fd);
 			prev_fd = ms()->fd[0];
 		}
-		else if((cm->intype == TK_IN_RE || cm->intype == TK_NONE) && (cm->outype == TK_OUT_RE || cm->outype == TK_NONE))
+		else if((cm->intype == TK_IN_RE || cm->intype == TK_NONE)
+		&& (cm->outype == TK_OUT_RE || cm->outype == TK_NONE))
 		{
 			pipeid = exe_pipe2(cm);
+
 		}
+
 		else if (cm->intype == TK_PIPE &&
 				(cm->outype == TK_OUT_RE || cm->outype == TK_NONE || cm->outype == TK_APPEND))
 		{
@@ -209,8 +256,8 @@ void exe(t_cmd *cm)
 			close(ms()->fd[0]);
 		}
 		cm = cm->next;
-	}
 
+	}
 	if (prev_fd != -1)
 		close(prev_fd);
 	if (ms()->in_fd != 0)
@@ -218,6 +265,8 @@ void exe(t_cmd *cm)
 	if (ms()->out_fd != 1)
 		close(ms()->out_fd);
 	while (wait(NULL) > 0);
+
+
 }
 
 
@@ -240,16 +289,16 @@ t_cmd *create_node( t_token_type intype, t_token_type outype) {
 }
 void	test()
 {
-	t_cmd *head = create_node(TK_NONE, TK_NONE);
+	t_cmd *head = create_node(TK_HDOC, TK_NONE);
 
-	t_cmd *second = create_node(TK_NONE,TK_NONE);
+	t_cmd *second = create_node(TK_PIPE,TK_NONE);
 
 
 t_cmd *third = create_node(TK_NONE,TK_NONE);
 		//head->next = third;
 		//second->next = third;
-	char *str[] = {"cat","1",NULL};
-	char *str2[] = {NULL};
+	char *str[] = {"cat",NULL};
+	char *str2[] = {"cat",NULL};
 	char *str3[] = {NULL};
 	char *file[] = {NULL};
 	char *file2[] = {NULL,NULL};
@@ -259,7 +308,7 @@ t_cmd *third = create_node(TK_NONE,TK_NONE);
 		head->outfile = file;
 		head->of = NULL;
 		head->ofnum = 0;
-		head->inf = NULL;
+		head->inf = "here_doc";
 		head->ifnum = 0;
 
 	second->ofnum =0;
@@ -273,9 +322,12 @@ t_cmd *third = create_node(TK_NONE,TK_NONE);
 		third->inf = 0;
 
 		char *infile3[] = {"9","10","8",NULL};
-	//char *infile[] = {"7","8","9",NULL};
-		//head->infile = infile;
+	char *infile[] = {"1","2","3",NULL};
+	head->limiter = infile;
+	head->herenum = 3;
+		head->infile = infile;
 			third->infile = infile3;
 
 	exe(head);
+
 }

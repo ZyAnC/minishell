@@ -6,7 +6,7 @@
 /*   By: yzheng <yzheng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 12:08:50 by yzheng            #+#    #+#             */
-/*   Updated: 2024/09/26 17:46:32 by yzheng           ###   ########.fr       */
+/*   Updated: 2024/10/01 18:05:08 by yzheng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 void restart(int ex)
 {
+
     if(!ms()->prompt)
       free(ms()->prompt);
     if(!ms()->input)
@@ -22,6 +23,7 @@ void restart(int ex)
 	ms()->fd[1] = -1;
     ms()->in_fd = STDIN_FILENO;
     ms()->out_fd = STDOUT_FILENO;
+
     if(ex)
     {
         free(ms()->cwd);
