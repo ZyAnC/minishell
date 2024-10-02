@@ -6,7 +6,7 @@
 /*   By: jingwu <jingwu@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 11:00:09 by yzheng            #+#    #+#             */
-/*   Updated: 2024/09/30 08:54:53 by jingwu           ###   ########.fr       */
+/*   Updated: 2024/10/02 12:01:47 by jingwu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,10 +56,11 @@ bool	pre_handle(void);
 // lexer.c
 bool	lexer(void);
 
-// operate_lexer.c
+// operate_token.c
 t_token	*new_token(char *str, t_token_type tk_type);
 bool	add_token(char *str, t_token_type token);
 t_token	*tk_list_manager(t_list_position psn);
+void	del_node(t_list **list, t_list *node);
 
 // checking.c
 bool	check_syntax(void);
@@ -67,6 +68,13 @@ bool	check_quote(void);
 
 // expander.c
 void	expander(void);
+
+// add_cmd_utils.c
+void	count(t_cmd **cmd, t_list *tk_lt, int start, int end);
+bool	allocate_mem(t_cmd **cmd);
+
+// process_re.c
+void	process_re(t_cmd **cmd, t_list *tk_node);
 
 /*                                              tools                                                    */
 // handle_error.c
