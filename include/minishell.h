@@ -6,7 +6,7 @@
 /*   By: jingwu <jingwu@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 11:00:09 by yzheng            #+#    #+#             */
-/*   Updated: 2024/10/03 11:07:45 by jingwu           ###   ########.fr       */
+/*   Updated: 2024/10/03 14:25:29 by jingwu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,13 @@ void	restart(int exit);
 void	count(t_cmd **cmd, t_list *tk_lt, int start, int end);
 bool	allocate_mem(t_cmd **cmd);
 
+// checking_token_type.c
+bool	is_pipe(t_token *token);
+bool	is_dir(t_token *token);
+bool	is_dir_or_pipe(t_token *token);
+bool	is_seperator(char c);
+bool	is_defining_var(t_token *token);
+
 // checking.c
 bool	check_syntax(void);
 bool	check_quote(void);
@@ -72,6 +79,7 @@ t_token	*new_token(char *str, t_token_type tk_type, bool merge);
 int	add_token(char *str, t_token_type token, bool merge);
 t_token	*tk_list_manager(t_list_position psn);
 void	del_node(t_list **list, t_list *node);
+
 
 // parsing.c
 bool	parsing(void);
@@ -96,5 +104,8 @@ bool	is_seperator(char c);
 
 // env_list.c
 char	*get_env_value(char *env_name);
+
+// free.c
+void	ft_free(void *pointer);
 
 # endif
