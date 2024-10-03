@@ -6,7 +6,7 @@
 /*   By: jingwu <jingwu@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 11:00:09 by yzheng            #+#    #+#             */
-/*   Updated: 2024/10/02 12:01:47 by jingwu           ###   ########.fr       */
+/*   Updated: 2024/10/03 11:07:45 by jingwu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@
 # define OUT_RE_STX_ERR		"minishell: syntax error near unexpected token `>'"
 # define HDOC_STX_ERR		"minishell: syntax error near unexpected token `<<'"
 # define APED_STX_ERR		"minishell: syntax error near unexpected token `>>'"
+# define ADD_CMD_ERR		"Failed to add a new command node"
 
 
 /*For global*/
@@ -50,28 +51,34 @@ t_ms	*ms(void);
 void	restart(int exit);
 
 /*                                             pre_handle                                               */
-// pre_handle.c
-bool	pre_handle(void);
+
+// add_cmd_utils.c
+void	count(t_cmd **cmd, t_list *tk_lt, int start, int end);
+bool	allocate_mem(t_cmd **cmd);
+
+// checking.c
+bool	check_syntax(void);
+bool	check_quote(void);
+bool	check_mergerable(char *matcher, char *str, int index);
+
+// expander.c
+void	expander(void);
 
 // lexer.c
 bool	lexer(void);
 
 // operate_token.c
-t_token	*new_token(char *str, t_token_type tk_type);
-bool	add_token(char *str, t_token_type token);
+t_token	*new_token(char *str, t_token_type tk_type, bool merge);
+int	add_token(char *str, t_token_type token, bool merge);
 t_token	*tk_list_manager(t_list_position psn);
 void	del_node(t_list **list, t_list *node);
 
-// checking.c
-bool	check_syntax(void);
-bool	check_quote(void);
+// parsing.c
+bool	parsing(void);
 
-// expander.c
-void	expander(void);
-
-// add_cmd_utils.c
-void	count(t_cmd **cmd, t_list *tk_lt, int start, int end);
-bool	allocate_mem(t_cmd **cmd);
+// pre_handle.c
+void	restruct_token(void);
+bool	pre_handle(void);
 
 // process_re.c
 void	process_re(t_cmd **cmd, t_list *tk_node);

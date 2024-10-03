@@ -6,7 +6,7 @@
 /*   By: jingwu <jingwu@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 10:02:38 by jingwu            #+#    #+#             */
-/*   Updated: 2024/09/26 10:45:29 by jingwu           ###   ########.fr       */
+/*   Updated: 2024/10/03 11:07:52 by jingwu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,24 +20,24 @@
 	i:	the start position;
 	quote: " or ';
 */
-static int	handle_quotes(int i, char quote)
-{
-	int	j;
+// static int	handle_quotes(int i, char quote)
+// {
+// 	int	j;
 
-	j = 0;
-	if (ms() ->input[i + j] == quote)
-	{
-		j++;
-		while (ms() ->input[i + j] && ms() ->input[i + j] != quote)
-			j++;
-		j++; // now ms() ->input[i + j] is the character after the second quote.
-	}
-	return (j);
-}
+// 	j = 0;
+// 	if (ms() ->input[i + j] == quote)
+// 	{
+// 		j++;
+// 		while (ms() ->input[i + j] && ms() ->input[i + j] != quote)
+// 			j++;
+// 		j++; // now ms() ->input[i + j] is the character after the second quote.
+// 	}
+// 	return (j);
+// }
 /*
 	In this program, the meta_characters are: |, <, >, <<, >>.
 */
-static bool	is_meta_char(i)
+static bool	is_meta_char(int i)
 {
 	if((ms() ->input[i]) == '|' || ms() ->input[i] == '<'
 			|| ms() ->input[i] == '>')
@@ -51,21 +51,55 @@ static bool	is_meta_char(i)
 	2. get quotes part "...."'....'"...";
 	3.
 */
-static int	read_words(int i)
+// static int	read_words(int i)
+// {
+// 	int	j;
+
+// 	j = 0;
+// 	while (ms() ->input[i + j] && !is_meta_char(ms() ->input[i + j]))
+// 	{
+// 		j += handle_quotes((i + j), '\"');
+// 		j += handle_quotes((i + j), '\'');
+// 		if (ms() ->input[i + j] == ' ')
+// 			break ;
+// 		j++;
+// 	}
+// 	if (!add_token(ft_substr(ms() ->input, i , j), TK_WORD))
+// 		return (-1);
+// 	return (j);
+// }
+
+static int	find_match(char *matcher, char *str)
+{
+	int		i;
+	char	*word;
+	bool	merge;
+
+	i = 0;
+	while (str[i] && !ft_strchr(matcher, str[i]))
+		i++;
+	merge = check_mergerable(matcher, str, i);
+	word = ft_substr(str, 0, i);
+	if (matcher[0] = '"')
+		add_token(word, TK_DOUBLE_QT, merge);
+	else if (matcher[0] = '\'')
+		add_token(word, TK_SINGLE_QT, merge);
+	else
+		add_token(word, TK_WORD, merge);
+	return (i);
+}
+
+static int	read_word(int i)
 {
 	int	j;
 
 	j = 0;
-	while (ms() ->input[i + j] && !is_meta_char(ms() ->input[i + j]))
-	{
-		j += handle_quotes((i + j), '\"');
-		j += handle_quotes((i + j), '\'');
-		if (ms() ->input[i + j] == ' ')
-			break ;
-		j++;
-	}
-	if (!add_token(ft_substr(ms() ->input, i , j), TK_WORD))
-		return (-1);
+	if (ms() ->input[i] == '"')
+		j = find_match("\"", &ms() ->input[i + 1]) + 2;
+	else if (ms() ->input[i] == '\'')
+		j = find_match("'", &ms() ->input[i + 1]) + 2;
+	else
+		j = find_match("<>'\"|", &ms() ->input[i]);
 	return (j);
 }
 
@@ -87,15 +121,15 @@ static int	read_meta_char(int i)
 
 	j = 0;
 	if (ms()->input[i] == '|')
-		j = add_token(ft_strdup("|"), TK_PIPE);
+		j = add_token(ft_strdup("|"), TK_PIPE, false);
 	else if (!ft_strncmp(&(ms()->input[i]), "<<", 2))
-		j = add_token(ft_strdup("<<"), TK_HDOC);
+		j = add_token(ft_strdup("<<"), TK_HDOC, false);
 	else if (!ft_strncmp(&(ms()->input[i]), ">>", 2))
-		j =  add_token(ft_strdup(">>"), TK_APPEND);
+		j =  add_token(ft_strdup(">>"), TK_APPEND, false);
 	else if (ms() ->input[i] == '<')
-		j = add_token(ft_strdup("<"), TK_IN_RE);
+		j = add_token(ft_strdup("<"), TK_IN_RE, false);
 	else if (ms() ->input[i] == '>')
-		j = add_token(ft_strdup(">"), TK_OUT_RE);
+		j = add_token(ft_strdup(">"), TK_OUT_RE, false);
 	return (j);
 }
 /*

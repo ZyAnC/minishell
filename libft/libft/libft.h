@@ -6,7 +6,7 @@
 /*   By: jingwu <jingwu@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 22:16:20 by yzheng            #+#    #+#             */
-/*   Updated: 2024/09/26 12:45:21 by jingwu           ###   ########.fr       */
+/*   Updated: 2024/10/03 11:03:31 by jingwu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ void	ft_putstr_fd(char *s, int fd);
 void	ft_putendl_fd(char *s, int fd);
 void	ft_putnbr_fd(int n, int fd);
 char	*ft_strchr(const char *s, int c);
+int		ft_strcmp(char *s1, char *s2);
 char	*ft_strdup(const char *src);
 char	*ft_strnstr(const char *str, const char *to_find, size_t len);
 char	*ft_strrchr(const char *s, int c);

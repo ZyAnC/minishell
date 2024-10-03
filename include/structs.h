@@ -6,17 +6,18 @@
 /*   By: jingwu <jingwu@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 10:57:07 by jingwu            #+#    #+#             */
-/*   Updated: 2024/10/02 12:57:41 by jingwu           ###   ########.fr       */
+/*   Updated: 2024/10/03 10:38:27 by jingwu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef STRUCTS_H
 # define STRUCTS_H
 #include "minishell.h"
+#include <stdbool.h> // why it doesn't work if I include it in minishell.h?
 
 typedef enum e_token_type
 {
-	TK_NONE,
+	TK_NONE, // didn't use this one
 	TK_PIPE,
 	TK_IN_RE,
 	TK_OUT_RE,
@@ -24,8 +25,8 @@ typedef enum e_token_type
 	TK_APPEND,
 	TK_SINGLE_QT,
 	TK_DOUBLE_QT,
-	TK_WORD, // changed from TK_KEYWORD to TK_WORD
-	TK_LOC_V,
+	TK_WORD,
+	TK_LOC_V, //did't use this one.
 }	t_token_type;
 
 typedef enum e_err_type
@@ -79,6 +80,7 @@ typedef struct s_token
 	char			*str;
 	t_token_type	tk_type;
 	char			*arg;
+	bool			merge;
 	int				idx;
 }	t_token;
 

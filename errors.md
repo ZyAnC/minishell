@@ -27,6 +27,8 @@ Summary, error handling before execution:
 	erro: bash: syntax error near unexpected token `newline'
 
 
+5. ~$ 2name=aaa
+2name=aaa: command not found
 
 
 
