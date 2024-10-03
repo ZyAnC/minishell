@@ -6,7 +6,7 @@
 /*   By: jingwu <jingwu@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 08:43:11 by jingwu            #+#    #+#             */
-/*   Updated: 2024/09/30 10:48:38 by jingwu           ###   ########.fr       */
+/*   Updated: 2024/10/03 14:26:08 by jingwu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,76 +55,55 @@ static char	*replace(char *str, char *name, char *value)
 	return (newstr);
 }
 
-/*
-	This function will ge the env_value first, then call function
-	replace() to replace the env_name with env_value.
-
-*/
-static void	replace_env(t_token *token, char *env_name)
+static void	expand(t_token *token)
 {
-	char	*env_value;
-	int		len;
-	char	*new_str;
+	char	*name;
+	char	*value;
+	char	*tmp;
 
-	if (!token || !env_name)
-		return ;
-	if (!ft_strcmp(env_name, "$?"))
-		env_value = ft_itoa(ms() ->exit);
-	else
-		env_value = get_env_value(env_name);
-	token->str = replace(token->str, env_name, env_value);
+	while (ft_strnstr(token->str, "$", ft_strlen(token->str)))
+	{
+		name = get_env_name(token->str);
+		if (!name)
+			return ;
+		if (!ft_strcmp(name, "$?"))
+			value = ft_itoa(ms() ->exit);
+		else
+			value = get_env_value(name);
+		tmp = token->str;
+		token->str = replace(token->str, name, value);
+		ft_free(name);
+		ft_free(value);
+		ft_free(tmp);
+	}
 }
-
 /*
 	@How to check if the env is needed expaned or not?
-	Rule: only when env is quoted by single quote, don't need expaned.
+	Rule: when env is quoted by double quote, or not quoted, they need to expand.
 	The conditions need to be considerd:
 		1. echo $?
 		2. echo $$name
 		3. echo "$name' abc"
 		4. echo 'abc $name out"put'
 */
-static void	expand(t_token *token)
-{
-	bool	sg_quote;
-	bool	db_quote;
-	int		i;
-	int		j;
-
-	sg_quote = false;
-	db_quote = false;
-	i = 0;
-	while (token->str[i])
-	{
-		j = 1;
-		if (token->str[i] == '\"' && !sg_quote && !db_quote)
-			db_quote = true;
-		else if (token->str[i] == '\'' && !db_quote && !sg_quote)
-			sg_quote = true;
-		else if (token->str[i] == '$' && !is_seperator(token->str[i + 1])
-			&& sg_quote)
-		{
-			replace_env(token, get_env_name(&(token->str[i])));
-			j = ft_strlen(get_env_name(&(token->str[i])));
-		}
-		i += j;
-	}
-}
-
 void	expander(void)
 {
 	t_token	*token;
+	char	*str;
 	int		i;
 
 	tk_list_manager(RESET);
 	while (tk_list_manager(CUR_CNT))
 	{
 		token = tk_list_manager(CUR_CNT);
-		if (token->tk_type == TK_WORD)
+		if (token->tk_type == TK_DOUBLE_QT || token->tk_type == TK_WORD)
 		{
-			if (ft_strchr(token->str, '$'))
-				expand(token);// inside expand()it may do not expand.
+			str = ft_strchr(token->str, '$');
+			if (str && *(str + 1) != '\0' && *(str + 1) != ' ' )
+				expand(token);
 		}
+		if (is_defining_var(token))
+			token->tk_type = TK_LOC_V;
 		tk_list_manager(NEXT);
 	}
 }

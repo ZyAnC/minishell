@@ -6,11 +6,40 @@
 /*   By: jingwu <jingwu@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 12:48:19 by jingwu            #+#    #+#             */
-/*   Updated: 2024/10/03 09:28:36 by jingwu           ###   ########.fr       */
+/*   Updated: 2024/10/03 14:42:03 by jingwu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./minishell.h"
+
+static void	merge(t_list *list)
+{
+	t_token	*cur;
+	t_token	*next;
+	char	*tmp;
+	t_list	*delete;
+
+	while (list)
+	{
+		cur = list->content;
+		if (!(list->next))
+			return ;
+		if (!cur->merge)
+		{
+			list = list->next;
+			continue ;
+		}
+		next = list->next->content;
+		tmp = cur->str;
+		cur->str = ft_strjoin(cur->str, next->str);
+		free(tmp);
+		if (!next->merge)
+			cur->merge = next->merge;
+		delete = list->next;
+		list->next = list->next->next;
+		del_node(&list, delete);
+	}
+}
 
 /*
 	This funtion will loop the token list, to check if the input just
@@ -70,6 +99,7 @@ bool	pre_handle(void)
 		return (false);
 	restruct_token();// add corresponding infos for redirections.
 	expander();
+	merge(ms() ->tokens);
 	if (!parsing())
 		return (false);
 	if (are_all_def_var())
