@@ -6,11 +6,23 @@
 /*   By: jingwu <jingwu@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 07:56:08 by jingwu            #+#    #+#             */
-/*   Updated: 2024/09/30 08:43:32 by jingwu           ###   ########.fr       */
+/*   Updated: 2024/10/03 09:28:03 by jingwu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./minishell.h"
+
+t_env	*new_env(char *name, char *value)
+{
+	t_env	*new;
+
+	new = (t_env *)malloc(sizeof(t_env));
+	if (!new)
+		return (ft_strdup(""));
+	new->name = name;
+	new->value = value;
+	return (new);
+}
 
 /*
 	@Why "return(ft_strdup(""))"?
@@ -35,4 +47,27 @@ char	*get_env_value(char *env_name)
 		tmp = tmp->next;
 	}
 	return (ft_strdup(""));// why can't return NULL here????
+}
+
+void	add_env_node(t_list **list, char *str)
+{
+	char	*name;
+	char	*value;
+	int		i;
+
+	i = -1;
+	while (str[++i])
+	{
+		if (str[i] == '=')
+			break;
+	}
+	name = ft_substr(str, 0, i);
+	value = get_env_value(name);
+	if (!value)
+	{
+		value = ft_strdup(str + i + 1);
+		ft_lstadd_back(list, ft_lstnew(new_env(name, value)));
+	}
+	else
+		free(name);
 }

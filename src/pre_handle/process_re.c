@@ -6,7 +6,7 @@
 /*   By: jingwu <jingwu@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/02 10:02:18 by jingwu            #+#    #+#             */
-/*   Updated: 2024/10/02 12:55:18 by jingwu           ###   ########.fr       */
+/*   Updated: 2024/10/02 13:01:26 by jingwu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ static void	handle_in_re(t_cmd **cmd, t_list *tk_node)
 {
 	(*cmd) ->intype = TK_IN_RE;
 	(*cmd) ->infile[(*cmd) ->ct_in++] = ((t_token *)((tk_node) ->content)) ->arg;
-	// del_node(&(ms() ->tokens),tk_node);
 	(*cmd) ->inf = ((t_token *)((tk_node) ->content)) ->arg;
 }
 

@@ -6,7 +6,7 @@
 /*   By: jingwu <jingwu@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 09:55:19 by jingwu            #+#    #+#             */
-/*   Updated: 2024/09/27 08:42:03 by jingwu           ###   ########.fr       */
+/*   Updated: 2024/10/03 11:07:34 by jingwu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,4 +77,22 @@ bool	check_syntax(void)
 		}
 	}
 	tk_list_manager(NEXT);
+}
+
+bool	check_mergerable(char *matcher, char *str, int index)
+{
+	char	*meta_char;
+	char	*quote;
+	char	*special;
+
+	meta_char = "<>'\"|";
+	quote = "'\"";
+	special = "<>|";
+	if (!str[index])
+		return (false);
+	if (!ft_strcmp(meta_char, matcher) && ft_strchr(quote, str[index]))
+		return (true);
+	if (ft_strchr(quote, matcher[0]) && !ft_strchr(special, str[index + 1]))
+		return (true);
+	return (false);
 }

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   checking_token_type.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jingwu <jingwu@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 13:47:08 by jingwu            #+#    #+#             */
-/*   Updated: 2024/09/30 08:53:54 by jingwu           ###   ########.fr       */
+/*   Updated: 2024/10/03 09:22:43 by jingwu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,5 +49,44 @@ bool	is_seperator(char c)
 	sep = "|<>\'\"\0 ";
 	if (!ft_strchr(sep, c))
 		return (false);
+	return (true);
+}
+
+/*
+	The syntax of defining  enviroment varible: name=value
+	Rule:
+	1. there is no space between "name", "=" and "value", like
+	   name =123, name= 123 are all wrong;
+	2. the variable name only start with either letter or '_', and only
+	   contains letter, '_' and number.
+	   like 2name=123, *name=123, na$me=123 are all wrong;
+
+	f_equal: when loop the str, if encounter a "=" then f_equal=true;
+	f_alp_uds: when loop the str, if encounter a alphabeta or "_", then
+				f_alp_uds=true;
+*/
+bool	is_defining_var(t_token *token)
+{
+	int		i;
+	bool	f_equal;
+	bool	f_alp_uds;
+
+	i = -1;
+	f_equal = false;
+	f_alp_uds = false;
+	while (token->str[++i])
+	{
+		if (token->str[i] == '=')
+			f_equal = true;
+		else if (token->str[i] == '_' || ft_isalpha(token->str[i]))
+			f_alp_uds = true;
+		else if (!ft_isalpha(token->str[i]) && token->str[i] != '_'
+			&& !f_equal && !f_alp_uds)
+			return (false);
+		else if (!ft_isalnum(token->str[i]) && token->str[i] != '_'
+			&& !f_equal)
+			return (false);
+	}
+	add_env_node(&(ms() ->env_list), token->str);
 	return (true);
 }

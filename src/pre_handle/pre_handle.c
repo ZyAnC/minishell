@@ -6,11 +6,34 @@
 /*   By: jingwu <jingwu@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 12:48:19 by jingwu            #+#    #+#             */
-/*   Updated: 2024/10/02 11:11:14 by jingwu           ###   ########.fr       */
+/*   Updated: 2024/10/03 09:28:36 by jingwu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./minishell.h"
+
+/*
+	This funtion will loop the token list, to check if the input just
+	contains defining environment variable, such as the input is
+	"name=sherry | export shcool="Hive Helsinki"
+*/
+static bool	are_all_def_var(void)
+{
+	t_list	*tmp;
+	t_token	*token;
+
+	tmp = ms() ->tokens;
+	while (tmp)
+	{
+		token = (t_token *)(tmp->content);
+		if (!ft_strchr(token->str, '='))
+			return (false);
+		if (!is_defining_var(tmp ->content))
+			return (false);
+		tmp = tmp->next;
+	}
+	return (true);
+}
 
 /*
 	The function is add infiles, outfiles or delimiter for <, >, >> or << into their
@@ -44,13 +67,12 @@ bool	pre_handle(void)
 	if (!lexer())
 		return (print_error(ADD_TOKEN_FAILED, 1));
 	if (!check_syntax())
-		return (false); // should return an error message here
+		return (false);
 	restruct_token();// add corresponding infos for redirections.
 	expander();
 	if (!parsing())
 		return (false);
-
-	if (check_all_local()) // what's this for?????
-		return (false); // should return an error message here
+	if (are_all_def_var())
+		return (false);
 	return (true);
 }
