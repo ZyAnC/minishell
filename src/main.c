@@ -6,7 +6,7 @@
 /*   By: yzheng <yzheng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 12:23:30 by yzheng            #+#    #+#             */
-/*   Updated: 2024/10/01 20:42:01 by yzheng           ###   ########.fr       */
+/*   Updated: 2024/10/02 15:11:17 by yzheng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,7 @@ static void init_ms(char **env)
 	ms()->exit = 0;
 	ms()->in_fd = STDIN_FILENO;
 	ms()->out_fd = STDOUT_FILENO;
+	ms()->hfd = -1;
 	ms()->cwd = getcwd(NULL, 2048);
 	ms()->path = findpath(env);
 	ms()->env_list = get_env_list(env);
