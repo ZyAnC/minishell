@@ -6,11 +6,11 @@
 /*   By: jingwu <jingwu@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/02 08:21:42 by jingwu            #+#    #+#             */
-/*   Updated: 2024/10/02 11:58:56 by jingwu           ###   ########.fr       */
+/*   Updated: 2024/10/04 11:37:04 by jingwu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./minishell.h"
+#include "minishell.h"
 
 /*
 	The function will count the amount of <, >, >> and <<.

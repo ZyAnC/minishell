@@ -24,6 +24,7 @@
 #include <errno.h>
 # include <readline/readline.h>
 # include <readline/history.h>
+# include <signal.h>
 
 /*                                             err_type                                         */
 # define MEMORY_ERROR		"Unable to allocate memory."
@@ -45,7 +46,8 @@ t_ms	*ms(void);
 /*For error*/
 
 void	open_error(char *message);
-void	ex_error(char *message, t_error type, int err_status);
+void	ex_error(char *message, t_err_type type, int err_status);
+
 /*For shell*/
 void	restart(int exit);
 
@@ -69,6 +71,7 @@ pid_t	type_outpipe(t_cmd *cm, int	*prev_fd);
 /*<-----exe----->*/
 char	*findvalidcmd(char **shellcmd);
 void	real_execute(t_cmd *cm);
+void	exe(t_cmd *cm);
 
 
 /*                                             pre_handle                                               */
@@ -125,8 +128,9 @@ bool	is_seperator(char c);
 
 // env_list.c
 char	*get_env_value(char *env_name);
+void	add_env_node(t_list **list, char *str);
 
 // free.c
-void	ft_free(void *pointer);
+void	ft_newfree(void *pointer);
 
 # endif

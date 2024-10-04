@@ -6,11 +6,11 @@
 /*   By: jingwu <jingwu@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 13:47:08 by jingwu            #+#    #+#             */
-/*   Updated: 2024/10/03 09:22:43 by jingwu           ###   ########.fr       */
+/*   Updated: 2024/10/04 11:37:50 by jingwu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "./minishell.h"
+# include "minishell.h"
 
 bool	is_pipe(t_token *token)
 {

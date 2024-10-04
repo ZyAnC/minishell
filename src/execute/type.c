@@ -10,10 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-
-#include "./minishell.h"
-
-
+#include "minishell.h"
 
 char	*replace_env(char	*envname, char *src)
 {

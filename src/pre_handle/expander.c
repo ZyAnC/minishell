@@ -6,11 +6,11 @@
 /*   By: jingwu <jingwu@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 08:43:11 by jingwu            #+#    #+#             */
-/*   Updated: 2024/10/03 14:26:08 by jingwu           ###   ########.fr       */
+/*   Updated: 2024/10/04 11:38:41 by jingwu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./minishell.h"
+#include "minishell.h"
 
 /*
 	The name doesn't not contain the '$' at the beginning.
@@ -24,7 +24,7 @@ static char *get_env_name(char *str)
 	i = 0;
 	if(str[i] == '$')
 		i++;
-	if (str[i] == '?');
+	if (str[i] == '?')
 		return (ft_strdup("$?"));
 	while (ft_isalnum(str[i]) || str[i] == '_')
 		i++;
@@ -72,9 +72,9 @@ static void	expand(t_token *token)
 			value = get_env_value(name);
 		tmp = token->str;
 		token->str = replace(token->str, name, value);
-		ft_free(name);
-		ft_free(value);
-		ft_free(tmp);
+		free(name);
+		free(value);
+		free(tmp);
 	}
 }
 /*
@@ -90,7 +90,6 @@ void	expander(void)
 {
 	t_token	*token;
 	char	*str;
-	int		i;
 
 	tk_list_manager(RESET);
 	while (tk_list_manager(CUR_CNT))

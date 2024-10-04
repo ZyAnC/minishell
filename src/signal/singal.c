@@ -1,20 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   free.c                                             :+:      :+:    :+:   */
+/*   singal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jingwu <jingwu@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/03 14:24:00 by jingwu            #+#    #+#             */
-/*   Updated: 2024/10/04 11:39:25 by jingwu           ###   ########.fr       */
+/*   Created: 2024/10/04 08:14:19 by jingwu            #+#    #+#             */
+/*   Updated: 2024/10/04 11:41:43 by jingwu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	ft_newfree(void *pointer)
+/*
+	@What the function does?
+	To listening SIGINT (ctrl-C) and SIGQUIT(ctrl-\)
+*/
+void	init_signal(void)
 {
-	if (pointer)
-		free(pointer);
-	pointer = NULL;
+//	signal(SIGINT, handle_sigint);
+	signal(SIGQUIT, SIG_IGN);
 }

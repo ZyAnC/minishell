@@ -6,11 +6,11 @@
 /*   By: jingwu <jingwu@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 12:24:17 by jingwu            #+#    #+#             */
-/*   Updated: 2024/10/02 13:21:54 by jingwu           ###   ########.fr       */
+/*   Updated: 2024/10/04 11:36:09 by jingwu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./minishell.h"
+#include "minishell.h"
 
 static t_cmd	*new_cmd(int start, int end)
 {
@@ -22,13 +22,13 @@ static t_cmd	*new_cmd(int start, int end)
 	cmd_nd = ft_calloc(1, sizeof(t_cmd));
 	count(&cmd_nd, tmp, start, end);
 	if (!allocate_mem(&cmd_nd))
-		return (ft_strdup(""));
+		return (NULL);
 	while (tmp)
 	{
 		token = tmp->content;
 		if (token->idx >= start && token->idx <= end)
 		{
-			if (is_dir(token->tk_type))
+			if (is_dir(token))
 				process_re(&cmd_nd, tmp);
 			else if (token->tk_type == TK_WORD)
 				cmd_nd->cmd[cmd_nd->ct_w] = token->str;
@@ -41,7 +41,7 @@ static t_cmd	*new_cmd(int start, int end)
 
 static bool	add_cmd(t_cmd *new)
 {
-	t_list	*tmp;
+	t_cmd	*tmp;
 
 	if (!new)
 		return (false);
@@ -50,7 +50,7 @@ static bool	add_cmd(t_cmd *new)
 	else
 	{
 		tmp = ms() ->cmds;
-		while (tmp->next != NULL);
+		while (tmp->next != NULL)
 			tmp = tmp->next;
 		tmp->next = new;
 	}
@@ -82,7 +82,8 @@ bool	parsing(void)
 		if (!tmp->next)
 			sign = add_cmd(new_cmd((i + 1), ((t_token *)tmp->content) ->idx));
 		if (!sign)
-			print_error(ADD_CMD_ERR, 1);
+			return (print_error(ADD_CMD_ERR, 1));
 		tmp = tmp->next;
 	}
+	return (true);
 }

@@ -1,19 +1,5 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   exe.c                                              :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: yzheng <yzheng@student.hive.fi>            +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/23 13:53:13 by yzheng            #+#    #+#             */
-/*   Updated: 2024/10/02 16:17:03 by yzheng           ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
 
-
-
-#include "./minishell.h"
-
+#include "minishell.h"
 
 static inline void	ft_execve_failed(char **shellcmd, char *path)
 {
@@ -88,7 +74,7 @@ void exe(t_cmd *cm)
 	while (wait(NULL) > 0);
 }
 
-
+/*
 t_cmd *create_node( t_token_type intype, t_token_type outype) {
 	t_cmd *new_node = malloc(sizeof(t_cmd));
 	if (!new_node) {
@@ -152,3 +138,4 @@ t_cmd *third = create_node(TK_PIPE,TK_NONE);
 	exe(head);
 
 }
+*/

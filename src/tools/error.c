@@ -9,8 +9,7 @@
 /*   Updated: 2024/10/02 10:16:11 by yzheng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-#include "./minishell.h"
+#include "minishell.h"
 
 void	open_error(char *message)
 {
@@ -21,7 +20,7 @@ void	open_error(char *message)
 	restart(0);
 }
 
-void	ex_error(char *message, t_error type, int err_status)
+void	ex_error(char *message, t_err_type type, int err_status)
 {
 	ft_putstr_fd("minishell: ", 2);
 	if(message)

@@ -1,5 +1,6 @@
 
-#include "../include/minishell.h"
+
+#include "minishell.h"
 
 t_ms	*ms(void)
 {
@@ -41,10 +42,12 @@ void	buildshell()
 		}
 		add_history(ms()->input);
 
-		//if (!pre_handler())
+		if (pre_handle())
+			exe(ms()->cmds);
+		restart(0);
 	}
-
 }
+
 char	*findpath(char **env)
 {
 
@@ -54,7 +57,9 @@ char	*findpath(char **env)
 	while (env[i] && !ft_strnstr(env[i], "PATH", 4))
 		i++;
 	return (env[i]);
+
 }
+
 t_list *get_env_list(char **env)
 {
 	t_list *env_list = NULL;
@@ -62,7 +67,6 @@ t_list *get_env_list(char **env)
 
 	while (env[i])
 	{
-
 		char *env_copy = ft_strdup(env[i]);
 		if (!env_copy)
 			return (NULL);
@@ -74,6 +78,7 @@ t_list *get_env_list(char **env)
 	}
 	return (env_list);
 }
+
 static void init_ms(char **env)
 {
 
@@ -88,7 +93,8 @@ static void init_ms(char **env)
 	ms()->env = env;
 	ms()->fd[0] = -1;
 	ms()->fd[1] = -1;
-	ms()->tokens = NULL; // added by sherry
+	ms()->tokens = NULL;
+
 	if(!(ms()->cwd))
 	{
 		perror("getcwd() error");
@@ -105,8 +111,6 @@ int main(int  ac, char **av, char **env)
 	}
 	(void)av;
 	init_ms(env);
-
-
 	buildshell();
 	return (0);
 }

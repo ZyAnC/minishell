@@ -10,7 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./minishell.h"
+#include "minishell.h"
+
 void	check_infile(t_cmd *cm)
 {
 	int	i;

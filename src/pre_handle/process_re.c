@@ -6,11 +6,11 @@
 /*   By: jingwu <jingwu@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/02 10:02:18 by jingwu            #+#    #+#             */
-/*   Updated: 2024/10/02 13:01:26 by jingwu           ###   ########.fr       */
+/*   Updated: 2024/10/04 11:39:06 by jingwu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./minishell.h"
+#include "minishell.h"
 
 static void	handle_in_re(t_cmd **cmd, t_list *tk_node)
 {

@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   restart.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yzheng <yzheng@student.hive.fi>            +#+  +:+       +#+        */
+/*   By: jingwu <jingwu@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 12:08:50 by yzheng            #+#    #+#             */
 /*   Updated: 2024/10/02 13:26:12 by yzheng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./minishell.h"
+#include "minishell.h"
 
 void restart(int ex)
 {

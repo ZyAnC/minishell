@@ -6,11 +6,11 @@
 /*   By: jingwu <jingwu@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 07:56:08 by jingwu            #+#    #+#             */
-/*   Updated: 2024/10/03 09:28:03 by jingwu           ###   ########.fr       */
+/*   Updated: 2024/10/04 11:39:14 by jingwu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./minishell.h"
+#include "minishell.h"
 
 t_env	*new_env(char *name, char *value)
 {
@@ -18,7 +18,7 @@ t_env	*new_env(char *name, char *value)
 
 	new = (t_env *)malloc(sizeof(t_env));
 	if (!new)
-		return (ft_strdup(""));
+		return (NULL);
 	new->name = name;
 	new->value = value;
 	return (new);

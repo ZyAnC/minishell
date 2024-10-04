@@ -158,7 +158,6 @@ typedef struct s_cmd
 
 }	t_cmd;
 
-
 typedef enum e_error
 {
 	DIRECTORY,

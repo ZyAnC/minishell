@@ -6,11 +6,11 @@
 /*   By: jingwu <jingwu@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 09:55:19 by jingwu            #+#    #+#             */
-/*   Updated: 2024/10/03 11:07:34 by jingwu           ###   ########.fr       */
+/*   Updated: 2024/10/04 11:38:33 by jingwu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./minishell.h"
+#include "minishell.h"
 
 /*
 	@param
@@ -67,8 +67,7 @@ bool	check_syntax(void)
 	while (tk_list_manager(CUR_CNT))
 	{
 		next_tk = tk_list_manager(NEXT_CNT);
-		if (is_dir(tk_list_manager(CUR_CNT)
-			&& (!next_tk || is_dir_or_pipe(tk_list_manager(NEXT_CNT)))))
+		if (is_dir(tk_list_manager(CUR_CNT)) && (!next_tk || is_dir_or_pipe(tk_list_manager(NEXT_CNT))))
 			return(stx_error(next_tk));
 		if(is_pipe(tk_list_manager(CUR_CNT)))
 		{
@@ -77,6 +76,7 @@ bool	check_syntax(void)
 		}
 	}
 	tk_list_manager(NEXT);
+	return (true);
 }
 
 bool	check_mergerable(char *matcher, char *str, int index)
