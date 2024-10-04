@@ -6,16 +6,30 @@
 /*   By: yzheng <yzheng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 12:08:50 by yzheng            #+#    #+#             */
-/*   Updated: 2024/10/02 13:26:12 by yzheng           ###   ########.fr       */
+/*   Updated: 2024/10/04 19:59:36 by yzheng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./minishell.h"
+void free_list(t_list *head)
+{
+	t_list *temp;
 
+	while (head != NULL)
+	{
+		temp = head;
+		head = head->next;
+		free(temp->content);
+		free(temp);
+	}
+}
 void restart(int ex)
 {
-	if(!ms()->prompt)
-		free(ms()->prompt);
+	if(ms()->prompt)
+	{
+		printf("aaa<------------->\n");
+			free(ms()->prompt);
+	}
 	if(!ms()->input)
 		free(ms()->input);
 	ms()->fd[0] = -1;
@@ -25,6 +39,8 @@ void restart(int ex)
 	if(ex)
 	{
 		free(ms()->cwd);
+		pp_free(ms()->env);
+		printf("%d\n",ms()->exit);
 		exit(ms()->exit);
 	}
 }

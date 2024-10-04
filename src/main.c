@@ -6,7 +6,7 @@
 /*   By: yzheng <yzheng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 12:23:30 by yzheng            #+#    #+#             */
-/*   Updated: 2024/10/02 15:11:17 by yzheng           ###   ########.fr       */
+/*   Updated: 2024/10/04 20:01:53 by yzheng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ void    buildshell()
 {
 	while (1)
 	{
+
 		ms()->prompt = prompt();
 		ms()->input = readline(ms()->prompt);
 		ms()->lines++;
@@ -88,6 +89,36 @@ t_list *get_env_list(char **env)
 	}
 	return (env_list);
 }
+
+static void initenv(char **env)
+{
+	int	i;
+
+	i = 0;
+	while (env[i])
+		i++;
+	ms()->env = malloc((i + 1) * sizeof(char *));
+	if (ms()->env == NULL)
+	{
+		perror("Failed to allocate memory for ms()->env");
+		exit(1);
+	}
+	i = 0;
+	while(env[i])
+	{
+		ms()->env[i] = ft_strdup(env[i]);
+		if (ms()->env[i] == NULL)
+		{
+			while(i)
+				free(ms()->env[i--]);
+			perror("Failed to duplicate string");
+			exit(1);
+		}
+		i++;
+	}
+	ms()->env[i] = NULL;
+
+}
 static void init_ms(char **env)
 {
 
@@ -99,7 +130,8 @@ static void init_ms(char **env)
 	ms()->cwd = getcwd(NULL, 2048);
 	ms()->path = findpath(env);
 	ms()->env_list = get_env_list(env);
-	ms()->env = env;
+
+	initenv(env);
 	ms()->fd[0] = -1;
 	ms()->fd[1] = -1;
 
@@ -118,6 +150,7 @@ int main(int  ac, char **av, char **env)
 		exit(127);
 	}
 	(void)av;
+
 	init_ms(env);
 
 

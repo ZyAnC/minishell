@@ -6,7 +6,7 @@
 /*   By: yzheng <yzheng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 10:57:07 by jingwu            #+#    #+#             */
-/*   Updated: 2024/10/02 08:58:57 by yzheng           ###   ########.fr       */
+/*   Updated: 2024/10/04 15:54:17 by yzheng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,6 +109,9 @@ typedef enum e_error
 	PIPE,
 	FORK,
 	PREMISSON,
+	TOOMUCH,
+	HOME,
+	CD,
 }	t_error;
 
 # endif

@@ -6,11 +6,25 @@
 /*   By: yzheng <yzheng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/02 10:22:31 by yzheng            #+#    #+#             */
-/*   Updated: 2024/10/02 10:23:56 by yzheng           ###   ########.fr       */
+/*   Updated: 2024/10/04 13:49:00 by yzheng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./minishell.h"
+
+int	ft_strcmp(char *s1, char *s2)
+{
+	while (*s1 && *s2)
+	{
+		if (*s1 != *s2)
+			return (*s1 - *s2);
+		s1++;
+		s2++;
+	}
+	if ((!(*s1) && *s2) || (*s1 && !*s2))
+	  return (*s1 - *s2);
+	return (0);
+}
 
 static inline char	*pathincmd(char **shellcmd)
 {
