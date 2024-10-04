@@ -9,6 +9,7 @@ t_ms	*ms(void)
 
 char	*prompt()
 {
+
 	char	*str;
 	char	*str2;
 
@@ -87,7 +88,7 @@ static void init_ms(char **env)
 	ms()->env = env;
 	ms()->fd[0] = -1;
 	ms()->fd[1] = -1;
-
+	ms()->tokens = NULL; // added by sherry
 	if(!(ms()->cwd))
 	{
 		perror("getcwd() error");
@@ -105,30 +106,8 @@ int main(int  ac, char **av, char **env)
 	(void)av;
 	init_ms(env);
 
-	ft_bzero(ms(),sizeof(t_ms));
-	ms()->exit = 0;
-	ms()->in_fd = STDIN_FILENO;
-	ms()->out_fd = STDOUT_FILENO;
-	ms()->cwd = getcwd(NULL, 2048);
-	if(!(ms()->cwd))
-	{
-		perror("getcwd() error");
-		exit(1);
-	}
-	ms()->tokens = NULL; // added by sherry
-}
-
-int	main(int ac, char **av)
-{
-	if (ac != 1)
-	{
-		ft_putstr_fd("Too many arguments\n",2);
-		exit(127);
-	}
-	(void)av;
-	init_ms();
-
 
 	buildshell();
 	return (0);
 }
+

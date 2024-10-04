@@ -1,23 +1,16 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   structs.h                                          :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: jingwu <jingwu@student.hive.fi>            +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/20 10:57:07 by jingwu            #+#    #+#             */
-/*   Updated: 2024/10/03 10:38:27 by jingwu           ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
+
 
 #ifndef STRUCTS_H
 # define STRUCTS_H
 #include "minishell.h"
+
 #include <stdbool.h> // why it doesn't work if I include it in minishell.h?
 
+
+#include <fcntl.h>
 typedef enum e_token_type
 {
-	TK_NONE, // didn't use this one
+	TK_NONE,
 	TK_PIPE,
 	TK_IN_RE,
 	TK_OUT_RE,
@@ -93,11 +86,14 @@ typedef struct s_token
 */
 typedef struct s_ms
 {
+
 	int				in_fd;
 	int				out_fd;
 	int				fd[2];
 	int				exit;
 	int				lines;
+	pid_t	pipeid[2];
+	int				hfd;
 	char			**env;
 	char			*cwd;
 	char			*prompt;
@@ -107,6 +103,7 @@ typedef struct s_ms
 	struct s_list	*env_list;
 	struct s_cmd	*cmds;
 }	t_ms;
+
 
 /*
 	@param
@@ -146,6 +143,7 @@ typedef struct s_cmd
 	char			**outfile;
 	char			*of;
 	char			*inf;
+
 	t_token_type	intype;
 	t_token_type	outype;
 	int				ofnum;
@@ -157,6 +155,20 @@ typedef struct s_cmd
 	int				ct_del;
 	int				ct_w;
 	struct s_cmd	*next;
+
 }	t_cmd;
+
+
+typedef enum e_error
+{
+	DIRECTORY,
+	NFILE,
+	COMMAND,
+	ERR,
+	MALLOC,
+	PIPE,
+	FORK,
+	PREMISSON,
+}	t_error;
 
 # endif

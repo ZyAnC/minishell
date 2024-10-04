@@ -12,10 +12,13 @@ LIBS := $(LIBFT)/libft.a $(PRINTF)/libftprintf.a $(GETNEXTLINE)/get_next_line.a 
 SRCS_DIR = ./src
 SRCS_TDIR = tools
 SRCS_EDIR = execute
+SRCS_BUIL = builtin
 
 SRCS = $(wildcard $(SRCS_DIR)/*.c) \
         $(wildcard $(SRCS_DIR)/$(SRCS_TDIR)/*.c) \
-        $(wildcard $(SRCS_DIR)/$(SRCS_EDIR)/*.c)
+        $(wildcard $(SRCS_DIR)/$(SRCS_EDIR)/*.c) \
+		$(wildcard $(SRCS_DIR)/$(SRCS_BUIL)/*.c)
+
 OBJS = $(SRCS:.c=.o)
 
 all: $(NAME)
