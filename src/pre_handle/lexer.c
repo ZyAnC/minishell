@@ -6,34 +6,12 @@
 /*   By: jingwu <jingwu@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 10:02:38 by jingwu            #+#    #+#             */
-/*   Updated: 2024/10/03 11:07:52 by jingwu           ###   ########.fr       */
+/*   Updated: 2024/10/04 11:38:48 by jingwu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./minishell.h"
+#include "minishell.h"
 
-/*
-	This function is for read the whole quote words, like "hello",
-	'abcdef'.
-
-	Parameters:
-	i:	the start position;
-	quote: " or ';
-*/
-// static int	handle_quotes(int i, char quote)
-// {
-// 	int	j;
-
-// 	j = 0;
-// 	if (ms() ->input[i + j] == quote)
-// 	{
-// 		j++;
-// 		while (ms() ->input[i + j] && ms() ->input[i + j] != quote)
-// 			j++;
-// 		j++; // now ms() ->input[i + j] is the character after the second quote.
-// 	}
-// 	return (j);
-// }
 /*
 	In this program, the meta_characters are: |, <, >, <<, >>.
 */
@@ -45,29 +23,6 @@ static bool	is_meta_char(int i)
 	return (false);
 }
 
-/*
-	How to read a word?
-	1. current character is not NULL, is not a token;
-	2. get quotes part "...."'....'"...";
-	3.
-*/
-// static int	read_words(int i)
-// {
-// 	int	j;
-
-// 	j = 0;
-// 	while (ms() ->input[i + j] && !is_meta_char(ms() ->input[i + j]))
-// 	{
-// 		j += handle_quotes((i + j), '\"');
-// 		j += handle_quotes((i + j), '\'');
-// 		if (ms() ->input[i + j] == ' ')
-// 			break ;
-// 		j++;
-// 	}
-// 	if (!add_token(ft_substr(ms() ->input, i , j), TK_WORD))
-// 		return (-1);
-// 	return (j);
-// }
 
 static int	find_match(char *matcher, char *str)
 {
@@ -80,16 +35,22 @@ static int	find_match(char *matcher, char *str)
 		i++;
 	merge = check_mergerable(matcher, str, i);
 	word = ft_substr(str, 0, i);
-	if (matcher[0] = '"')
+	if (matcher[0] == '"')
 		add_token(word, TK_DOUBLE_QT, merge);
-	else if (matcher[0] = '\'')
+	else if (matcher[0] == '\'')
 		add_token(word, TK_SINGLE_QT, merge);
 	else
 		add_token(word, TK_WORD, merge);
 	return (i);
 }
 
-static int	read_word(int i)
+/*
+	How to read a word? NEED REWRITE
+	1. current character is not NULL, is not a token;
+	2. get quotes part "...."'....'"...";
+	3.
+*/
+static int	read_words(int i)
 {
 	int	j;
 

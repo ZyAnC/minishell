@@ -6,7 +6,7 @@
 /*   By: jingwu <jingwu@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 22:16:20 by yzheng            #+#    #+#             */
-/*   Updated: 2024/10/03 11:03:31 by jingwu           ###   ########.fr       */
+/*   Updated: 2024/10/04 10:27:43 by jingwu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 # include <stdlib.h>
 # include <unistd.h>
-# include "./include/minishell.h"
+//# include "../../include/minishell.h"
 
 typedef struct s_list
 {

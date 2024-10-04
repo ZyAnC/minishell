@@ -10,12 +10,19 @@ GETNEXTLINE := ./libft/get_next_line
 LIBS := $(LIBFT)/libft.a $(PRINTF)/libftprintf.a $(GETNEXTLINE)/get_next_line.a -lreadline
 
 SRCS_DIR = ./src
+SRCS_PDIR = pre_handle
+SRCS_SDIR = signal
 SRCS_TDIR = tools
 SRCS_EDIR = execute
+SRCS_BUIL = builtin
 
 SRCS = $(wildcard $(SRCS_DIR)/*.c) \
-        $(wildcard $(SRCS_DIR)/$(SRCS_TDIR)/*.c) \
-        $(wildcard $(SRCS_DIR)/$(SRCS_EDIR)/*.c)
+		$(wildcard $(SRCS_DIR)/$(SRCS_PDIR)/*.c) \
+		$(wildcard $(SRCS_DIR)/$(SRCS_SDIR)/*.c) \
+		$(wildcard $(SRCS_DIR)/$(SRCS_TDIR)/*.c) \
+		$(wildcard $(SRCS_DIR)/$(SRCS_EDIR)/*.c) \
+		$(wildcard $(SRCS_DIR)/$(SRCS_BUIL)/*.c)
+
 OBJS = $(SRCS:.c=.o)
 
 all: $(NAME)

@@ -6,11 +6,11 @@
 /*   By: jingwu <jingwu@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 11:28:56 by jingwu            #+#    #+#             */
-/*   Updated: 2024/10/03 10:56:23 by jingwu           ###   ########.fr       */
+/*   Updated: 2024/10/04 11:38:54 by jingwu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./minishell.h"
+#include "minishell.h"
 
 /*
 	Generate a new node for lexer_list.
@@ -41,7 +41,7 @@ int	add_token(char *str, t_token_type token, bool merge)
 	node = new_token(str, token, merge);
 	if (!node)
 		return (-1);
-	ft_lstadd_back(&ms() ->tokens, ft_lstnew(token));
+	ft_lstadd_back(&ms() ->tokens, (ft_lstnew(node)));
 	return (ft_strlen(str));
 }
 
@@ -68,9 +68,9 @@ t_token	*tk_list_manager(t_list_position psn)
 	else if (psn == NEXT)
 		tk_list = tk_list->next;
 	else if (psn == CUR_CNT && tk_list)
-		return (tk_list->content);
+		return ((t_token *)(tk_list->content));
 	else if (psn == NEXT_CNT && tk_list->next)
-		return (tk_list->next->content);
+		return ((t_token *)(tk_list->next->content));
 	return (NULL);
 }
 
