@@ -1,4 +1,5 @@
 
+
 #include "minishell.h"
 
 t_ms	*ms(void)
@@ -40,6 +41,7 @@ void	buildshell()
 			restart(1);
 		}
 		add_history(ms()->input);
+
 		if (pre_handle())
 			exe(ms()->cmds);
 		restart(0);
@@ -55,6 +57,7 @@ char	*findpath(char **env)
 	while (env[i] && !ft_strnstr(env[i], "PATH", 4))
 		i++;
 	return (env[i]);
+
 }
 
 t_list *get_env_list(char **env)
@@ -64,7 +67,6 @@ t_list *get_env_list(char **env)
 
 	while (env[i])
 	{
-
 		char *env_copy = ft_strdup(env[i]);
 		if (!env_copy)
 			return (NULL);
@@ -92,6 +94,7 @@ static void init_ms(char **env)
 	ms()->fd[0] = -1;
 	ms()->fd[1] = -1;
 	ms()->tokens = NULL;
+
 	if(!(ms()->cwd))
 	{
 		perror("getcwd() error");

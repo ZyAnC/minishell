@@ -3,13 +3,12 @@
 /*                                                        :::      ::::::::   */
 /*   error.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jingwu <jingwu@student.hive.fi>            +#+  +:+       +#+        */
+/*   By: yzheng <yzheng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 14:02:58 by yzheng            #+#    #+#             */
-/*   Updated: 2024/10/04 11:39:20 by jingwu           ###   ########.fr       */
+/*   Updated: 2024/10/02 10:16:11 by yzheng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 #include "minishell.h"
 
 void	open_error(char *message)

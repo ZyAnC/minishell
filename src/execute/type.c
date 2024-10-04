@@ -3,17 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   type.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jingwu <jingwu@student.hive.fi>            +#+  +:+       +#+        */
+/*   By: yzheng <yzheng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/02 09:53:18 by yzheng            #+#    #+#             */
-/*   Updated: 2024/10/04 11:37:43 by jingwu           ###   ########.fr       */
+/*   Updated: 2024/10/02 16:55:20 by yzheng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-
 #include "minishell.h"
-
-
 
 char	*replace_env(char	*envname, char *src)
 {

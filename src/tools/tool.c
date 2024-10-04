@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   tool.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jingwu <jingwu@student.hive.fi>            +#+  +:+       +#+        */
+/*   By: yzheng <yzheng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/02 09:04:56 by yzheng            #+#    #+#             */
-/*   Updated: 2024/10/04 11:39:59 by jingwu           ###   ########.fr       */
+/*   Updated: 2024/10/02 16:30:37 by yzheng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
 void	check_infile(t_cmd *cm)
 {
 	int	i;

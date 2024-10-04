@@ -47,6 +47,7 @@ t_ms	*ms(void);
 
 void	open_error(char *message);
 void	ex_error(char *message, t_err_type type, int err_status);
+
 /*For shell*/
 void	restart(int exit);
 
@@ -71,6 +72,7 @@ pid_t	type_outpipe(t_cmd *cm, int	*prev_fd);
 char	*findvalidcmd(char **shellcmd);
 void	real_execute(t_cmd *cm);
 void	exe(t_cmd *cm);
+
 
 /*                                             pre_handle                                               */
 
