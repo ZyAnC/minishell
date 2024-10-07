@@ -6,7 +6,7 @@
 /*   By: yzheng <yzheng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 12:23:30 by yzheng            #+#    #+#             */
-/*   Updated: 2024/10/04 20:01:53 by yzheng           ###   ########.fr       */
+/*   Updated: 2024/10/06 18:33:13 by yzheng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,6 @@ static void initenv(char **env)
 		i++;
 	}
 	ms()->env[i] = NULL;
-
 }
 static void init_ms(char **env)
 {
@@ -130,11 +129,9 @@ static void init_ms(char **env)
 	ms()->cwd = getcwd(NULL, 2048);
 	ms()->path = findpath(env);
 	ms()->env_list = get_env_list(env);
-
 	initenv(env);
 	ms()->fd[0] = -1;
 	ms()->fd[1] = -1;
-
 	if(!(ms()->cwd))
 	{
 		perror("getcwd() error");

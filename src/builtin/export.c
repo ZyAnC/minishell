@@ -65,10 +65,16 @@ int	ft_valid_character(char *str)
 			break;
 		}
 	}
-	ft_printf("%s\n",str);
 	free(str);
-
 	return(flag);
+}
+
+void		update_env(int	i, char	*str, t_list *tmp)
+{
+
+	free(ms()->env[i]);
+	ms()->env[i] = ft_strdup(str);
+	tmp->content = ft_strdup(str);
 }
 
 void	add_env(char	*str)
@@ -76,30 +82,55 @@ void	add_env(char	*str)
 	t_list	*new;
 	int		i;
 	int		j;
+
 	new = ft_lstnew(str);
 	ft_lstadd_back(&ms()->env_list, new);
-
 	i = 0;
 	while(ms()->env[i])
 		i++;
 	char **new_env = malloc((i + 2) * sizeof(char *));
-	if (new_env == NULL) {
-		perror("Failed to allocate memory");
-		return;
-	}
+	if (new_env == NULL)
+		restart(1);
 	j = -1;
 	while (++j < i)
 		new_env[j] = ms()->env[j];
 	new_env[i] = ft_strdup(str);
 	new_env[i+1] = NULL;
-	if (new_env[i] == NULL) {
-		perror("Failed to duplicate string");
-		free(new_env);
-		return;
-	}
+	if (new_env[i] == NULL)
+		restart(1);
 	free(ms()->env);
-	ms()->env = new_env;
+	i  = 0;
+	while(new_env[i])
+	{
+		ms()->env[i] = ft_strdup(new_env[i]);
+		if(!ms()->env[i])
+			restart(1);
+		i++;
+	}
 	free(new_env);
+}
+void		update_or_add(char	*str)
+{
+	int		i;
+	char	*name;
+	int		size;
+	t_list* tmp;
+
+	tmp = ms()->env_list;
+	size = 0;
+	while(str[size] != '=')
+		size++;
+	name = ft_strndup(str,size);
+	i = 0;
+	while (ms()->env[i] && !ft_strnstr(ms()->env[i], name, size))
+			i++;
+	while(tmp && !ft_strnstr(tmp->content, name, size))
+		tmp = tmp->next;
+	if(!ms()->env[i])
+		add_env(str);
+	else
+		update_env(i, str,tmp);
+	free(name);
 }
 char	*lastequal(char	*str)
 {
@@ -116,11 +147,8 @@ char	*lastequal(char	*str)
 			perror("Failed to allocate memory");
 			return(NULL);
 		}
-
-
 		strncpy(result, str, length);
 		result[length] = '\0';
-
 	}
 	else
 		return(NULL);
@@ -133,7 +161,6 @@ int	ft_export(char	**cmd)
 
 	i = 1;
 	status = 1;
-
 	if (!cmd[1])
 		return(print_sorted_env());
 	while(cmd[i])
@@ -144,7 +171,7 @@ int	ft_export(char	**cmd)
 			if (!ft_valid_character(lastequal(cmd[i])))
 				status = export_err(cmd[i]);
 			else
-				add_env(cmd[i]);
+				update_or_add(cmd[i]);
 		}
 		else
 			status = export_err(cmd[i]);

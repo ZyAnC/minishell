@@ -6,7 +6,7 @@
 /*   By: yzheng <yzheng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 13:53:13 by yzheng            #+#    #+#             */
-/*   Updated: 2024/10/04 20:06:34 by yzheng           ###   ########.fr       */
+/*   Updated: 2024/10/06 19:00:45 by yzheng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,12 @@
 
 #include "./minishell.h"
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <sys/types.h>
+#include <signal.h>
+#include <sys/wait.h>
 
 static inline void	ft_execve_failed(char **shellcmd, char *path)
 {
@@ -70,7 +76,7 @@ void	real_execute(t_cmd *cm)
 		execve(path, cm->cmd, ms()->env);
 		ft_execve_failed(cm->cmd, path);
 	}
-	printf("<nihao-------------->\n");
+	exit(0);
 
 }
 
@@ -117,6 +123,7 @@ void exe(t_cmd *cm)
 		}
 		cm = cm->next;
 	}
+
 	close_all(prev_fd);
 	while (wait(NULL) > 0);
 }
@@ -147,10 +154,10 @@ void	test()
 
 
 t_cmd *third = create_node(TK_PIPE,TK_NONE);
-		//head->next = second;
+		head->next = second;
 		//second->next = third;
-	char *str[] = {"echo","1",NULL};
-	char *str2[] = {"env",NULL};
+	char *str[] = {"env",NULL};
+	char *str2[] = {"echo","1",NULL};
 	char *str3[] = {NULL};
 	char *file[] = {NULL};
 	char *file2[] = {NULL,NULL};
