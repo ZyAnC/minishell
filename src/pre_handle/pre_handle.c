@@ -6,13 +6,13 @@
 /*   By: jingwu <jingwu@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 12:48:19 by jingwu            #+#    #+#             */
-/*   Updated: 2024/10/04 11:39:01 by jingwu           ###   ########.fr       */
+/*   Updated: 2024/10/08 13:08:33 by jingwu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	merge(t_list *list)
+void	merge(t_list *list)// add static after testing!!!!!!!!!!
 {
 	t_token	*cur;
 	t_token	*next;
@@ -37,7 +37,7 @@ static void	merge(t_list *list)
 			cur->merge = next->merge;
 		delete = list->next;
 		list->next = list->next->next;
-		del_node(&list, delete);
+		del_node(delete);
 	}
 }
 
@@ -46,12 +46,12 @@ static void	merge(t_list *list)
 	contains defining environment variable, such as the input is
 	"name=sherry | export shcool="Hive Helsinki"
 */
-static bool	are_all_def_var(void)
+bool	are_all_def_var(void)// add static after testing !!!!!!!!!
 {
 	t_list	*tmp;
 	t_token	*token;
 
-	tmp = ms() ->tokens;
+	tmp = ms()->tokens;
 	while (tmp)
 	{
 		token = (t_token *)(tmp->content);
@@ -64,26 +64,31 @@ static bool	are_all_def_var(void)
 	return (true);
 }
 
-/*
-	The function is add infiles, outfiles or delimiter for <, >, >> or << into their
-	token arg.
-*/
 void	restruct_token(void)
 {
 	t_list	*tmp;
-	t_token	*token;
-	t_token	*next;
+	t_token	*cur_tk;
+	t_token	*next_tk;
+	t_list	*delete;
 
-	tmp = ms() ->tokens;
-
+	tmp = ms()->tokens;
 	while (tmp)
 	{
-		token = (t_token *)(tmp ->content);
-		next = ((t_token *)((tmp ->next) ->content));
-		if (is_dir(token))
+		cur_tk = (t_token *)(tmp->content);
+		if (!tmp->next)
+			break ;
+		next_tk = ((t_token *)((tmp->next)->content));
+		if (is_dir(cur_tk))
 		{
-			token->arg = next->str;
-			del_node(&(ms() ->tokens), tmp->next);
+			cur_tk->arg = ft_strdup(next_tk->str);
+			delete = tmp->next;
+			if (!(tmp->next)->next)
+			{
+				tmp->next = NULL;
+				break ;
+			}
+			tmp->next = (tmp->next)->next;
+			del_node(delete);
 		}
 		tmp = tmp->next;
 	}
@@ -91,13 +96,13 @@ void	restruct_token(void)
 
 bool	pre_handle(void)
 {
-	if (!check_quote()) // it will check if the input is quoted correctly
-		return (print_error(UNQUOTED, 1));
+	if (!check_quote())
+		return (false);
 	if (!lexer())
 		return (print_error(ADD_TOKEN_FAILED, 1));
 	if (!check_syntax())
 		return (false);
-	restruct_token();// add corresponding infos for redirections.
+	restruct_token();
 	expander();
 	merge(ms() ->tokens);
 	if (!parsing())

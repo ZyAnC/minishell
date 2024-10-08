@@ -1,0 +1,16 @@
+void	print_token_list(void)// for test !!!!!!!!!!!!!!!!!!!!!!!!
+{
+	t_list	*list;
+	t_token	*token;
+	int		i;
+
+	list = ms()->tokens;
+	i = 0;
+	while (list)
+	{
+		token = list->content;
+		printf("token[%d]: str=%s   type=%u  arg=%s  index=%d  merger=%d\n", i, token->str, token->tk_type, token->arg, token->idx, token->merge);
+		i++;
+		list = list->next;
+	}
+}

@@ -27,16 +27,17 @@
 # include <signal.h>
 
 /*                                             err_type                                         */
-# define MEMORY_ERROR		"Unable to allocate memory."
-# define UNQUOTED			"The input is quoted incorrectly."
-# define ADD_TOKEN_FAILED	"Failed when trying to add a new node to token list."
+# define MEMORY_ERROR		"error: Could not allocate memory"
+# define UNQUOTED			"error: The input is quoted incorrectly"
+# define ADD_TOKEN_FAILED	"error: Could not add a new token node to token"
 # define PIPE_STX_ERR		"minishell: syntax error near unexpected token `|'"
 # define NL_STX_ERR			"minishell: syntax error near unexpected token `newline'"
 # define IN_RE_STX_ERR		"minishell: syntax error near unexpected token `<'"
 # define OUT_RE_STX_ERR		"minishell: syntax error near unexpected token `>'"
 # define HDOC_STX_ERR		"minishell: syntax error near unexpected token `<<'"
 # define APED_STX_ERR		"minishell: syntax error near unexpected token `>>'"
-# define ADD_CMD_ERR		"Failed to add a new command node"
+# define ADD_CMD_ERR		"error: Could not add a new command node"
+# define DEL_TOKEN_ERR		"error: Could not delete a token from the list"
 
 
 /*For global*/
@@ -47,6 +48,8 @@ t_ms	*ms(void);
 
 void	open_error(char *message);
 void	ex_error(char *message, t_err_type type, int err_status);
+bool	print_error(char *err_type, int err_fd);
+bool	stx_error(t_token *node);
 
 /*For shell*/
 void	restart(int exit);
@@ -58,7 +61,7 @@ void	pp_free(char **fly);
 void	close_all(int	prev_fd);
 void	check_infile(t_cmd *cm);
 char	*ft_strndup(char *src, int size);
-char *replace_first_substring(char *str, char *old_sub, char *new_sub);
+char	*replace_first_substring(char *str, char *old_sub, char *new_sub);
 void	set_fd(t_cmd *cm);
 /*For execute*/
 /*<-----pipe && redirect----->*/
@@ -100,10 +103,10 @@ bool	lexer(void);
 
 // operate_token.c
 t_token	*new_token(char *str, t_token_type tk_type, bool merge);
-int	add_token(char *str, t_token_type token, bool merge);
+int		add_token(char *str, t_token_type token, bool merge);
 t_token	*tk_list_manager(t_list_position psn);
-void	del_node(t_list **list, t_list *node);
-
+void	del_node(t_list *node);
+void	delete_token(t_token *token);
 
 // parsing.c
 bool	parsing(void);
@@ -116,10 +119,6 @@ bool	pre_handle(void);
 void	process_re(t_cmd **cmd, t_list *tk_node);
 
 /*                                              tools                                                    */
-// handle_error.c
-bool	print_error(char *err_type, int err_fd);
-bool	stx_error(t_token *node);
-
 // utils.c
 bool	is_pipe(t_token *token);
 bool	is_dir(t_token *token);
