@@ -6,7 +6,7 @@
 /*   By: jingwu <jingwu@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 10:02:38 by jingwu            #+#    #+#             */
-/*   Updated: 2024/10/04 11:38:48 by jingwu           ###   ########.fr       */
+/*   Updated: 2024/10/08 09:52:15 by jingwu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,13 @@
 /*
 	In this program, the meta_characters are: |, <, >, <<, >>.
 */
-static bool	is_meta_char(int i)
+static bool	is_meta_char(char c)
 {
-	if((ms() ->input[i]) == '|' || ms() ->input[i] == '<'
-			|| ms() ->input[i] == '>')
+	if(c == '|' || c == '<' || c == '>')
 		return (true);
-	return (false);
+	else
+		return (false);
 }
-
 
 static int	find_match(char *matcher, char *str)
 {
@@ -60,7 +59,7 @@ static int	read_words(int i)
 	else if (ms() ->input[i] == '\'')
 		j = find_match("'", &ms() ->input[i + 1]) + 2;
 	else
-		j = find_match("<>'\"|", &ms() ->input[i]);
+		j = find_match("<>'\"| ", &ms() ->input[i]);
 	return (j);
 }
 
@@ -105,12 +104,13 @@ bool	lexer(void)
 	int	j;
 
 	i = 0;
-	while (ms() ->input[i])
+	while (ms()->input[i])
 	{
 		j = 0;
+
 		while (ms() ->input[i] == ' ')
-			j++;
-		if (is_meta_char(ms() ->input[i]))
+			i++;
+		if (is_meta_char(ms()->input[i]))
 			j = read_meta_char(i);
 		else
 			j = read_words(i);

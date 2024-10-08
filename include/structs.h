@@ -2,24 +2,23 @@
 
 #ifndef STRUCTS_H
 # define STRUCTS_H
+
 #include "minishell.h"
-
 #include <stdbool.h> // why it doesn't work if I include it in minishell.h?
+//#include <fcntl.h>
 
-
-#include <fcntl.h>
 typedef enum e_token_type
 {
-	TK_NONE,
-	TK_PIPE,
-	TK_IN_RE,
-	TK_OUT_RE,
-	TK_HDOC,
-	TK_APPEND,
-	TK_SINGLE_QT,
-	TK_DOUBLE_QT,
-	TK_WORD,
-	TK_LOC_V, //did't use this one.
+	TK_NONE, //0
+	TK_PIPE, //1
+	TK_IN_RE,//2
+	TK_OUT_RE,//3
+	TK_HDOC,//4
+	TK_APPEND,//5
+	TK_SINGLE_QT,//6
+	TK_DOUBLE_QT,//7
+	TK_WORD, //8
+	TK_LOC_V, //9
 }	t_token_type;
 
 typedef enum e_err_type
@@ -52,12 +51,12 @@ typedef enum e_list_position
 	NEXT_CNT,
 }	t_list_position;
 
-
 typedef struct e_env
 {
 	char	*name;
 	char	*value;
 }	t_env;
+
 /*
 	@What is a token?
 	It might be a command, a word or a redirector,and so on. Such as "echo", "hello", "<";
@@ -86,7 +85,6 @@ typedef struct s_token
 */
 typedef struct s_ms
 {
-
 	int				in_fd;
 	int				out_fd;
 	int				fd[2];
@@ -103,7 +101,6 @@ typedef struct s_ms
 	struct s_list	*env_list;
 	struct s_cmd	*cmds;
 }	t_ms;
-
 
 /*
 	@param
@@ -143,7 +140,6 @@ typedef struct s_cmd
 	char			**outfile;
 	char			*of;
 	char			*inf;
-
 	t_token_type	intype;
 	t_token_type	outype;
 	int				ofnum;
@@ -155,19 +151,6 @@ typedef struct s_cmd
 	int				ct_del;
 	int				ct_w;
 	struct s_cmd	*next;
-
 }	t_cmd;
-
-typedef enum e_error
-{
-	DIRECTORY,
-	NFILE,
-	COMMAND,
-	ERR,
-	MALLOC,
-	PIPE,
-	FORK,
-	PREMISSON,
-}	t_error;
 
 # endif

@@ -10,10 +10,8 @@ t_ms	*ms(void)
 
 char	*prompt()
 {
-
 	char	*str;
 	char	*str2;
-
 
 	str = ft_strjoin("minishell:" , ms()->cwd);
 	if (!str)
@@ -26,7 +24,6 @@ char	*prompt()
 	}
 	free(str);
 	return(str2);
-
 }
 void	buildshell()
 {
@@ -41,9 +38,11 @@ void	buildshell()
 			restart(1);
 		}
 		add_history(ms()->input);
-
-		if (pre_handle())
-			exe(ms()->cmds);
+		if (ms()->input)
+		{
+			if (pre_handle())
+				exe(ms()->cmds);
+		}
 		restart(0);
 	}
 }
@@ -93,8 +92,6 @@ static void init_ms(char **env)
 	ms()->env = env;
 	ms()->fd[0] = -1;
 	ms()->fd[1] = -1;
-	ms()->tokens = NULL;
-
 	if(!(ms()->cwd))
 	{
 		perror("getcwd() error");

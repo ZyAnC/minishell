@@ -6,7 +6,7 @@
 /*   By: jingwu <jingwu@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 11:28:56 by jingwu            #+#    #+#             */
-/*   Updated: 2024/10/04 11:38:54 by jingwu           ###   ########.fr       */
+/*   Updated: 2024/10/08 11:22:15 by jingwu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@ t_token	*new_token(char *str, t_token_type tk_type, bool merge)
 		return (NULL);
 	node->str = str;
 	node->tk_type = tk_type;
-	node->idx++;
 	node->merge = merge;
 	return (node);
 }
@@ -34,11 +33,13 @@ t_token	*new_token(char *str, t_token_type tk_type, bool merge)
 */
 int	add_token(char *str, t_token_type token, bool merge)
 {
-	t_token	*node;
+	t_token		*node;
+	static int	i = 1;
 
 	if (!str)
 		return (false);
 	node = new_token(str, token, merge);
+	node->idx = i++;
 	if (!node)
 		return (-1);
 	ft_lstadd_back(&ms() ->tokens, (ft_lstnew(node)));
@@ -74,32 +75,24 @@ t_token	*tk_list_manager(t_list_position psn)
 	return (NULL);
 }
 
-/*
-	@how to delete a node?
-	 1. If the node is at the beginning:
-	    You need to update the head of the list.
-	 2. If the node is in the middle or at the end:
-	    loop the list to find the node right before the delete_node, then update the list.
-*/
-void	del_node(t_list **list, t_list *node)
+void	delete_token(t_token *token)
 {
-	t_list	*tmp;
-
-	if (!list || !*list || !node)
+	if (!token)
 		return ;
-	tmp = *list;
-	if (*list == node)
-	{
-		*list = (*list) ->next;
-		free(((t_token *)(node->content)));
-		free(tmp);
-	}
-	else
-	{
-		while (!(tmp->next) && (tmp->next) != node)
-			tmp = tmp->next;
-		tmp ->next = node ->next;
-		free(((t_token *)(node->content)) ->str);
-		free(node);
-	}
+	if (token->str)
+		free(token->str);
+	token->str = NULL;
+	if (token->arg)
+		free(token->arg);
+	token->arg = NULL;
+	token->tk_type = -1;
+	token->idx = -1;
+	token->merge = 0;
+	token = NULL;
+}
+
+void	del_node(t_list *node)
+{
+	ft_lstdelone(node, (void *)delete_token);
+	node = NULL;
 }
