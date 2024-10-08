@@ -17,7 +17,6 @@ SRCS_EDIR = execute
 SRCS_BUIL = builtin
 
 SRCS = $(wildcard $(SRCS_DIR)/*.c) \
-
 		$(wildcard $(SRCS_DIR)/$(SRCS_PDIR)/*.c) \
 		$(wildcard $(SRCS_DIR)/$(SRCS_SDIR)/*.c) \
 		$(wildcard $(SRCS_DIR)/$(SRCS_TDIR)/*.c) \

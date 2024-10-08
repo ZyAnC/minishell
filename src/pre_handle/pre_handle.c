@@ -6,15 +6,12 @@
 /*   By: jingwu <jingwu@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 12:48:19 by jingwu            #+#    #+#             */
-/*   Updated: 2024/10/08 11:24:40 by jingwu           ###   ########.fr       */
+/*   Updated: 2024/10/08 12:51:50 by jingwu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-
-
-void	print_token_list(void);// for test!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 void	merge(t_list *list)// add static after testing!!!!!!!!!!
 {
 	t_token	*cur;
@@ -67,40 +64,6 @@ bool	are_all_def_var(void)// add static after testing !!!!!!!!!
 	return (true);
 }
 
-// /*
-// 	The function is adding infiles, outfiles or delimiter for <, >, >> or << into their
-// 	token arg.
-// */
-// void	restruct_token(void)
-// {
-// 	t_list	*tmp;
-// 	t_token	*cur_tk;
-// 	t_token	*next_tk;
-// 	t_list	*delete;
-
-// 	tmp = ms()->tokens;
-// 	while (tmp)
-// 	{
-// 		cur_tk = (t_token *)(tmp->content);
-// 		if (!tmp->next)
-// 			break ;
-// 		next_tk = ((t_token *)((tmp->next) ->content));
-// 		if (is_dir(cur_tk))
-// 		{
-// 			cur_tk->arg = ft_strdup(next_tk->str);
-// 			delete = tmp->next;
-// 			if (!(tmp->next)->next)
-// 			{
-// 				tmp->next = NULL;
-// 				break ;
-// 			}
-// 			tmp->next = (tmp->next)->next;
-// 			del_node(delete);
-// 		}
-// 		tmp = tmp->next;
-// 	}
-// }
-
 void	restruct_token(void)
 {
 	t_list	*tmp;
@@ -130,8 +93,6 @@ void	restruct_token(void)
 		tmp = tmp->next;
 	}
 }
-
-
 
 bool	pre_handle(void)
 {
