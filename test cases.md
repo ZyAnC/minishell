@@ -7,6 +7,8 @@ Thinking of these cases:
 
 3. cat file1.txt file2.txt | grep "pattern" > output1.txt > output2.txt | sort >> log1.txt >> log2.txt | uniq > final_output.txt
 
+4. echo $HOME | name=sherry | grep a >>out, the cmd[1] is empty, should I delete it?
+
 
 
 Test   1: ✅ echo hello world
@@ -29,7 +31,7 @@ Test  17: ✅ echo "$"
 Test  18: ✅ echo '$'
 Test  19: ✅ echo $
 Test  20: ✅ echo $?
-Test  21: ✅ echo $?HELLO	
+Test  21: ✅ echo $?HELLO
 Test  22: ✅ pwd
 Test  23: ✅ pwd oi
 Test  24: ✅ export hello

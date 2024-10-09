@@ -6,7 +6,7 @@
 /*   By: jingwu <jingwu@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 13:47:08 by jingwu            #+#    #+#             */
-/*   Updated: 2024/10/04 11:37:50 by jingwu           ###   ########.fr       */
+/*   Updated: 2024/10/09 14:45:16 by jingwu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ bool	is_seperator(char c)
 	f_alp_uds: when loop the str, if encounter a alphabeta or "_", then
 				f_alp_uds=true;
 */
-bool	is_defining_var(t_token *token)
+bool	is_defining_var(char *str)
 {
 	int		i;
 	bool	f_equal;
@@ -74,19 +74,21 @@ bool	is_defining_var(t_token *token)
 	i = -1;
 	f_equal = false;
 	f_alp_uds = false;
-	while (token->str[++i])
+	printf("str=%s\n", str);// for testing!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	while (str[++i])
 	{
-		if (token->str[i] == '=')
+		if (str[i] == '=')
 			f_equal = true;
-		else if (token->str[i] == '_' || ft_isalpha(token->str[i]))
+		else if (str[i] == '_' || ft_isalpha(str[i]))
 			f_alp_uds = true;
-		else if (!ft_isalpha(token->str[i]) && token->str[i] != '_'
+		else if (!ft_isalpha(str[i]) && str[i] != '_'
 			&& !f_equal && !f_alp_uds)
 			return (false);
-		else if (!ft_isalnum(token->str[i]) && token->str[i] != '_'
+		else if (!ft_isalnum(str[i]) && str[i] != '_'
 			&& !f_equal)
 			return (false);
 	}
-	add_env_node(&(ms() ->env_list), token->str);
+	add_env_node(&(ms()->env_list), str);
+	printf("-----------it is defining variable-------------------\n");// for testing!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	return (true);
 }

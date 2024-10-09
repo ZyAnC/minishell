@@ -6,7 +6,7 @@
 /*   By: jingwu <jingwu@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 08:43:11 by jingwu            #+#    #+#             */
-/*   Updated: 2024/10/08 14:08:01 by jingwu           ###   ########.fr       */
+/*   Updated: 2024/10/09 14:47:44 by jingwu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,26 +100,18 @@ void	expander(void)
 	t_token	*token;
 	char	*str;
 
-	printf("inside expander\n");// for test!!!!!!!!!!!!!!!!!!
 	tk_list_manager(RESET);
 	while (tk_list_manager(CUR_CNT))
 	{
-			printf("<----------------------1------------------>\n");// for test!!!!!!!!!!!!!!!!!!
 		token = tk_list_manager(CUR_CNT);
-		printf("<----------------------2------------------>\n");// for test!!!!!!!!!!!!!!!!!!
 		if (token->tk_type == TK_DOUBLE_QT || token->tk_type == TK_WORD)
 		{
-			printf("<----------------------3------------------>\n");// for test!!!!!!!!!!!!!!!!!!
 			str = ft_strchr(token->str, '$');
-			printf("<----------------------4------------------>\n");// for test!!!!!!!!!!!!!!!!!!
 			if (str && *(str + 1) != '\0' && *(str + 1) != ' ' )
 				expand(token);
-			printf("<----------------------5------------------>\n");// for test!!!!!!!!!!!!!!!!!!
 		}
-		// if (is_defining_var(token))
-		// 	token->tk_type = TK_LOC_V;
-
+		if (ft_strchr(token->str, '=') && is_defining_var(token->str))
+			token->tk_type = TK_LOC_V;
 		tk_list_manager(NEXT);
-		printf("out of  expander\n");// for test!!!!!!!!!!!!!!!!!!
 	}
 }

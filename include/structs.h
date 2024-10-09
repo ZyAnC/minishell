@@ -7,6 +7,11 @@
 #include <stdbool.h> // why it doesn't work if I include it in minishell.h?
 //#include <fcntl.h>
 
+/*
+	TK_LOC_V: for defining local variable command, like if input is "echo a | name=sherry"
+			  then for 'name=sherry' the type of the token is TK_LOC_V. For this type, we
+			  do NOT put them into cmd list.
+*/
 typedef enum e_token_type
 {
 	TK_NONE, //0
