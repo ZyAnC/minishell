@@ -6,7 +6,7 @@
 /*   By: jingwu <jingwu@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 07:56:08 by jingwu            #+#    #+#             */
-/*   Updated: 2024/10/04 11:39:14 by jingwu           ###   ########.fr       */
+/*   Updated: 2024/10/08 14:29:09 by jingwu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,14 +39,15 @@ char	*get_env_value(char *env_name)
 	if (env_name[0] == '$')
 		env_name++;
 	tmp = ms() ->env_list;
-	while (tmp)
+
+	while (tmp && env_name)
 	{
 		env = (t_env *)(tmp->content);
 		if (!ft_strcmp(env->name, env_name))
 			return (ft_strdup(env->value));
 		tmp = tmp->next;
 	}
-	return (ft_strdup(""));// why can't return NULL here????
+	return (ft_strdup(""));
 }
 
 void	add_env_node(t_list **list, char *str)

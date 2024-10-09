@@ -6,7 +6,7 @@
 /*   By: jingwu <jingwu@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/02 08:21:42 by jingwu            #+#    #+#             */
-/*   Updated: 2024/10/04 11:37:04 by jingwu           ###   ########.fr       */
+/*   Updated: 2024/10/09 12:07:09 by jingwu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,12 @@ void	count(t_cmd **cmd, t_list *tk_lt, int start, int end)
 				(*cmd) ->ofnum++;
 			else if (token->tk_type == TK_HDOC)
 				(*cmd) ->herenum++;
-			else if (token->tk_type == TK_WORD)
+			else if (token->tk_type == TK_WORD || token->tk_type == TK_DOUBLE_QT
+				|| token->tk_type == TK_SINGLE_QT)
 				(*cmd) ->word++;
 		}
+		if (token->idx > end)
+			break ;
 		tk_lt = tk_lt->next;
 	}
 }

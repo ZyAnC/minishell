@@ -1,4 +1,100 @@
-void	print_token_list(void)// for test !!!!!!!!!!!!!!!!!!!!!!!!
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    for_test_print_token_list.txt                      :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: jingwu <jingwu@student.hive.fi>            +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2024/09/23 12:48:19 by jingwu            #+#    #+#              #
+#    Updated: 2024/10/09 12:07:49 by jingwu           ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
+#include "minishell.h"
+
+static void	merge(t_list *list)
+{
+	t_token	*cur;
+	t_token	*next;
+	char	*tmp;
+	t_list	*delete;
+	while (list)
+	{
+		cur = list->content;
+		if (!(list->next))
+			return ;
+		if (!cur->merge)
+		{
+			list = list->next;
+			continue ;
+		}
+		next = (list->next)->content;
+		tmp = cur->str;
+		cur->str = ft_strjoin(cur->str, next->str);
+		free(tmp);
+		if (!next->merge)
+			cur->merge = next->merge;
+		delete = list->next;
+		list->next = list->next->next;
+		del_node(delete);
+	}
+}
+
+/*
+	This funtion will loop the token list, to check if the input just
+	contains defining environment variable, such as the input is
+	"name=sherry | export shcool="Hive Helsinki"
+*/
+bool	are_all_def_var(void)// add static after testing !!!!!!!!!
+{
+	t_list	*tmp;
+	t_token	*token;
+
+	tmp = ms()->tokens;
+	while (tmp)
+	{
+		token = (t_token *)(tmp->content);
+		if (!ft_strchr(token->str, '='))
+			return (false);
+		if (!is_defining_var(tmp ->content))
+			return (false);
+		tmp = tmp->next;
+	}
+	return (true);
+}
+
+void	restruct_token(void)
+{
+	t_list	*tmp;
+	t_token	*cur_tk;
+	t_token	*next_tk;
+	t_list	*delete;
+
+	tmp = ms()->tokens;
+	while (tmp)
+	{
+		cur_tk = (t_token *)(tmp->content);
+		if (!tmp->next)
+			break ;
+		next_tk = ((t_token *)((tmp->next)->content));
+		if (is_dir(cur_tk))
+		{
+			cur_tk->arg = ft_strdup(next_tk->str);
+			delete = tmp->next;
+			if (!(tmp->next)->next)
+			{
+				tmp->next = NULL;
+				break ;
+			}
+			tmp->next = (tmp->next)->next;
+			del_node(delete);
+		}
+		tmp = tmp->next;
+	}
+}
+
+
+static void	assign_token_index(void)
 {
 	t_list	*list;
 	t_token	*token;
@@ -8,9 +104,120 @@ void	print_token_list(void)// for test !!!!!!!!!!!!!!!!!!!!!!!!
 	i = 0;
 	while (list)
 	{
-		token = list->content;
-		printf("token[%d]: str=%s   type=%u  arg=%s  index=%d  merger=%d\n", i, token->str, token->tk_type, token->arg, token->idx, token->merge);
+		token = (t_token *)(list->content);
+		token->idx = i++;
+		list = list->next;
+	}
+}
+
+/*
+	1: print tokens
+	2: print env;
+*/
+void	print_list(t_list *list, int flag)// for test !!!!!!!!!!!!!!!!!!!!!!!!
+{
+	t_token	*token;
+	t_env	*env;
+	int		i;
+
+	i = 0;
+	while (list)
+	{
+		if (flag == 1)
+		{
+			token = list->content;
+			printf("token[%d]: str=%s   type=%u  arg=%s  index=%d  merger=%d\n", i, token->str, token->tk_type, token->arg, token->idx, token->merge);
+		}
+		else if (flag == 2)
+		{
+			env = list->content;
+			printf("env[%d]: name=$%s   value=%s\n", i, env->name, env->value);
+		}
 		i++;
 		list = list->next;
 	}
+}
+
+
+void	print_cmd(void)
+{
+	t_cmd	*cmd;
+	int  i_cmd = 0;
+	int	j;
+
+	cmd = ms()->cmds;
+	while (cmd)
+	{
+		j = 0;
+		printf("cmd[%d]\n", i_cmd++);
+		printf("ofnum=%d  ifnum=%d  herenum=%d  word=%d\n", cmd->ofnum, cmd->ifnum, cmd->herenum, cmd->word);
+		if (cmd->word != 0)
+		{
+			printf("\ncmd strs are below:\n");
+			while(j < cmd->word)
+			{
+				printf("	cmd_str[%d]=%s\n", j, cmd->cmd[j]);
+				j++;
+			}
+		}
+		j = 0;
+		if (cmd->ifnum != 0)
+		{
+			printf("\ninfile strs are below:\n");
+			while(j < cmd->ifnum)
+			{
+				printf("	infile[%d]=%s\n", j, cmd->infile[j]);
+				j++;
+			}
+		}
+		j = 0;
+		if (cmd->ofnum != 0)
+		{
+			printf("\noutfile strs are below:\n");
+			while(j < cmd->ofnum)
+			{
+				printf("	outfile[%d]=%s\n", j, cmd->outfile[j]);
+				j++;
+			}
+		}
+		j = 0;
+		if (cmd->herenum)
+		{
+			printf("\nlimiter strs are below:\n");
+			while(j < cmd->herenum)
+			{
+				printf("	limiter[%d]=%s\n", j, cmd->limiter[j]);
+				j++;
+			}
+		}
+		printf("\nlast_infile=%s\nlast_outfie=%s", cmd->inf, cmd->of);
+		printf("\nintype=%d\nouttype=%d\n\n", cmd->intype, cmd->outype);
+		cmd = cmd->next;
+	}
+}
+
+bool	pre_handle(void)
+{
+	if (!check_quote())
+		return (false);
+	if (!lexer())
+		return (print_error(ADD_TOKEN_FAILED, 1));
+	if (!check_syntax())
+		return (false);
+	restruct_token();
+	printf("\n<-------------after restruct------------------>\n");// for test!!!!!!!!!!!!!!!!!!
+	print_list(ms()->tokens, 1);// for test!!!!!!!!!!!!!!!!!!
+//	print_list(ms()->env_list, 2);
+	// expander();//there is an error, seems in env_list;
+	merge(ms() ->tokens);
+	assign_token_index();
+	printf("\n\n<-------------after merge------------------>\n");// for test!!!!!!!!!!!!!!!!!!
+	print_list(ms()->tokens, 1);// for test!!!!!!!!!!!!!!!!!!
+	if (!parsing())//underway
+		return (false);
+	printf("\n\n<-------------cmd list----------------->\n");// for test!!!!!!!!!!!!!!!!
+	print_cmd();
+	// if (are_all_def_var())// shoud we do are_all_def_var() before parsing()?????
+	// 	return (false);
+	return (true);
 }

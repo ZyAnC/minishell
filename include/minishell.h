@@ -112,7 +112,6 @@ void	delete_token(t_token *token);
 bool	parsing(void);
 
 // pre_handle.c
-void	restruct_token(void);
 bool	pre_handle(void);
 
 // process_re.c

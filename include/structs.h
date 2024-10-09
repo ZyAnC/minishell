@@ -117,13 +117,22 @@ typedef struct s_ms
 			1. the input: "<<end <infile <<sp <infile2 cat | ..."
 			   in this case, inf = "infile2";
 			2. the input: "<<end <infile <<sp cat | ..."
-			   in this case, inf = NULL; (becasue the last one is '<<' there is no name)
+			   in this case, inf = NULL; (becasue there is no infile)
 
 	intype:	the last < or << in the part of input seperated by '|'.
 			For exapmle, the input :"<<end <infile <<sp cat | ..."
 			in this case, intype = TK_HDOC, becase it is the last one.
+			But if there is no < or <<:
+				if there is a pipe, then intype = TK_PIPE;
+				if there is NO pipe, then intype = TK_NONE;
+			the priority is(high to low) : redirection, pipe, none
 
 	outype:	the last > or >> in the part of input seperated by '|';
+			But if there is no > or >>:
+				if there is a pipe, then intype = TK_PIPE;
+				if there is NO pipe, then intype = TK_NONE;
+			the priority is(high to low) : redirection, pipe, none
+
 	ifnum:	the amount of input redirection '<';
 	ofnum:	the amount of output redirection '>';
 	herenum:	the amount of heredoc '<<';

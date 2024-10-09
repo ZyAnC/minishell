@@ -6,7 +6,7 @@
 /*   By: jingwu <jingwu@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 11:28:56 by jingwu            #+#    #+#             */
-/*   Updated: 2024/10/08 11:22:15 by jingwu           ###   ########.fr       */
+/*   Updated: 2024/10/09 09:09:46 by jingwu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,21 +25,22 @@ t_token	*new_token(char *str, t_token_type tk_type, bool merge)
 	node->str = str;
 	node->tk_type = tk_type;
 	node->merge = merge;
+	node->idx = -1;
 	return (node);
 }
 
 /*
-	Add a new node to the lexer_list;
+	Add a new node to the token list;
 */
 int	add_token(char *str, t_token_type token, bool merge)
 {
 	t_token		*node;
-	static int	i = 1;
+//	static int	i = 0;
 
 	if (!str)
 		return (false);
 	node = new_token(str, token, merge);
-	node->idx = i++;
+//	node->idx = i++;
 	if (!node)
 		return (-1);
 	ft_lstadd_back(&ms() ->tokens, (ft_lstnew(node)));

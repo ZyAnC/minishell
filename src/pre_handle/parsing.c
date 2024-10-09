@@ -6,7 +6,7 @@
 /*   By: jingwu <jingwu@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 12:24:17 by jingwu            #+#    #+#             */
-/*   Updated: 2024/10/04 11:36:09 by jingwu           ###   ########.fr       */
+/*   Updated: 2024/10/09 12:06:11 by jingwu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,10 @@ static t_cmd	*new_cmd(int start, int end)
 	count(&cmd_nd, tmp, start, end);
 	if (!allocate_mem(&cmd_nd))
 		return (NULL);
+	cmd_nd->intype = TK_PIPE;
+	cmd_nd->outype = TK_NONE;
+	if (start == 0)
+		cmd_nd->intype = TK_NONE;
 	while (tmp)
 	{
 		token = tmp->content;
@@ -30,9 +34,13 @@ static t_cmd	*new_cmd(int start, int end)
 		{
 			if (is_dir(token))
 				process_re(&cmd_nd, tmp);
-			else if (token->tk_type == TK_WORD)
-				cmd_nd->cmd[cmd_nd->ct_w] = token->str;
+			else if (token->tk_type == TK_WORD || token->tk_type == TK_DOUBLE_QT || token->tk_type == TK_SINGLE_QT)
+				cmd_nd->cmd[cmd_nd->ct_w++] = ft_strdup(token->str);
+			if (token->idx == end && token->tk_type == TK_PIPE && cmd_nd->outype == TK_NONE)
+				cmd_nd->outype = TK_PIPE;
 		}
+		if (token->idx > end)
+			break ;
 		tmp = tmp->next;
 	}
 	cmd_nd->next = NULL;
@@ -45,6 +53,7 @@ static bool	add_cmd(t_cmd *new)
 
 	if (!new)
 		return (false);
+
 	if (!(ms() ->cmds))
 		ms() ->cmds = new;
 	else
@@ -70,17 +79,18 @@ bool	parsing(void)
 	if (!ms() ->tokens)
 		return (true);
 	i = 0;
+	sign = true;
 	tmp = ms() ->tokens;
 	while (tmp)
 	{
-		token = tmp->content;
+		token = (t_token *)(tmp->content);
 		if (token->tk_type == TK_PIPE && tmp->next)
 		{
-			sign = add_cmd(new_cmd((i + 1), token->idx)); // token's index start from 1, right????
-			i = token->idx;
+			sign = add_cmd(new_cmd(i, token->idx));
+			i = token->idx + 1;
 		}
 		if (!tmp->next)
-			sign = add_cmd(new_cmd((i + 1), ((t_token *)tmp->content) ->idx));
+			sign = add_cmd(new_cmd(i, ((t_token *)tmp->content) ->idx));
 		if (!sign)
 			return (print_error(ADD_CMD_ERR, 1));
 		tmp = tmp->next;

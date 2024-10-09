@@ -6,19 +6,18 @@
 /*   By: jingwu <jingwu@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 12:48:19 by jingwu            #+#    #+#             */
-/*   Updated: 2024/10/08 13:08:33 by jingwu           ###   ########.fr       */
+/*   Updated: 2024/10/09 12:09:41 by jingwu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	merge(t_list *list)// add static after testing!!!!!!!!!!
+static void	merge(t_list *list)
 {
 	t_token	*cur;
 	t_token	*next;
 	char	*tmp;
 	t_list	*delete;
-
 	while (list)
 	{
 		cur = list->content;
@@ -29,7 +28,7 @@ void	merge(t_list *list)// add static after testing!!!!!!!!!!
 			list = list->next;
 			continue ;
 		}
-		next = list->next->content;
+		next = (list->next)->content;
 		tmp = cur->str;
 		cur->str = ft_strjoin(cur->str, next->str);
 		free(tmp);
@@ -46,7 +45,7 @@ void	merge(t_list *list)// add static after testing!!!!!!!!!!
 	contains defining environment variable, such as the input is
 	"name=sherry | export shcool="Hive Helsinki"
 */
-bool	are_all_def_var(void)// add static after testing !!!!!!!!!
+static bool	are_all_def_var(void)
 {
 	t_list	*tmp;
 	t_token	*token;
@@ -64,7 +63,7 @@ bool	are_all_def_var(void)// add static after testing !!!!!!!!!
 	return (true);
 }
 
-void	restruct_token(void)
+static void	restruct_token(void)
 {
 	t_list	*tmp;
 	t_token	*cur_tk;
@@ -76,7 +75,6 @@ void	restruct_token(void)
 	{
 		cur_tk = (t_token *)(tmp->content);
 		if (!tmp->next)
-			break ;
 		next_tk = ((t_token *)((tmp->next)->content));
 		if (is_dir(cur_tk))
 		{
@@ -94,6 +92,22 @@ void	restruct_token(void)
 	}
 }
 
+static void	assign_token_index(void)
+{
+	t_list	*list;
+	t_token	*token;
+	int		i;
+
+	list = ms()->tokens;
+	i = 0;
+	while (list)
+	{
+		token = (t_token *)(list->content);
+		token->idx = i++;
+		list = list->next;
+	}
+}
+
 bool	pre_handle(void)
 {
 	if (!check_quote())
@@ -103,8 +117,8 @@ bool	pre_handle(void)
 	if (!check_syntax())
 		return (false);
 	restruct_token();
-	expander();
 	merge(ms() ->tokens);
+	assign_token_index();
 	if (!parsing())
 		return (false);
 	if (are_all_def_var())
