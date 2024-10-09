@@ -6,7 +6,7 @@
 /*   By: jingwu <jingwu@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 07:56:08 by jingwu            #+#    #+#             */
-/*   Updated: 2024/10/08 14:29:09 by jingwu           ###   ########.fr       */
+/*   Updated: 2024/10/09 14:06:34 by jingwu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,11 +50,36 @@ char	*get_env_value(char *env_name)
 	return (ft_strdup(""));
 }
 
+/*
+	@function
+	The funtion will loop the env list to find if any env.name matching with passed name.
+
+	@return
+	return the env if found matched one;
+	return NULL, if did NOT find matched one;
+*/
+static t_env	*find_env(t_list *list, char *name)
+{
+	t_env	*env;
+
+	if (!list)
+		return (NULL);
+	while (list)
+	{
+		env = list->content;
+		if (!ft_strcmp(env->name, name))
+			return (env);
+		list = list->next;
+	}
+	return (NULL);
+}
+
 void	add_env_node(t_list **list, char *str)
 {
 	char	*name;
 	char	*value;
 	int		i;
+	t_env	*env;
 
 	i = -1;
 	while (str[++i])
@@ -63,12 +88,14 @@ void	add_env_node(t_list **list, char *str)
 			break;
 	}
 	name = ft_substr(str, 0, i);
-	value = get_env_value(name);
-	if (!value)
+	value = ft_strdup(str + i + 1);
+	env = find_env(*list, name);
+	if (env)
 	{
-		value = ft_strdup(str + i + 1);
-		ft_lstadd_back(list, ft_lstnew(new_env(name, value)));
+		free(name);
+		free(env->value);
+		env->value = value;
 	}
 	else
-		free(name);
+		ft_lstadd_back(list, ft_lstnew(new_env(name, value)));
 }

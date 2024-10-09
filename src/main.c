@@ -60,23 +60,19 @@ char	*findpath(char **env)
 
 }
 
-t_list *get_env_list(char **env)
+t_list *get_env_list(char **envs)
 {
-	t_list *env_list = NULL;
-	int i = 0;
+	t_list	*env_lt;
+	int		i;
 
-	while (env[i])
+	i = 0;
+	env_lt = NULL;
+	while (envs[i])
 	{
-		char *env_copy = ft_strdup(env[i]);
-		if (!env_copy)
-			return (NULL);
-		t_list *new_node = ft_lstnew(env_copy);
-		if (!new_node)
-			return (NULL);
-		ft_lstadd_back(&env_list, new_node);
+		add_env_node(&env_lt, envs[i]);
 		i++;
 	}
-	return (env_list);
+	return (env_lt);
 }
 
 static void init_ms(char **env)

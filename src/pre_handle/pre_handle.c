@@ -6,7 +6,7 @@
 /*   By: jingwu <jingwu@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 12:48:19 by jingwu            #+#    #+#             */
-/*   Updated: 2024/10/09 12:09:41 by jingwu           ###   ########.fr       */
+/*   Updated: 2024/10/09 14:53:00 by jingwu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ static bool	are_all_def_var(void)
 		token = (t_token *)(tmp->content);
 		if (!ft_strchr(token->str, '='))
 			return (false);
-		if (!is_defining_var(tmp ->content))
+		if (!is_defining_var(token->str))
 			return (false);
 		tmp = tmp->next;
 	}
@@ -75,6 +75,7 @@ static void	restruct_token(void)
 	{
 		cur_tk = (t_token *)(tmp->content);
 		if (!tmp->next)
+			break ;
 		next_tk = ((t_token *)((tmp->next)->content));
 		if (is_dir(cur_tk))
 		{
@@ -92,6 +93,7 @@ static void	restruct_token(void)
 	}
 }
 
+
 static void	assign_token_index(void)
 {
 	t_list	*list;
@@ -108,6 +110,7 @@ static void	assign_token_index(void)
 	}
 }
 
+
 bool	pre_handle(void)
 {
 	if (!check_quote())
@@ -117,11 +120,12 @@ bool	pre_handle(void)
 	if (!check_syntax())
 		return (false);
 	restruct_token();
+	expander();
 	merge(ms() ->tokens);
 	assign_token_index();
-	if (!parsing())
-		return (false);
 	if (are_all_def_var())
+		return (false);
+	if (!parsing())
 		return (false);
 	return (true);
 }

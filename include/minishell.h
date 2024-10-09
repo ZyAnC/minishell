@@ -88,7 +88,7 @@ bool	is_pipe(t_token *token);
 bool	is_dir(t_token *token);
 bool	is_dir_or_pipe(t_token *token);
 bool	is_seperator(char c);
-bool	is_defining_var(t_token *token);
+bool	is_defining_var(char *str);
 
 // checking.c
 bool	check_syntax(void);
@@ -131,4 +131,11 @@ void	add_env_node(t_list **list, char *str);
 // free.c
 void	ft_newfree(void *pointer);
 
+
+
+
+
+
+
+void	print_list(t_list *list, int flag); // for testing!!!!!!!!!!!11
 # endif
