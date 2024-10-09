@@ -6,7 +6,7 @@
 /*   By: jingwu <jingwu@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 12:48:19 by jingwu            #+#    #+#             */
-/*   Updated: 2024/10/09 14:40:00 by jingwu           ###   ########.fr       */
+/*   Updated: 2024/10/09 14:53:00 by jingwu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,90 +110,6 @@ static void	assign_token_index(void)
 	}
 }
 
-/*
-	1: print tokens
-	2: print env;
-*/
-void	print_list(t_list *list, int flag)// for test !!!!!!!!!!!!!!!!!!!!!!!!
-{
-	t_token	*token;
-	t_env	*env;
-	int		i;
-
-	i = 0;
-	while (list)
-	{
-		if (flag == 1)
-		{
-			token = list->content;
-			printf("token[%d]: str=%s   type=%u  arg=%s  index=%d  merger=%d\n", i, token->str, token->tk_type, token->arg, token->idx, token->merge);
-		}
-		else if (flag == 2)
-		{
-			env = list->content;
-			printf("env[%d]: name=$%s   value=%s\n", i, env->name, env->value);
-		}
-		i++;
-		list = list->next;
-	}
-}
-
-void	print_cmd(void)// for test !!!!!!!!!!!!!!!!!!!!!!!!
-{
-	t_cmd	*cmd;
-	int  i_cmd = 0;
-	int	j;
-
-	cmd = ms()->cmds;
-	while (cmd)
-	{
-		j = 0;
-		printf("cmd[%d]\n", i_cmd++);
-		printf("ofnum=%d  ifnum=%d  herenum=%d  word=%d\n", cmd->ofnum, cmd->ifnum, cmd->herenum, cmd->word);
-		if (cmd->word != 0)
-		{
-			printf("\ncmd strs are below:\n");
-			while(j < cmd->word)
-			{
-				printf("	cmd_str[%d]=%s\n", j, cmd->cmd[j]);
-				j++;
-			}
-		}
-		j = 0;
-		if (cmd->ifnum != 0)
-		{
-			printf("\ninfile strs are below:\n");
-			while(j < cmd->ifnum)
-			{
-				printf("	infile[%d]=%s\n", j, cmd->infile[j]);
-				j++;
-			}
-		}
-		j = 0;
-		if (cmd->ofnum != 0)
-		{
-			printf("\noutfile strs are below:\n");
-			while(j < cmd->ofnum)
-			{
-				printf("	outfile[%d]=%s\n", j, cmd->outfile[j]);
-				j++;
-			}
-		}
-		j = 0;
-		if (cmd->herenum)
-		{
-			printf("\nlimiter strs are below:\n");
-			while(j < cmd->herenum)
-			{
-				printf("	limiter[%d]=%s\n", j, cmd->limiter[j]);
-				j++;
-			}
-		}
-		printf("\nlast_infile=%s\nlast_outfie=%s", cmd->inf, cmd->of);
-		printf("\nintype=%d\nouttype=%d\n\n", cmd->intype, cmd->outype);
-		cmd = cmd->next;
-	}
-}
 
 bool	pre_handle(void)
 {
@@ -204,22 +120,12 @@ bool	pre_handle(void)
 	if (!check_syntax())
 		return (false);
 	restruct_token();
-	printf("\n<-------------after restruct------------------>\n");// for test!!!!!!!!!!!!!!!!!!
-	print_list(ms()->tokens, 1);// for test!!!!!!!!!!!!!!!!!!
 	expander();
-	printf("\n<-------------after expander------------------>\n");// for test!!!!!!!!!!!!!!!!!!
-	print_list(ms()->tokens, 1);// for test!!!!!!!!!!!!!!!!!!
 	merge(ms() ->tokens);
 	assign_token_index();
-	printf("\n\n<-------------after merge------------------>\n");// for test!!!!!!!!!!!!!!!!!!
-	print_list(ms()->tokens, 1);// for test!!!!!!!!!!!!!!!!!!
 	if (are_all_def_var())
 		return (false);
-	printf("\n\n<-------------after checking def_var-------->\n");// for test!!!!!!!!!!!!!!!!!!
-	print_list(ms()->tokens, 1);// for test!!!!!!!!!!!!!!!!!!
 	if (!parsing())
 		return (false);
-	printf("\n\n<-------------cmd list----------------->\n");// for test!!!!!!!!!!!!!!!!
-	print_cmd();// for test!!!!!!!!!!!!!!!!!!
 	return (true);
 }

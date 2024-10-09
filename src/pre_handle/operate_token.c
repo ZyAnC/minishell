@@ -6,7 +6,7 @@
 /*   By: jingwu <jingwu@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 11:28:56 by jingwu            #+#    #+#             */
-/*   Updated: 2024/10/09 09:09:46 by jingwu           ###   ########.fr       */
+/*   Updated: 2024/10/09 14:54:45 by jingwu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,12 +35,10 @@ t_token	*new_token(char *str, t_token_type tk_type, bool merge)
 int	add_token(char *str, t_token_type token, bool merge)
 {
 	t_token		*node;
-//	static int	i = 0;
 
 	if (!str)
 		return (false);
 	node = new_token(str, token, merge);
-//	node->idx = i++;
 	if (!node)
 		return (-1);
 	ft_lstadd_back(&ms() ->tokens, (ft_lstnew(node)));

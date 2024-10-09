@@ -6,7 +6,7 @@
 /*   By: jingwu <jingwu@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 13:47:08 by jingwu            #+#    #+#             */
-/*   Updated: 2024/10/09 14:45:16 by jingwu           ###   ########.fr       */
+/*   Updated: 2024/10/09 14:53:25 by jingwu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,6 @@ bool	is_defining_var(char *str)
 	i = -1;
 	f_equal = false;
 	f_alp_uds = false;
-	printf("str=%s\n", str);// for testing!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	while (str[++i])
 	{
 		if (str[i] == '=')
@@ -89,6 +88,5 @@ bool	is_defining_var(char *str)
 			return (false);
 	}
 	add_env_node(&(ms()->env_list), str);
-	printf("-----------it is defining variable-------------------\n");// for testing!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	return (true);
 }

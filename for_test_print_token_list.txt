@@ -6,7 +6,7 @@
 #    By: jingwu <jingwu@student.hive.fi>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/23 12:48:19 by jingwu            #+#    #+#              #
-#    Updated: 2024/10/09 12:07:49 by jingwu           ###   ########.fr        #
+#    Updated: 2024/10/09 14:52:20 by jingwu           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -45,7 +45,7 @@ static void	merge(t_list *list)
 	contains defining environment variable, such as the input is
 	"name=sherry | export shcool="Hive Helsinki"
 */
-bool	are_all_def_var(void)// add static after testing !!!!!!!!!
+static bool	are_all_def_var(void)
 {
 	t_list	*tmp;
 	t_token	*token;
@@ -56,14 +56,14 @@ bool	are_all_def_var(void)// add static after testing !!!!!!!!!
 		token = (t_token *)(tmp->content);
 		if (!ft_strchr(token->str, '='))
 			return (false);
-		if (!is_defining_var(tmp ->content))
+		if (!is_defining_var(token->str))
 			return (false);
 		tmp = tmp->next;
 	}
 	return (true);
 }
 
-void	restruct_token(void)
+static void	restruct_token(void)
 {
 	t_list	*tmp;
 	t_token	*cur_tk;
@@ -138,8 +138,7 @@ void	print_list(t_list *list, int flag)// for test !!!!!!!!!!!!!!!!!!!!!!!!
 	}
 }
 
-
-void	print_cmd(void)
+void	print_cmd(void)// for test !!!!!!!!!!!!!!!!!!!!!!!!
 {
 	t_cmd	*cmd;
 	int  i_cmd = 0;
@@ -207,17 +206,20 @@ bool	pre_handle(void)
 	restruct_token();
 	printf("\n<-------------after restruct------------------>\n");// for test!!!!!!!!!!!!!!!!!!
 	print_list(ms()->tokens, 1);// for test!!!!!!!!!!!!!!!!!!
-//	print_list(ms()->env_list, 2);
-	// expander();//there is an error, seems in env_list;
+	expander();
+	printf("\n<-------------after expander------------------>\n");// for test!!!!!!!!!!!!!!!!!!
+	print_list(ms()->tokens, 1);// for test!!!!!!!!!!!!!!!!!!
 	merge(ms() ->tokens);
 	assign_token_index();
 	printf("\n\n<-------------after merge------------------>\n");// for test!!!!!!!!!!!!!!!!!!
 	print_list(ms()->tokens, 1);// for test!!!!!!!!!!!!!!!!!!
-	if (!parsing())//underway
+	if (are_all_def_var())
+		return (false);
+	printf("\n\n<-------------after checking def_var-------->\n");// for test!!!!!!!!!!!!!!!!!!
+	print_list(ms()->tokens, 1);// for test!!!!!!!!!!!!!!!!!!
+	if (!parsing())
 		return (false);
 	printf("\n\n<-------------cmd list----------------->\n");// for test!!!!!!!!!!!!!!!!
-	print_cmd();
-	// if (are_all_def_var())// shoud we do are_all_def_var() before parsing()?????
-	// 	return (false);
+	print_cmd();// for test!!!!!!!!!!!!!!!!!!
 	return (true);
 }

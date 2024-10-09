@@ -6,7 +6,7 @@
 /*   By: jingwu <jingwu@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 09:55:19 by jingwu            #+#    #+#             */
-/*   Updated: 2024/10/07 10:10:20 by jingwu           ###   ########.fr       */
+/*   Updated: 2024/10/09 14:53:35 by jingwu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,6 @@ bool	check_syntax(void)
 	while (tk_list_manager(CUR_CNT))
 	{
 		next_tk = tk_list_manager(NEXT_CNT);
-//		printf("cur_token=%s\nnext_token=%s\n\n", tk_list_manager(CUR_CNT)->str, next_tk->str);//for test!!!!!!
 		if (is_dir(tk_list_manager(CUR_CNT)) && (!next_tk || is_dir_or_pipe(tk_list_manager(NEXT_CNT))))
 			return(stx_error(next_tk));
 		if(is_pipe(tk_list_manager(CUR_CNT)))
