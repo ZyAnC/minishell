@@ -36,20 +36,49 @@ Example
 
 
 for <infile ls | grep "txt" > outfile
-    1st half <infile ls |
+    1st half: <infile ls |
 
         intype = TK_IN_RE;
-        outtype=tk_none;
+        outtype=TK_PIPE;
         outfile = null;
         infile = "infile";
-        ispipe = 1;
 
-    2nd half grep "txt" > outfile
-        intype=tk_none;
+    2nd half: grep "txt" > outfile
+        intype=TK_PIPE;
         outtype = TK_OUT_RE;
         infile = NULL
         outfile = "outfile"
-        ispipe = 0;
+
+for echo a | echo b
+     1st half: echo a |
+
+        intype = TK_NONE;
+        outtype=TK_PIPE;
+        outfile = NULL;
+        infile = NULL;
+
+    2nd half: echo b
+
+        intype=TK_PIPE;
+        outtype = TK_NONE;
+        infile = NULL
+        outfile = NULL
+
+for  <infile >out1 | <infile2 >>out2
+    1st half: <infile >out1 |
+
+        intype = TK_IN_RE;
+        outtype= TK_OUT_RE;
+        outfile = out1;
+        infile = infile;
+
+    2nd half: <infile2 >>out2
+
+        intype=TK_IN_RE;
+        outtype = TK_APPEND;
+        infile = infile2
+        outfile = out2
+
 
 for cat <1 <4 >3 <2
 should same with <2 cat >3

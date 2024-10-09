@@ -40,8 +40,9 @@ void	buildshell()
 		add_history(ms()->input);
 		if (ms()->input)
 		{
-			if (pre_handle())
-				exe(ms()->cmds);
+			pre_handle();
+			// if (pre_handle())
+			// 	exe(ms()->cmds);
 		}
 		restart(0);
 	}
