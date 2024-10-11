@@ -10,6 +10,8 @@ Thinking of these cases:
 4. echo $HOME | name=sherry | grep a >>out, the cmd[1] is empty, should I delete it?
 
 
+https://github.com/nenieiri-42Yerevan/Minishell/blob/master/README.md
+
 
 Test   1: ✅ echo hello world
 Test   2: ✅ echo "hello world"

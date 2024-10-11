@@ -6,7 +6,7 @@
 /*   By: jingwu <jingwu@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 12:48:19 by jingwu            #+#    #+#             */
-/*   Updated: 2024/10/09 14:53:00 by jingwu           ###   ########.fr       */
+/*   Updated: 2024/10/11 11:21:49 by jingwu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,6 @@ static void	restruct_token(void)
 {
 	t_list	*tmp;
 	t_token	*cur_tk;
-	t_token	*next_tk;
 	t_list	*delete;
 
 	tmp = ms()->tokens;
@@ -76,10 +75,9 @@ static void	restruct_token(void)
 		cur_tk = (t_token *)(tmp->content);
 		if (!tmp->next)
 			break ;
-		next_tk = ((t_token *)((tmp->next)->content));
 		if (is_dir(cur_tk))
 		{
-			cur_tk->arg = ft_strdup(next_tk->str);
+			cur_tk->arg = ft_strdup(((t_token *)((tmp->next)->content))->str);
 			delete = tmp->next;
 			if (!(tmp->next)->next)
 			{
