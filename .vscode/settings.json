@@ -1,5 +1,18 @@
 {
     "files.associations": {
+<<<<<<< HEAD
         "printf.h": "c"
+=======
+        "get_next_line.h": "c",
+        "shell.h": "c",
+        "history.h": "c",
+        "libft.h": "c",
+        "readline.h": "c",
+        "stdbool.h": "c",
+        "minishell.h": "c",
+        "printf.h": "c",
+        "stdio.h": "c",
+        "stdlib.h": "c"
+>>>>>>> master
     }
 }

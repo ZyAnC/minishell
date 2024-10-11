@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jingwu <jingwu@student.hive.fi>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/09/20 11:00:09 by yzheng            #+#    #+#             */
+/*   Updated: 2024/10/11 12:48:10 by jingwu           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
@@ -40,12 +52,13 @@
 # define DEL_TOKEN_ERR		"error: Could not delete a token from the list"
 
 
+# include <sys/stat.h>
 /*For global*/
 t_ms	*ms(void);
 
 
 /*For error*/
-
+int	export_err(char	*cmd);
 void	open_error(char *message);
 void	ex_error(char *message, t_err_type type, int err_status);
 bool	print_error(char *err_type, int err_fd);
@@ -62,6 +75,8 @@ void	close_all(int	prev_fd);
 void	check_infile(t_cmd *cm);
 char	*ft_strndup(char *src, int size);
 char	*replace_first_substring(char *str, char *old_sub, char *new_sub);
+
+int	ft_strcmp(char *s1, char *s2);
 void	set_fd(t_cmd *cm);
 /*For execute*/
 /*<-----pipe && redirect----->*/
@@ -75,6 +90,17 @@ pid_t	type_outpipe(t_cmd *cm, int	*prev_fd);
 char	*findvalidcmd(char **shellcmd);
 void	real_execute(t_cmd *cm);
 void	exe(t_cmd *cm);
+int		ft_env(void);
+/*<-----builtin----->*/
+int	ft_cd(char **cmd);
+int	ft_env(void);
+int	ft_unset(char **cmd);
+int	ft_echo(char	**cmd);
+void	ft_exit(char **cmd);
+int	ft_export(char	**cmd);
+int	print_sorted_env();
+char **sort_env();
+char	*get_env(char	*name);
 
 
 /*                                             pre_handle                                               */

@@ -6,12 +6,25 @@
 /*   By: jingwu <jingwu@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 12:08:50 by yzheng            #+#    #+#             */
-/*   Updated: 2024/10/02 13:26:12 by yzheng           ###   ########.fr       */
+/*   Updated: 2024/10/11 12:45:06 by jingwu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
 
+#include "./minishell.h"
+void free_list(t_list *head)
+{
+	t_list *temp;
+
+
+	while (head != NULL)
+	{
+		temp = head;
+		head = head->next;
+		free(temp->content);
+		free(temp);
+	}
+}
 void restart(int ex)
 {
 	if(!ms()->prompt)
@@ -24,7 +37,9 @@ void restart(int ex)
 	ms()->out_fd = STDOUT_FILENO;
 	if(ex)
 	{
+
 		free(ms()->cwd);
+		pp_free(ms()->env);
 		exit(ms()->exit);
 	}
 }
