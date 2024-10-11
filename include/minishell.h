@@ -117,7 +117,13 @@ bool	pre_handle(void);
 // process_re.c
 void	process_re(t_cmd **cmd, t_list *tk_node);
 
-/*                                              tools                                                    */
+/*..............................................signal....................................................*/
+void	init_signal(void);
+void	signal_heredoc(void);
+void	handle_sigint(int signal);
+void	handle_heredoc(int signal);
+
+/*..............................................tools..............................................*/
 // utils.c
 bool	is_pipe(t_token *token);
 bool	is_dir(t_token *token);
