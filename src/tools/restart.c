@@ -6,7 +6,7 @@
 /*   By: jingwu <jingwu@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 12:08:50 by yzheng            #+#    #+#             */
-/*   Updated: 2024/10/11 12:45:06 by jingwu           ###   ########.fr       */
+/*   Updated: 2024/10/11 14:26:49 by jingwu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,8 @@ void restart(int ex)
 	ms()->fd[1] = -1;
 	ms()->in_fd = STDIN_FILENO;
 	ms()->out_fd = STDOUT_FILENO;
+	free_token_list();
+//	free_cmd_list(ms()->cmds);
 	if(ex)
 	{
 

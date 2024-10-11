@@ -6,7 +6,7 @@
 /*   By: jingwu <jingwu@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 13:53:13 by yzheng            #+#    #+#             */
-/*   Updated: 2024/10/11 12:46:39 by jingwu           ###   ########.fr       */
+/*   Updated: 2024/10/11 14:28:49 by jingwu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,12 @@
 
 #include "./minishell.h"
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <sys/types.h>
-#include <signal.h>
-#include <sys/wait.h>
+// #include <stdio.h>
+// #include <stdlib.h>
+// #include <unistd.h>
+// #include <sys/types.h>
+// #include <signal.h>
+// #include <sys/wait.h>
 
 static inline void	ft_execve_failed(char **shellcmd, char *path)
 {
@@ -106,7 +106,9 @@ void exe(t_cmd *cm)
 
 	prev_fd = -1;
 	while (cm)
-	{
+	{	int i = 0;
+		while(cm->cmd[i])
+			printf("\ncmd:%s \n",cm->cmd[i++]);
 		set_fd(cm);
 		if(cm->herenum > 0)
 			type_hdoc(cm);
@@ -128,68 +130,3 @@ void exe(t_cmd *cm)
 	while (wait(NULL) > 0);
 }
 
-/*
-t_cmd *create_node( t_token_type intype, t_token_type outype) {
-	t_cmd *new_node = malloc(sizeof(t_cmd));
-	if (!new_node) {
-		perror("Failed to allocate memory");
-		return NULL;
-	}
-
-	new_node->cmd = NULL;
-
-
-	new_node->intype = intype;
-	new_node->outype = outype;
-
-	new_node->next = NULL;
-
-	return new_node;
-}
-void	test()
-{
-	t_cmd *head = create_node(TK_NONE, TK_NONE);
-
-	t_cmd *second = create_node(TK_NONE,TK_NONE);
-
-
-t_cmd *third = create_node(TK_PIPE,TK_NONE);
-		head->next = second;
-		//second->next = third;
-	char *str[] = {"env",NULL};
-	char *str2[] = {"echo","1",NULL};
-	char *str3[] = {NULL};
-	char *file[] = {NULL};
-	char *file2[] = {NULL,NULL};
-	char *file3[] = {NULL,NULL};
-
-		head->cmd=str;
-		head->outfile = file;
-		head->of = NULL;
-		head->ofnum = 0;
-		head->inf = "3";
-		head->ifnum = 0;
-	second->ifnum = 0;
-	second->ofnum =0;
-		second->cmd=str2;
-		second->outfile = file2;
-
-		third->cmd = str3;
-		third->outfile = file3;
-		third->ofnum = 0;
-		third->ifnum = 0;
-		third->inf = 0;
-
-		char *infile3[] = {"9","10","8",NULL};
-	char *infile[] = {"1","2","3",NULL};
-	head->limiter = infile;
-	head->herenum = 0;
-	second->limiter = infile;
-	second->herenum = 0;
-		head->infile = infile;
-			third->infile = infile3;
-
-	exe(head);
-
-}
-*/

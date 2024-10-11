@@ -6,7 +6,7 @@
 /*   By: jingwu <jingwu@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 10:57:07 by jingwu            #+#    #+#             */
-/*   Updated: 2024/10/11 12:47:04 by jingwu           ###   ########.fr       */
+/*   Updated: 2024/10/11 12:49:11 by jingwu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,9 @@ typedef enum e_err_type
 	PIPE,
 	FORK,
 	PREMISSON,
-<<<<<<< HEAD
+	TOOMUCH,
+	HOME,
+	CD,
 }	t_err_type;
 
 /*
@@ -177,11 +179,5 @@ typedef struct s_cmd
 	int				ct_w;
 	struct s_cmd	*next;
 }	t_cmd;
-=======
-	TOOMUCH,
-	HOME,
-	CD,
-}	t_error;
->>>>>>> master
 
 # endif

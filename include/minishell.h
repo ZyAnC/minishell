@@ -6,7 +6,7 @@
 /*   By: jingwu <jingwu@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 11:00:09 by yzheng            #+#    #+#             */
-/*   Updated: 2024/10/11 12:48:10 by jingwu           ###   ########.fr       */
+/*   Updated: 2024/10/11 14:27:52 by jingwu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,12 +162,14 @@ void	add_env_node(t_list **list, char *str);
 
 // free.c
 void	ft_newfree(void *pointer);
+void	free_token_list(void);
+void free_cmd_list(t_cmd *command);
 
 
 
 
 
 
-
-void	print_list(t_list *list, int flag); // for testing!!!!!!!!!!!11
+//void	print_list(t_list *list, int flag); // for testing!!!!!!!!!!!11
+//void	print_cmd(void);
 # endif
