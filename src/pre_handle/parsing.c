@@ -6,7 +6,7 @@
 /*   By: jingwu <jingwu@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 12:24:17 by jingwu            #+#    #+#             */
-/*   Updated: 2024/10/11 14:27:25 by jingwu           ###   ########.fr       */
+/*   Updated: 2024/10/14 08:16:12 by jingwu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static t_cmd	*new_cmd(int start, int end)
 	t_token	*token;
 	t_cmd	*cmd_nd;
 
-	tmp = ms() ->tokens;
+	tmp = ms()->tokens;
 	cmd_nd = ft_calloc(1, sizeof(t_cmd));
 	count(&cmd_nd, tmp, start, end);
 	if (!allocate_mem(&cmd_nd))

@@ -12,7 +12,7 @@ char	*prompt()
 	char	*str;
 	char	*str2;
 
-	str = ft_strjoin("minishell:" , ms()->cwd);
+	str = ft_strjoin(GREEN"minishell:"RESET_C , ms()->cwd);// delete the color settings
 	if (!str)
 		return(NULL);
 	str2 = ft_strjoin(str,"$ ");
@@ -24,6 +24,7 @@ char	*prompt()
 	free(str);
 	return(str2);
 }
+
 void	buildshell()
 {
 	while (1)
@@ -74,7 +75,6 @@ t_list *get_env_list(char **envs)
 	return (env_lt);
 }
 
-
 static void initenv(char **env)
 {
 	int	i;
@@ -115,7 +115,7 @@ static void init_ms(char **env)
 	ms()->cwd = getcwd(NULL, 2048);
 	ms()->path = findpath(env);
 	ms()->env_list = get_env_list(env);
-	initenv(env);
+	initenv(env);//checking on this later
 	ms()->fd[0] = -1;
 	ms()->fd[1] = -1;
 	if(!(ms()->cwd))
@@ -133,8 +133,8 @@ int main(int  ac, char **av, char **env)
 		exit(127);
 	}
 	(void)av;
-
 	init_ms(env);
+	signal_default();
 	buildshell();
 	return (0);
 }

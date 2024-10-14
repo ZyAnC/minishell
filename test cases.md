@@ -9,6 +9,11 @@ Thinking of these cases:
 
 4. echo $HOME | name=sherry | grep a >>out, the cmd[1] is empty, should I delete it?
 
+Things to do:
+1. fix cant free cmd list error;
+2. change env logic in pre_handle;
+3. add signals;
+4. testing;
 
 https://github.com/nenieiri-42Yerevan/Minishell/blob/master/README.md
 
@@ -92,7 +97,7 @@ Test  74: ✅ cat <"./test_files/infile" | grep hello
 Test  75: ✅ cat <"./test_files/infile_big" | echo hi
 Test  76: ✅ cat <missing
 Test  77: ✅ cat <missing | cat
-Test  78: ✅ cat <missing | echo oi
+Test  78: ✅ cat <missing | echo oi                                               Error!
 Test  79: ✅ cat <missing | cat <"./test_files/infile"
 Test  80: ✅ echo <123 <456 hi | echo 42
 Test  81: ✅ ls >./outfiles/outfile01

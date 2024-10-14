@@ -1,114 +1,49 @@
-# **************************************************************************** #
-#                                                                              #
-#                                                         :::      ::::::::    #
-#    for_test_print_token_list.txt                      :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: jingwu <jingwu@student.hive.fi>            +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2024/09/23 12:48:19 by jingwu            #+#    #+#              #
-#    Updated: 2024/10/11 11:31:06 by jingwu           ###   ########.fr        #
-#                                                                              #
-# **************************************************************************** #
-
-#include "minishell.h"
-
-static void	merge(t_list *list)
+void free_cmd_list(void)
 {
-	t_token	*cur;
-	t_token	*next;
-	char	*tmp;
-	t_list	*delete;
-	while (list)
+printf("<------------get in free cmd list----------->\n");// For testing!!!!!!!!!!!!!!!!!!!!!!!!!
+	t_cmd	*next_cmd;
+
+	if (!ms()->cmds)
 	{
-		cur = list->content;
-		if (!(list->next))
-			return ;
-		if (!cur->merge)
-		{
-			list = list->next;
-			continue ;
-		}
-		next = (list->next)->content;
-		tmp = cur->str;
-		cur->str = ft_strjoin(cur->str, next->str);
-		free(tmp);
-		if (!next->merge)
-			cur->merge = next->merge;
-		delete = list->next;
-		list->next = list->next->next;
-		del_node(delete);
+		printf("inside free_cmd_list, ms()->cmd is empty\n");
+		return ;
 	}
+	while (ms()->cmds)
+	{
+		next_cmd = ms()->cmds->next;
+		printf("<--------------------1---------------------->\n");
+		pp_free(ms()->cmds->cmd);
+
+		printf("<--------------------2---------------------->\n");
+		pp_free(ms()->cmds->infile);
+
+		printf("<--------------------3---------------------->\n");
+		pp_free(ms()->cmds->limiter);
+
+		printf("<--------------------4---------------------->\n");
+		pp_free(ms()->cmds->outfile);
+
+		printf("<--------------------5---------------------->\n");
+		if (ms()->cmds->of)
+			free(ms()->cmds->of);
+
+		printf("<--------------------6---------------------->\n");
+		if (ms()->cmds->inf)
+			free(ms()->cmds->inf);
+
+		printf("<--------------------7---------------------->\n");
+		free(ms()->cmds);
+
+		printf("<--------------------8---------------------->\n");
+		ms()->cmds = next_cmd;
+		printf("<--------------------9---------------------->\n");
+	}
+	printf("<--------------------10---------------------->\n");
+	ms()->cmds = NULL;
+	printf("finishing free cmd list\n");// For testing!!!!!!!!!!!!!!!!!!!!!!!!!
+	print_cmd(); // For testing!!!!!!!!!!!!!!!!!!!!!!!!!
 }
 
-/*
-	This funtion will loop the token list, to check if the input just
-	contains defining environment variable, such as the input is
-	"name=sherry | export shcool="Hive Helsinki"
-*/
-static bool	are_all_def_var(void)
-{
-	t_list	*tmp;
-	t_token	*token;
-
-	tmp = ms()->tokens;
-	while (tmp)
-	{
-		token = (t_token *)(tmp->content);
-		if (!ft_strchr(token->str, '='))
-			return (false);
-		if (!is_defining_var(token->str))
-			return (false);
-		tmp = tmp->next;
-	}
-	return (true);
-}
-
-static void	restruct_token(void)
-{
-	t_list	*tmp;
-	t_token	*cur_tk;
-	t_token	*next_tk;
-	t_list	*delete;
-
-	tmp = ms()->tokens;
-	while (tmp)
-	{
-		cur_tk = (t_token *)(tmp->content);
-		if (!tmp->next)
-			break ;
-		next_tk = ((t_token *)((tmp->next)->content));
-		if (is_dir(cur_tk))
-		{
-			cur_tk->arg = ft_strdup(next_tk->str);
-			delete = tmp->next;
-			if (!(tmp->next)->next)
-			{
-				tmp->next = NULL;
-				break ;
-			}
-			tmp->next = (tmp->next)->next;
-			del_node(delete);
-		}
-		tmp = tmp->next;
-	}
-}
-
-
-static void	assign_token_index(void)
-{
-	t_list	*list;
-	t_token	*token;
-	int		i;
-
-	list = ms()->tokens;
-	i = 0;
-	while (list)
-	{
-		token = (t_token *)(list->content);
-		token->idx = i++;
-		list = list->next;
-	}
-}
 
 /*
 	1: print tokens
@@ -121,6 +56,12 @@ void	print_list(t_list *list, int flag)// for test !!!!!!!!!!!!!!!!!!!!!!!!
 	int		i;
 
 	i = 0;
+	if (!list)
+	{
+		printf ("token list is empty\n\n");
+		return ;
+	}
+
 	while (list)
 	{
 		if (flag == 1)
@@ -136,13 +77,20 @@ void	print_list(t_list *list, int flag)// for test !!!!!!!!!!!!!!!!!!!!!!!!
 		i++;
 		list = list->next;
 	}
+	printf ("\n\n");
 }
 
 void	print_cmd(void)// for test !!!!!!!!!!!!!!!!!!!!!!!!
-{
+{//printf("get into print_cmd function\n");// for test !!!!!!!!!!!!!!!!!!!!!!!
 	t_cmd	*cmd;
 	int  i_cmd = 0;
 	int	j;
+
+	if (!ms()->cmds)
+	{
+		printf ("cmd list is empty\n\n");
+		return ;
+	}
 
 	cmd = ms()->cmds;
 	while (cmd)
@@ -193,33 +141,5 @@ void	print_cmd(void)// for test !!!!!!!!!!!!!!!!!!!!!!!!
 		printf("\nintype=%d\nouttype=%d\n\n", cmd->intype, cmd->outype);
 		cmd = cmd->next;
 	}
-}
-
-bool	pre_handle(void)
-{
-	if (!check_quote())
-		return (false);
-	if (!lexer())
-		return (print_error(ADD_TOKEN_FAILED, 1));
-	if (!check_syntax())
-		return (false);
-	restruct_token();
-	printf("\n<-------------after restruct------------------>\n");// for test!!!!!!!!!!!!!!!!!!
-	print_list(ms()->tokens, 1);// for test!!!!!!!!!!!!!!!!!!
-	expander();
-	printf("\n<-------------after expander------------------>\n");// for test!!!!!!!!!!!!!!!!!!
-	print_list(ms()->tokens, 1);// for test!!!!!!!!!!!!!!!!!!
-	merge(ms() ->tokens);
-	assign_token_index();
-	printf("\n\n<-------------after merge------------------>\n");// for test!!!!!!!!!!!!!!!!!!
-	print_list(ms()->tokens, 1);// for test!!!!!!!!!!!!!!!!!!
-	if (are_all_def_var())
-		return (false);
-	printf("\n\n<-------------after checking def_var-------->\n");// for test!!!!!!!!!!!!!!!!!!
-	print_list(ms()->tokens, 1);// for test!!!!!!!!!!!!!!!!!!
-	if (!parsing())
-		return (false);
-	printf("\n\n<-------------cmd list----------------->\n");// for test!!!!!!!!!!!!!!!!
-	print_cmd();// for test!!!!!!!!!!!!!!!!!!
-	return (true);
+	printf ("\n\n");
 }

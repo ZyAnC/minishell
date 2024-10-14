@@ -6,7 +6,7 @@
 /*   By: jingwu <jingwu@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 11:00:09 by yzheng            #+#    #+#             */
-/*   Updated: 2024/10/11 14:27:52 by jingwu           ###   ########.fr       */
+/*   Updated: 2024/10/14 13:18:25 by jingwu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,8 +144,10 @@ bool	pre_handle(void);
 void	process_re(t_cmd **cmd, t_list *tk_node);
 
 /*..............................................signal....................................................*/
-void	init_signal(void);
+void	signal_default(void);
 void	signal_heredoc(void);
+void	signal_child(void);
+void	signal_ignore(void);
 void	handle_sigint(int signal);
 void	handle_heredoc(int signal);
 
@@ -163,13 +165,15 @@ void	add_env_node(t_list **list, char *str);
 // free.c
 void	ft_newfree(void *pointer);
 void	free_token_list(void);
-void free_cmd_list(t_cmd *command);
+void	free_cmd_list(void);
 
 
 
 
 
-
-//void	print_list(t_list *list, int flag); // for testing!!!!!!!!!!!11
-//void	print_cmd(void);
+// below are for testing!!!!!!!!!
+# define GREEN		"\033[1;32m"
+# define RESET_C		"\033[0m"
+void	print_list(t_list *list, int flag); // for testing!!!!!!!!!!!11
+void	print_cmd(void);// for testing!!!!!!!!!!!11
 # endif

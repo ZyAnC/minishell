@@ -25,11 +25,13 @@ pid_t exe_pipe2(t_cmd *cm)
 {
 	pid_t	pid;
 
+	signal_ignore();
 	pid = fork();
  	if (pid == -1)
 		ex_error("Fork", FORK, EXIT_FAILURE);
 	if (pid == 0)
 	{
+		signal_child();
 		if (cm->intype == TK_HDOC)
 			cm->ifnum++;
 		check_infile(cm);
@@ -46,11 +48,13 @@ pid_t exe_pipe3(t_cmd *cm)
 	pid_t	pid;
 	int		i;
 
+	signal_ignore();
 	pid = fork();
  	if (pid == -1)
 		ex_error("Fork", FORK, EXIT_FAILURE);
 	if (pid == 0)
 	{
+		signal_child();
 		i = 0;
 		while(i < cm->ofnum - 1)
 			close(open(cm->outfile[i++], O_WRONLY | O_CREAT | O_TRUNC, 0644));

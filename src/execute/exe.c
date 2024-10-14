@@ -6,20 +6,11 @@
 /*   By: jingwu <jingwu@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 13:53:13 by yzheng            #+#    #+#             */
-/*   Updated: 2024/10/11 14:28:49 by jingwu           ###   ########.fr       */
+/*   Updated: 2024/10/14 13:31:10 by jingwu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-
-
 #include "./minishell.h"
-
-// #include <stdio.h>
-// #include <stdlib.h>
-// #include <unistd.h>
-// #include <sys/types.h>
-// #include <signal.h>
-// #include <sys/wait.h>
 
 static inline void	ft_execve_failed(char **shellcmd, char *path)
 {
@@ -77,26 +68,6 @@ void	real_execute(t_cmd *cm)
 		ft_execve_failed(cm->cmd, path);
 	}
 	exit(0);
-
-}
-
-void	free_cm(t_cmd *cm)
-{
-	t_cmd *current = cm;
-	t_cmd *next_node;
-
-	while (current != NULL)
-	{
-		next_node = current->next; // Store next node
-		// Free the command array
-		if (current->cmd != NULL)
-			pp_free(cm->cmd);
-		// Free input and output file names
-		free(current->infile);
-		free(current->outfile);
-		free(current); // Free the current node
-		current = next_node; // Move to the next node
-	}
 }
 
 void exe(t_cmd *cm)
@@ -106,9 +77,7 @@ void exe(t_cmd *cm)
 
 	prev_fd = -1;
 	while (cm)
-	{	int i = 0;
-		while(cm->cmd[i])
-			printf("\ncmd:%s \n",cm->cmd[i++]);
+	{
 		set_fd(cm);
 		if(cm->herenum > 0)
 			type_hdoc(cm);
@@ -125,8 +94,8 @@ void exe(t_cmd *cm)
 		}
 		cm = cm->next;
 	}
-
 	close_all(prev_fd);
 	while (wait(NULL) > 0);
+	signal_default();
 }
 

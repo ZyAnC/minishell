@@ -6,7 +6,7 @@
 /*   By: jingwu <jingwu@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/11 10:18:58 by jingwu            #+#    #+#             */
-/*   Updated: 2024/10/11 10:38:01 by jingwu           ###   ########.fr       */
+/*   Updated: 2024/10/14 11:38:58 by jingwu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,10 @@ void	handle_sigint(int signal)
 		rl_redisplay();
 	}
 }
-
+/*
+	SIGINT's number is 2;
+	ms()->exit = 128 + 2 = 130; (from 128-255 , it means the thread is terminted by keyboard)
+*/
 void	handle_heredoc(int signal)
 {
 	if (signal == SIGINT)

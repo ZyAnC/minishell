@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   type.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yzheng <yzheng@student.hive.fi>            +#+  +:+       +#+        */
+/*   By: jingwu <jingwu@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/02 09:53:18 by yzheng            #+#    #+#             */
-/*   Updated: 2024/10/02 16:55:20 by yzheng           ###   ########.fr       */
+/*   Updated: 2024/10/14 13:31:31 by jingwu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 char	*replace_env(char	*envname, char *src)
 {
-	int	i;
-	int	j;
+	int		i;
+	int		j;
 	char	*dest;
 	char	*replacement;
 
@@ -55,6 +55,7 @@ static	char	*checkdollar(char	*doc_in)
 	}
 	return (doc_in);
 }
+
 void	getdoc(char *av,int hfd)
 {
 	char	*doc_in;
@@ -74,11 +75,13 @@ void	getdoc(char *av,int hfd)
 		free(doc_in);
 	}
 }
+
 void	type_hdoc(t_cmd *cm)
 {
 	int	i;
 
 	i = 0;
+	signal_heredoc();
 	while(cm->herenum--)
 	{
 		ms()->hfd = open("here_doc", O_CREAT | O_RDWR | O_TRUNC, 0644);
@@ -93,7 +96,9 @@ void	type_hdoc(t_cmd *cm)
 		cm->inf = "here_doc";
 		set_fd(cm);
 	}
+	signal_default();
 }
+
 pid_t	type_outpipe(t_cmd *cm, int	*prev_fd)
 {
 	pid_t	pipeid;

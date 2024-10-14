@@ -6,7 +6,7 @@
 /*   By: jingwu <jingwu@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 12:48:19 by jingwu            #+#    #+#             */
-/*   Updated: 2024/10/11 14:01:11 by jingwu           ###   ########.fr       */
+/*   Updated: 2024/10/14 10:38:11 by jingwu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,5 +125,7 @@ bool	pre_handle(void)
 		return (false);
 	if (!parsing())
 		return (false);
+//print_list(ms()->tokens, 1);//for testing !!!!!!!!!!!!!!!!!!!!!
+//print_cmd();//for testing !!!!!!!!!!!!!!!!!!!!!
 	return (true);
 }
