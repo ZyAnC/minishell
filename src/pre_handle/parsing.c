@@ -6,7 +6,7 @@
 /*   By: jingwu <jingwu@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 12:24:17 by jingwu            #+#    #+#             */
-/*   Updated: 2024/10/11 11:29:36 by jingwu           ###   ########.fr       */
+/*   Updated: 2024/10/14 08:16:12 by jingwu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static t_cmd	*new_cmd(int start, int end)
 	t_token	*token;
 	t_cmd	*cmd_nd;
 
-	tmp = ms() ->tokens;
+	tmp = ms()->tokens;
 	cmd_nd = ft_calloc(1, sizeof(t_cmd));
 	count(&cmd_nd, tmp, start, end);
 	if (!allocate_mem(&cmd_nd))
@@ -42,14 +42,6 @@ static t_cmd	*new_cmd(int start, int end)
 		token = tmp->content;
 		if (token->idx >= start && token->idx <= end)
 			action(token, &cmd_nd, tmp,end);
-		// {
-		// 	if (is_dir(token))
-		// 		process_re(&cmd_nd, tmp);
-		// 	else if (token->tk_type == TK_WORD || token->tk_type == TK_DOUBLE_QT || token->tk_type == TK_SINGLE_QT)
-		// 		cmd_nd->cmd[cmd_nd->ct_w++] = ft_strdup(token->str);
-		// 	if (token->idx == end && token->tk_type == TK_PIPE && cmd_nd->outype == TK_NONE)
-		// 		cmd_nd->outype = TK_PIPE;
-		// }
 		if (token->idx > end)
 			break ;
 		tmp = tmp->next;

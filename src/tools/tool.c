@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tool.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yzheng <yzheng@student.hive.fi>            +#+  +:+       +#+        */
+/*   By: jingwu <jingwu@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/02 09:04:56 by yzheng            #+#    #+#             */
-/*   Updated: 2024/10/02 16:30:37 by yzheng           ###   ########.fr       */
+/*   Updated: 2024/10/14 13:38:16 by jingwu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,15 +31,6 @@ void	check_infile(t_cmd *cm)
 	}
 }
 
-void	pp_free(char **fly)
-{
-	int	j;
-
-	j = 0;
-	while (fly[j])
-		free(fly[j++]);
-	free(fly);
-}
 
 char	*ft_strndup(char *src, int size)
 {

@@ -1,5 +1,4 @@
 
-
 #include "minishell.h"
 
 t_ms	*ms(void)
@@ -13,7 +12,7 @@ char	*prompt()
 	char	*str;
 	char	*str2;
 
-	str = ft_strjoin("minishell:" , ms()->cwd);
+	str = ft_strjoin(GREEN"minishell:"RESET_C , ms()->cwd);// delete the color settings
 	if (!str)
 		return(NULL);
 	str2 = ft_strjoin(str,"$ ");
@@ -25,10 +24,12 @@ char	*prompt()
 	free(str);
 	return(str2);
 }
+
 void	buildshell()
 {
 	while (1)
 	{
+
 		ms()->prompt = prompt();
 		ms()->input = readline(ms()->prompt);
 		ms()->lines++;
@@ -74,6 +75,35 @@ t_list *get_env_list(char **envs)
 	return (env_lt);
 }
 
+static void initenv(char **env)
+{
+	int	i;
+
+	i = 0;
+	while (env[i])
+		i++;
+	ms()->env = malloc((i + 1) * sizeof(char *));
+	if (ms()->env == NULL)
+	{
+		perror("Failed to allocate memory for ms()->env");
+		exit(1);
+	}
+	i = 0;
+	while(env[i])
+	{
+		ms()->env[i] = ft_strdup(env[i]);
+		if (ms()->env[i] == NULL)
+		{
+			while(i)
+				free(ms()->env[i--]);
+			perror("Failed to duplicate string");
+			exit(1);
+		}
+		i++;
+	}
+	ms()->env[i] = NULL;
+}
+
 static void init_ms(char **env)
 {
 
@@ -85,7 +115,7 @@ static void init_ms(char **env)
 	ms()->cwd = getcwd(NULL, 2048);
 	ms()->path = findpath(env);
 	ms()->env_list = get_env_list(env);
-	ms()->env = env;
+	initenv(env);//checking on this later
 	ms()->fd[0] = -1;
 	ms()->fd[1] = -1;
 	if(!(ms()->cwd))
@@ -104,6 +134,7 @@ int main(int  ac, char **av, char **env)
 	}
 	(void)av;
 	init_ms(env);
+	signal_default();
 	buildshell();
 	return (0);
 }
