@@ -6,7 +6,7 @@
 /*   By: jingwu <jingwu@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 10:57:07 by jingwu            #+#    #+#             */
-/*   Updated: 2024/10/11 12:49:11 by jingwu           ###   ########.fr       */
+/*   Updated: 2024/10/15 11:22:44 by jingwu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,16 +24,16 @@
 */
 typedef enum e_token_type
 {
-	TK_NONE, //0
-	TK_PIPE, //1
-	TK_IN_RE,//2
-	TK_OUT_RE,//3
-	TK_HDOC,//4
-	TK_APPEND,//5
-	TK_SINGLE_QT,//6
-	TK_DOUBLE_QT,//7
-	TK_WORD, //8
-	TK_LOC_V, //9
+	TK_NONE,
+	TK_PIPE,
+	TK_IN_RE,
+	TK_OUT_RE,
+	TK_HDOC,
+	TK_APPEND,
+	TK_SINGLE_QT,
+	TK_DOUBLE_QT,
+	TK_WORD,
+	TK_LOC_V,
 }	t_token_type;
 
 typedef enum e_err_type
@@ -69,6 +69,9 @@ typedef enum e_list_position
 	NEXT_CNT,
 }	t_list_position;
 
+/*
+	It is for environment variables and local variables
+*/
 typedef struct e_env
 {
 	char	*name;
@@ -108,7 +111,7 @@ typedef struct s_ms
 	int				fd[2];
 	int				exit;
 	int				lines;
-	pid_t	pipeid[2];
+	pid_t			pipeid[2];
 	int				hfd;
 	char			**env;
 	char			*cwd;
@@ -117,6 +120,7 @@ typedef struct s_ms
 	char			*path;
 	struct s_list	*tokens;
 	struct s_list	*env_list;
+	struct s_list	*local_var;
 	struct s_cmd	*cmds;
 }	t_ms;
 

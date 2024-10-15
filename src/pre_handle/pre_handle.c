@@ -6,7 +6,7 @@
 /*   By: jingwu <jingwu@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 12:48:19 by jingwu            #+#    #+#             */
-/*   Updated: 2024/10/14 10:38:11 by jingwu           ###   ########.fr       */
+/*   Updated: 2024/10/15 14:40:08 by jingwu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,29 +38,6 @@ static void	merge(t_list *list)
 		list->next = list->next->next;
 		del_node(delete);
 	}
-}
-
-/*
-	This funtion will loop the token list, to check if the input just
-	contains defining environment variable, such as the input is
-	"name=sherry | export shcool="Hive Helsinki"
-*/
-static bool	are_all_def_var(void)
-{
-	t_list	*tmp;
-	t_token	*token;
-
-	tmp = ms()->tokens;
-	while (tmp)
-	{
-		token = (t_token *)(tmp->content);
-		if (!ft_strchr(token->str, '='))
-			return (false);
-		if (!is_defining_var(token->str))
-			return (false);
-		tmp = tmp->next;
-	}
-	return (true);
 }
 
 static void	restruct_token(void)
@@ -111,21 +88,40 @@ static void	assign_token_index(void)
 
 bool	pre_handle(void)
 {
+//	printf("<-------------------inside pre_handle----------------------->\n");
 	if (!check_quote())
 		return (false);
+//	printf("<-------------------after check quote----------------------->\n");
 	if (!lexer())
 		return (print_error(ADD_TOKEN_FAILED, 1));
+//	printf("<-------------------after lexer----------------------->\n");
 	if (!check_syntax())
 		return (false);
+//	printf("<-------------------after check_syntax----------------------->\n");
 	restruct_token();
+//	printf("<-------------------after restruct----------------------->\n");
+
 	expander();
+//	printf("<-------------------after expander----------------------->\n");
 	merge(ms() ->tokens);
+//	printf("<-------------------after merge----------------------->\n");
+//	print_list(ms()->tokens, 1);//for testing !!!!!!!!!!!!!!!!!!!!!
+	if (are_all_def_loc_var() == true)
+	{
+//		print_list(ms()->local_var, 3);//for testing !!!!!!!!!!!
+				return (false);
+	}
+
+//	printf("<-------------------after all def var---------------------->\n");
+//	print_list(ms()->tokens, 1);//for testing !!!!!!!!!!!!!!!!!!!!!
+//	printf("<-------------------local variable--------------------->\n");
+//	print_list(ms()->local_var, 3);//for testing !!!!!!!!!!!!!!!!!!!!!
 	assign_token_index();
-	if (are_all_def_var())
-		return (false);
+//	printf("<-------------------after assign index----------------------->\n");
 	if (!parsing())
 		return (false);
 //print_list(ms()->tokens, 1);//for testing !!!!!!!!!!!!!!!!!!!!!
 //print_cmd();//for testing !!!!!!!!!!!!!!!!!!!!!
+//printf("<-------------------leaving pre_handle----------------------->\n");
 	return (true);
 }

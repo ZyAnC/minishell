@@ -69,7 +69,7 @@ t_list *get_env_list(char **envs)
 	env_lt = NULL;
 	while (envs[i])
 	{
-		add_env_node(&env_lt, envs[i]);
+		add_node_to_list(&env_lt, envs[i]);
 		i++;
 	}
 	return (env_lt);

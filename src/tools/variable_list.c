@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env_list.c                                         :+:      :+:    :+:   */
+/*   variable_list.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jingwu <jingwu@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 07:56:08 by jingwu            #+#    #+#             */
-/*   Updated: 2024/10/09 14:06:34 by jingwu           ###   ########.fr       */
+/*   Updated: 2024/10/15 11:31:10 by jingwu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_env	*new_env(char *name, char *value)
+t_env	*new_variable(char *name, char *value)
 {
 	t_env	*new;
 
@@ -31,7 +31,7 @@ t_env	*new_env(char *name, char *value)
 	free the memory we allocate for env_value, so if we just return a NULL with
 	out allocating memory for it, it will generate an error.
 */
-char	*get_env_value(char *env_name)
+char	*get_variable_value(char *env_name)
 {
 	t_env	*env;
 	t_list	*tmp;
@@ -58,7 +58,7 @@ char	*get_env_value(char *env_name)
 	return the env if found matched one;
 	return NULL, if did NOT find matched one;
 */
-static t_env	*find_env(t_list *list, char *name)
+static t_env	*find_variable(t_list *list, char *name)
 {
 	t_env	*env;
 
@@ -74,7 +74,7 @@ static t_env	*find_env(t_list *list, char *name)
 	return (NULL);
 }
 
-void	add_env_node(t_list **list, char *str)
+void	add_node_to_list(t_list **list, char *str)
 {
 	char	*name;
 	char	*value;
@@ -89,7 +89,7 @@ void	add_env_node(t_list **list, char *str)
 	}
 	name = ft_substr(str, 0, i);
 	value = ft_strdup(str + i + 1);
-	env = find_env(*list, name);
+	env = find_variable(*list, name);
 	if (env)
 	{
 		free(name);
@@ -97,5 +97,5 @@ void	add_env_node(t_list **list, char *str)
 		env->value = value;
 	}
 	else
-		ft_lstadd_back(list, ft_lstnew(new_env(name, value)));
+		ft_lstadd_back(list, ft_lstnew(new_variable(name, value)));
 }

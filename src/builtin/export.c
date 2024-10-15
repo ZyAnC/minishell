@@ -71,7 +71,6 @@ int	ft_valid_character(char *str)
 
 void		update_env(int	i, char	*str, t_list *tmp)
 {
-
 	free(ms()->env[i]);
 	ms()->env[i] = ft_strdup(str);
 	tmp->content = ft_strdup(str);
@@ -79,12 +78,13 @@ void		update_env(int	i, char	*str, t_list *tmp)
 
 void	add_env(char	*str)
 {
-	t_list	*new;
+//	t_list	*new;
 	int		i;
 	int		j;
 
-	new = ft_lstnew(str);
-	ft_lstadd_back(&ms()->env_list, new);
+	// new = ft_lstnew(str);
+	// ft_lstadd_back(&ms()->env_list, new);
+	add_node_to_list(&ms()->env_list, str);
 	i = 0;
 	while(ms()->env[i])
 		i++;
@@ -109,6 +109,8 @@ void	add_env(char	*str)
 	}
 	free(new_env);
 }
+
+//#if 0
 void		update_or_add(char	*str)
 {
 	int		i;
@@ -132,6 +134,8 @@ void		update_or_add(char	*str)
 		update_env(i, str,tmp);
 	free(name);
 }
+//#endif
+
 char	*lastequal(char	*str)
 {
 	int length;

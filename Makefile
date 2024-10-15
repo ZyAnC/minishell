@@ -1,6 +1,7 @@
 NAME = minishell
 
 CC := cc
+
 CFLAGS := -Wall -Wextra -Werror \
 	-I ./include -I ./libft/libft -I ./libft/printf -I ./libft/get_next_line
 
@@ -29,7 +30,7 @@ all: $(NAME)
 
 %.o: %.c
 	@$(CC) $(CFLAGS) -o $@ -c $<
-
+#-g is for debugging
 $(NAME): $(OBJS)
 	@${MAKE} -C ${LIBFT}
 	@${MAKE} -C ${PRINTF}

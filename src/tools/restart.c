@@ -6,7 +6,7 @@
 /*   By: jingwu <jingwu@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 12:08:50 by yzheng            #+#    #+#             */
-/*   Updated: 2024/10/14 11:27:04 by jingwu           ###   ########.fr       */
+/*   Updated: 2024/10/15 11:41:00 by jingwu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ void restart(int ex)
 	{
 		free(ms()->cwd);
 		pp_free(ms()->env);
+		free_local_var_list();
 		exit(ms()->exit);
 	}
 }

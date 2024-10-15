@@ -6,13 +6,13 @@
 /*   By: jingwu <jingwu@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/03 14:24:00 by jingwu            #+#    #+#             */
-/*   Updated: 2024/10/14 13:38:49 by jingwu           ###   ########.fr       */
+/*   Updated: 2024/10/15 11:40:34 by jingwu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	ft_newfree(void *pointer)
+void	ft_free_str(void *pointer)
 {
 	if (pointer)
 		free(pointer);
@@ -45,15 +45,15 @@ void	free_token_list(void)
 	{
 		token = temp->content;
 		next_node = temp->next;
-		ft_newfree(token->arg);
-		ft_newfree(token->str);
+		ft_free_str(token->arg);
+		ft_free_str(token->str);
 		free(temp);
 		temp = next_node;
 	}
 	ms()->tokens = NULL;
 }
 
-void free_cmd_list(void)
+void	free_cmd_list(void)
 {
 	t_cmd	*next_cmd;
 
@@ -66,10 +66,31 @@ void free_cmd_list(void)
 		pp_free(ms()->cmds->infile);
 		pp_free(ms()->cmds->limiter);
 		pp_free(ms()->cmds->outfile);
-		ft_newfree(ms()->cmds->of);
-		ft_newfree(ms()->cmds->inf);
+		ft_free_str(ms()->cmds->of);
+		ft_free_str(ms()->cmds->inf);
 		free(ms()->cmds);
 		ms()->cmds = next_cmd;
 	}
 	ms()->cmds = NULL;
+}
+
+void	free_local_var_list(void)
+{
+	t_list	*temp;
+	t_list	*next_node;
+	t_env	*var;
+
+	if (ms()->local_var == NULL)
+		return ;
+	temp = ms()->local_var;
+	while (temp)
+	{
+		var = (t_env *)temp->content;
+		next_node = temp->next;
+		ft_free_str(var->name);
+		ft_free_str(var->value);
+		free(temp);
+		temp = next_node;
+	}
+	ms()->local_var = NULL;
 }
