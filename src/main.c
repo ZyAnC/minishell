@@ -31,6 +31,7 @@ void	buildshell()
 	{
 
 		ms()->prompt = prompt();
+//		printf("prompt=%s\n", ms()->prompt);// for testing!!!!!!
 		ms()->input = readline(ms()->prompt);
 		ms()->lines++;
 		if(!ms()->input)
@@ -115,7 +116,7 @@ static void init_ms(char **env)
 	ms()->cwd = getcwd(NULL, 2048);
 	ms()->path = findpath(env);
 	ms()->env_list = get_env_list(env);
-	initenv(env);//checking on this later
+	initenv(env);
 	ms()->fd[0] = -1;
 	ms()->fd[1] = -1;
 	if(!(ms()->cwd))

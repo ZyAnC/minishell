@@ -6,7 +6,7 @@
 /*   By: jingwu <jingwu@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 10:02:38 by jingwu            #+#    #+#             */
-/*   Updated: 2024/10/08 09:52:15 by jingwu           ###   ########.fr       */
+/*   Updated: 2024/10/21 14:35:50 by jingwu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,9 +107,10 @@ bool	lexer(void)
 	while (ms()->input[i])
 	{
 		j = 0;
-
-		while (ms() ->input[i] == ' ')
+		while(ms()->input[i] && (ms()->input[i] == ' ' || ms()->input[i] == '\t'))
 			i++;
+		if (!ms()->input[i])
+			return (false);
 		if (is_meta_char(ms()->input[i]))
 			j = read_meta_char(i);
 		else

@@ -6,7 +6,7 @@
 /*   By: jingwu <jingwu@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 12:48:19 by jingwu            #+#    #+#             */
-/*   Updated: 2024/10/15 14:40:08 by jingwu           ###   ########.fr       */
+/*   Updated: 2024/10/21 14:36:05 by jingwu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,40 +88,21 @@ static void	assign_token_index(void)
 
 bool	pre_handle(void)
 {
-//	printf("<-------------------inside pre_handle----------------------->\n");
 	if (!check_quote())
 		return (false);
-//	printf("<-------------------after check quote----------------------->\n");
 	if (!lexer())
-		return (print_error(ADD_TOKEN_FAILED, 1));
-//	printf("<-------------------after lexer----------------------->\n");
+		return (false);
 	if (!check_syntax())
 		return (false);
-//	printf("<-------------------after check_syntax----------------------->\n");
-	restruct_token();
-//	printf("<-------------------after restruct----------------------->\n");
-
-	expander();
-//	printf("<-------------------after expander----------------------->\n");
 	merge(ms() ->tokens);
-//	printf("<-------------------after merge----------------------->\n");
-//	print_list(ms()->tokens, 1);//for testing !!!!!!!!!!!!!!!!!!!!!
+	restruct_token();
+	expander();
 	if (are_all_def_loc_var() == true)
-	{
-//		print_list(ms()->local_var, 3);//for testing !!!!!!!!!!!
 				return (false);
-	}
-
-//	printf("<-------------------after all def var---------------------->\n");
-//	print_list(ms()->tokens, 1);//for testing !!!!!!!!!!!!!!!!!!!!!
-//	printf("<-------------------local variable--------------------->\n");
-//	print_list(ms()->local_var, 3);//for testing !!!!!!!!!!!!!!!!!!!!!
 	assign_token_index();
-//	printf("<-------------------after assign index----------------------->\n");
 	if (!parsing())
 		return (false);
 //print_list(ms()->tokens, 1);//for testing !!!!!!!!!!!!!!!!!!!!!
 //print_cmd();//for testing !!!!!!!!!!!!!!!!!!!!!
-//printf("<-------------------leaving pre_handle----------------------->\n");
 	return (true);
 }

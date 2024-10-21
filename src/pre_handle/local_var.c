@@ -6,7 +6,7 @@
 /*   By: jingwu <jingwu@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 11:05:21 by jingwu            #+#    #+#             */
-/*   Updated: 2024/10/15 14:44:00 by jingwu           ###   ########.fr       */
+/*   Updated: 2024/10/21 14:38:21 by jingwu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,7 +133,7 @@ bool	are_all_def_loc_var(void)
 	t_list	*tmp;
 	t_token	*token;
 	int		type;
-//printf("<-------------------inside are all def var----------------------->\n");
+
 	type = checking_list_token_types(ms()->tokens);
 	if (type == 2)
 		return (true);
@@ -152,6 +152,5 @@ bool	are_all_def_loc_var(void)
 			tmp = tmp->next;
 		}
 	}
-//	printf("<-----------leaving are all def loc--------------------->\n");
 	return (true);
 }

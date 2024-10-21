@@ -1,6 +1,6 @@
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror  -fPIC
+CFLAGS = -Wall -Wextra -Werror
 AR = ar
 ARFLAGS = rcs
 SRCS = get_next_line.c get_next_line_utils.c
@@ -10,12 +10,15 @@ LIB = get_next_line.a
 all: $(LIB)
 
 $(LIB): $(OBJS)
-	$(AR) $(ARFLAGS) $@ $(OBJS)
+	@$(AR) $(ARFLAGS) $@ $(OBJS)
+
+.c.o:
+	@${CC} ${CFLAGS} -fPIC -c $< -o ${<:.c=.o}
 
 clean:
-	rm -f $(OBJS)
+	@rm -f $(OBJS)
 
 fclean: clean
-	rm -f $(LIB)
+	@rm -f $(LIB)
 
 re: fclean all

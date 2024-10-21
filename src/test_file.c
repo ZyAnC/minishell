@@ -1,52 +1,5 @@
 #include "minishell.h"
 
-// void free_cmd_list(void)
-// {
-// printf("<------------get in free cmd list----------->\n");// For testing!!!!!!!!!!!!!!!!!!!!!!!!!
-// 	t_cmd	*next_cmd;
-
-// 	if (!ms()->cmds)
-// 	{
-// 		printf("inside free_cmd_list, ms()->cmd is empty\n");
-// 		return ;
-// 	}
-// 	while (ms()->cmds)
-// 	{
-// 		next_cmd = ms()->cmds->next;
-// 		printf("<--------------------1---------------------->\n");
-// 		pp_free(ms()->cmds->cmd);
-
-// 		printf("<--------------------2---------------------->\n");
-// 		pp_free(ms()->cmds->infile);
-
-// 		printf("<--------------------3---------------------->\n");
-// 		pp_free(ms()->cmds->limiter);
-
-// 		printf("<--------------------4---------------------->\n");
-// 		pp_free(ms()->cmds->outfile);
-
-// 		printf("<--------------------5---------------------->\n");
-// 		if (ms()->cmds->of)
-// 			free(ms()->cmds->of);
-
-// 		printf("<--------------------6---------------------->\n");
-// 		if (ms()->cmds->inf)
-// 			free(ms()->cmds->inf);
-
-// 		printf("<--------------------7---------------------->\n");
-// 		free(ms()->cmds);
-
-// 		printf("<--------------------8---------------------->\n");
-// 		ms()->cmds = next_cmd;
-// 		printf("<--------------------9---------------------->\n");
-// 	}
-// 	printf("<--------------------10---------------------->\n");
-// 	ms()->cmds = NULL;
-// 	printf("finishing free cmd list\n");// For testing!!!!!!!!!!!!!!!!!!!!!!!!!
-// 	print_cmd(); // For testing!!!!!!!!!!!!!!!!!!!!!!!!!
-// }
-
-
 /*
 	1: print tokens
 	2: print env;

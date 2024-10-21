@@ -6,7 +6,7 @@
 /*   By: jingwu <jingwu@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 13:53:13 by yzheng            #+#    #+#             */
-/*   Updated: 2024/10/14 13:31:10 by jingwu           ###   ########.fr       */
+/*   Updated: 2024/10/16 09:48:37 by jingwu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ int		builtin(char **cmd)
 	int	size;
 
 	size = ft_strlen(cmd[0]);
+//	printf("cmd[0]=%s\n", cmd[0]);//for testing!!!!!!!!!!!!!!!!!!
 	if (!ft_strncmp(cmd[0], "env",size))
 		return(ft_env());
 	else if (!ft_strncmp(cmd[0], "cd",size))

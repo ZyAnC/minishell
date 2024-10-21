@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-int	ft_echo(char	**cmd)
+int	ft_echo(char **cmd)
 {
 	int	i;
 	int	n;

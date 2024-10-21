@@ -6,7 +6,7 @@
 /*   By: jingwu <jingwu@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 11:00:09 by yzheng            #+#    #+#             */
-/*   Updated: 2024/10/15 13:41:56 by jingwu           ###   ########.fr       */
+/*   Updated: 2024/10/21 14:36:14 by jingwu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@
 /*                                             err_type                                         */
 # define MEMORY_ERROR		"error: Could not allocate memory"
 # define UNQUOTED			"error: The input is quoted incorrectly"
-# define ADD_TOKEN_FAILED	"error: Could not add a new token node to token"
+//# define ADD_TOKEN_FAILED	"error: Could not add a new token node to token"
 # define PIPE_STX_ERR		"minishell: syntax error near unexpected token `|'"
 # define NL_STX_ERR			"minishell: syntax error near unexpected token `newline'"
 # define IN_RE_STX_ERR		"minishell: syntax error near unexpected token `<'"
