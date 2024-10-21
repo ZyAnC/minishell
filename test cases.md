@@ -16,7 +16,7 @@ Things to do:
 4. testing;
 
 https://github.com/nenieiri-42Yerevan/Minishell/blob/master/README.md
-
+echo "user ->$USER"
 
 Test   1: ✅ echo hello world
 Test   2: ✅ echo "hello world"

@@ -6,7 +6,7 @@
 /*   By: jingwu <jingwu@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 08:43:11 by jingwu            #+#    #+#             */
-/*   Updated: 2024/10/09 14:54:28 by jingwu           ###   ########.fr       */
+/*   Updated: 2024/10/21 14:37:56 by jingwu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 */
 static char *get_env_name(char *str)
 {
-	int	i;
+	int		i;
 
 	i = 0;
 	if(str[i] == '$')
@@ -63,14 +63,13 @@ static void	expand(t_token *token)
 
 	while (ft_strnstr(token->str, "$", ft_strlen(token->str)))
 	{
-		name = get_env_name(token->str);
+		name = get_env_name(ft_strchr(token->str, '$'));
 		if (!name)
 			return ;
-
 		if (!ft_strcmp(name, "$?"))
 			value = ft_itoa(ms() ->exit);
 		else
-			value = get_env_value(name);
+			value = get_variable_value(name);
 		tmp = token->str;
 		token->str = replace(token->str, name, value);
 		free(name);
@@ -91,7 +90,6 @@ void	expander(void)
 {
 	t_token	*token;
 	char	*str;
-
 	tk_list_manager(RESET);
 	while (tk_list_manager(CUR_CNT))
 	{

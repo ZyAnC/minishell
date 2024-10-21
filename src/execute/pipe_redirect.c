@@ -6,11 +6,13 @@ pid_t exe_pipe(t_cmd *cm)
 {
 	pid_t	pid;
 
+	signal_ignore();
 	pid = fork();
  	if (pid == -1)
 		ex_error("Fork", FORK, EXIT_FAILURE);
 	if (pid == 0)
 	{
+		signal_child();
 		check_infile(cm);
 		dup2(ms()->in_fd,STDIN_FILENO);
 		dup2(ms()->fd[1],STDOUT_FILENO);

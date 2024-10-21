@@ -6,7 +6,7 @@
 /*   By: jingwu <jingwu@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 12:24:17 by jingwu            #+#    #+#             */
-/*   Updated: 2024/10/14 08:16:12 by jingwu           ###   ########.fr       */
+/*   Updated: 2024/10/15 14:40:15 by jingwu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,9 @@ static void	action(t_token *token, t_cmd **cmd, t_list *tmp, int end)
 {
 	if (is_dir(token))
 		process_re(cmd, tmp);
-	else if (token->tk_type == TK_WORD || token->tk_type == TK_DOUBLE_QT || token->tk_type == TK_SINGLE_QT)
-		(*cmd)->cmd[(*cmd)->ct_w++] = ft_strdup(token->str);
+	else if (token->tk_type == TK_WORD || token->tk_type == TK_DOUBLE_QT
+		|| token->tk_type == TK_SINGLE_QT || token->tk_type == TK_LOC_V)
+			(*cmd)->cmd[(*cmd)->ct_w++] = ft_strdup(token->str);
 	if (token->idx == end && token->tk_type == TK_PIPE && (*cmd)->outype == TK_NONE)
 		(*cmd)->outype = TK_PIPE;
 }

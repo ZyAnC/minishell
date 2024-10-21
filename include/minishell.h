@@ -6,7 +6,7 @@
 /*   By: jingwu <jingwu@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 11:00:09 by yzheng            #+#    #+#             */
-/*   Updated: 2024/10/14 13:18:25 by jingwu           ###   ########.fr       */
+/*   Updated: 2024/10/21 14:36:14 by jingwu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@
 /*                                             err_type                                         */
 # define MEMORY_ERROR		"error: Could not allocate memory"
 # define UNQUOTED			"error: The input is quoted incorrectly"
-# define ADD_TOKEN_FAILED	"error: Could not add a new token node to token"
+//# define ADD_TOKEN_FAILED	"error: Could not add a new token node to token"
 # define PIPE_STX_ERR		"minishell: syntax error near unexpected token `|'"
 # define NL_STX_ERR			"minishell: syntax error near unexpected token `newline'"
 # define IN_RE_STX_ERR		"minishell: syntax error near unexpected token `<'"
@@ -143,6 +143,9 @@ bool	pre_handle(void);
 // process_re.c
 void	process_re(t_cmd **cmd, t_list *tk_node);
 
+//variable_list.c
+bool	are_all_def_loc_var(void);
+
 /*..............................................signal....................................................*/
 void	signal_default(void);
 void	signal_heredoc(void);
@@ -158,14 +161,16 @@ bool	is_dir(t_token *token);
 bool	is_dir_or_pipe(t_token *token);
 bool	is_seperator(char c);
 
-// env_list.c
-char	*get_env_value(char *env_name);
-void	add_env_node(t_list **list, char *str);
+// variable_list.c
+t_env	*new_variable(char *name, char *value);
+char	*get_variable_value(char *env_name);
+void	add_node_to_list(t_list **list, char *str);
 
 // free.c
-void	ft_newfree(void *pointer);
+void	ft_free_str(void *pointer);
 void	free_token_list(void);
 void	free_cmd_list(void);
+void	free_local_var_list(void);
 
 
 

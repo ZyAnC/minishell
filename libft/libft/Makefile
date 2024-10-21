@@ -23,24 +23,24 @@ RM = rm -f
 CFLAGS = -Wall -Wextra -Werror
 
 .c.o:
-	${CC} ${CFLAGS} -c $< -o ${<:.c=.o}
+	@${CC} ${CFLAGS} -c $< -o ${<:.c=.o}
 
 ${NAME}: ${OBJS}
-	${LIBC} ${NAME} ${OBJS}
+	@${LIBC} ${NAME} ${OBJS}
 
 all: ${NAME}
 
 bonus: .bonus
 
 .bonus: ${NAME} ${OBJSB}
-	${LIBC} ${NAME} ${OBJSB}
+	@${LIBC} ${NAME} ${OBJSB}
 	@touch .bonus
 clean:
-	${RM} -f ${OBJS} ${OBJSB}
+	@${RM} -f ${OBJS} ${OBJSB}
 	@${RM} -f .bonus
 
 fclean: clean
-	${RM} ${NAME} ${bonus}
+	@${RM} ${NAME} ${bonus}
 
 re: fclean all
 

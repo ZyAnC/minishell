@@ -31,6 +31,7 @@ void	buildshell()
 	{
 
 		ms()->prompt = prompt();
+//		printf("prompt=%s\n", ms()->prompt);// for testing!!!!!!
 		ms()->input = readline(ms()->prompt);
 		ms()->lines++;
 		if(!ms()->input)
@@ -69,7 +70,7 @@ t_list *get_env_list(char **envs)
 	env_lt = NULL;
 	while (envs[i])
 	{
-		add_env_node(&env_lt, envs[i]);
+		add_node_to_list(&env_lt, envs[i]);
 		i++;
 	}
 	return (env_lt);
@@ -115,7 +116,7 @@ static void init_ms(char **env)
 	ms()->cwd = getcwd(NULL, 2048);
 	ms()->path = findpath(env);
 	ms()->env_list = get_env_list(env);
-	initenv(env);//checking on this later
+	initenv(env);
 	ms()->fd[0] = -1;
 	ms()->fd[1] = -1;
 	if(!(ms()->cwd))
