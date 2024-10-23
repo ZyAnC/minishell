@@ -6,7 +6,7 @@
 /*   By: jingwu <jingwu@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 08:43:11 by jingwu            #+#    #+#             */
-/*   Updated: 2024/10/21 14:37:56 by jingwu           ###   ########.fr       */
+/*   Updated: 2024/10/22 13:05:16 by jingwu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,8 +100,6 @@ void	expander(void)
 			if (str && *(str + 1) != '\0' && *(str + 1) != ' ' )
 				expand(token);
 		}
-		if (ft_strchr(token->str, '=') && is_defining_var(token->str))
-			token->tk_type = TK_LOC_V;
 		tk_list_manager(NEXT);
 	}
 }

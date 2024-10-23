@@ -12,6 +12,7 @@ There are bugs in these function:
 
 Going to test 'unset'
 
+del_vaild_variable_define // need re write this function.
 
 ———————————— builtins
 Test   1: ✅ echo hello world

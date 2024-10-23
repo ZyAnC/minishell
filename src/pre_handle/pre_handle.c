@@ -6,7 +6,7 @@
 /*   By: jingwu <jingwu@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 12:48:19 by jingwu            #+#    #+#             */
-/*   Updated: 2024/10/21 14:36:05 by jingwu           ###   ########.fr       */
+/*   Updated: 2024/10/22 13:24:30 by jingwu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,10 +84,35 @@ static void	assign_token_index(void)
 		list = list->next;
 	}
 }
+/*
+	@function
+	Change the environment variable's type to TK_ENV_V, and local variable's type to TK_LOC_V.
+	Before theirs types are TK_WORD.
+*/
+static void	add_variable_type(t_list *list)
+{
+	t_token *token;
 
+	if (!list)
+		return ;
+	while (list)
+	{
+		token = (t_token *)(list->content);
+		if (ft_strcmp(token->str, "export") == 0 && list->next)
+			if (((t_token *)(list->next->content))->tk_type == TK_WORD)
+				((t_token *)(list->next->content))->tk_type = TK_ENV_V;
+		if (ft_strchr(token->str, '=') && token->tk_type != TK_ENV_V)
+			token->tk_type = TK_LOC_V;
+		list = list->next;
+	}
+}
 
 bool	pre_handle(void)
 {
+// 	printf("env is:\n");//for testing !!!!!!!!!!!!!!!!!!!!!
+// print_list(ms()->tokens, 4);//for testing !!!!!!!!!!!!!!!!!!!!!
+// printf("env_list is:\n");//for testing !!!!!!!!!!!!!!!!!!!!!
+// print_list(ms()->env_list, 2);//for testing !!!!!!!!!!!!!!!!!!!!!
 	if (!check_quote())
 		return (false);
 	if (!lexer())
@@ -96,13 +121,25 @@ bool	pre_handle(void)
 		return (false);
 	merge(ms() ->tokens);
 	restruct_token();
-	expander();
+	expander();// add token type TK_LOC_V
+printf("<------------  after expander------------------->\n");//for testing
+printf("token list is:\n");//for testing !!!!!!!!!!!!!!!!!!!!!
+print_list(ms()->tokens, 1);//for testing !!!!!!!!!!!!!!!!!!!!!
+	add_variable_type(ms()->tokens);
+printf("<------------  after add vari type------------------->\n");//for testing
+printf("token list is:\n");//for testing !!!!!!!!!!!!!!!!!!!!!
+print_list(ms()->tokens, 1);//for testing !!!!!!!!!!!!!!!!!!!!!
 	if (are_all_def_loc_var() == true)
-				return (false);
+	{
+		printf("<------------  after are all def------------------->\n");//for testing
+print_list(ms()->local_var, 3);//for testing !!!!!!!!!!!!!!!!!!!!!
+print_list(ms()->tokens, 1);//for testing !!!!!!!!!!!!!!!!!!!!!
+		return (false);
+	}
+print_list(ms()->local_var, 3);//for testing !!!!!!!!!!!!!!!!!!!!!
 	assign_token_index();
 	if (!parsing())
 		return (false);
-//print_list(ms()->tokens, 1);//for testing !!!!!!!!!!!!!!!!!!!!!
-//print_cmd();//for testing !!!!!!!!!!!!!!!!!!!!!
+print_cmd();//for testing !!!!!!!!!!!!!!!!!!!!!
 	return (true);
 }

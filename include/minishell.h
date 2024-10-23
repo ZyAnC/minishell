@@ -6,7 +6,7 @@
 /*   By: jingwu <jingwu@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 11:00:09 by yzheng            #+#    #+#             */
-/*   Updated: 2024/10/21 14:36:14 by jingwu           ###   ########.fr       */
+/*   Updated: 2024/10/23 08:58:17 by jingwu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,6 +145,8 @@ void	process_re(t_cmd **cmd, t_list *tk_node);
 
 //variable_list.c
 bool	are_all_def_loc_var(void);
+
+void	delete_extra_pipes(t_list **list);
 
 /*..............................................signal....................................................*/
 void	signal_default(void);

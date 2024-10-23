@@ -6,7 +6,7 @@
 /*   By: jingwu <jingwu@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/02 08:21:42 by jingwu            #+#    #+#             */
-/*   Updated: 2024/10/15 14:20:41 by jingwu           ###   ########.fr       */
+/*   Updated: 2024/10/22 13:17:30 by jingwu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 /*
 	The function will count the amount of <, >, >> and <<.
+	TK_type between 6 to 10 are : 	TK_SINGLE_QT, TK_DOUBLE_QT, TK_WORD,TK_LOC_V, TK_ENV_V,
 */
 void	count(t_cmd **cmd, t_list *tk_lt, int start, int end)
 {
@@ -30,8 +31,7 @@ void	count(t_cmd **cmd, t_list *tk_lt, int start, int end)
 				(*cmd) ->ofnum++;
 			else if (token->tk_type == TK_HDOC)
 				(*cmd) ->herenum++;
-			else if (token->tk_type == TK_WORD || token->tk_type == TK_DOUBLE_QT
-				|| token->tk_type == TK_SINGLE_QT || token->tk_type == TK_LOC_V)
+			else if (token->tk_type >= 6 && token->tk_type <= 10)
 				(*cmd) ->word++;
 		}
 		if (token->idx > end)

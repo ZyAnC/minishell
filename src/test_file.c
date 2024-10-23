@@ -1,9 +1,10 @@
 #include "minishell.h"
 
 /*
-	1: print tokens
-	2: print env;
-	3: print local variable
+	1: print tokens;
+	2: print env_list;
+	3: print local_var;
+	4: print ms()->env;
 */
 void	print_list(t_list *list, int flag)// for test !!!!!!!!!!!!!!!!!!!!!!!!
 {
@@ -12,12 +13,22 @@ void	print_list(t_list *list, int flag)// for test !!!!!!!!!!!!!!!!!!!!!!!!
 	int		i;
 
 	i = 0;
+	if (flag == 4)
+	{
+		i= -1;
+		if (!(ms()->env) || !(ms()->env[0]))
+		{
+			printf("env is empty\n");
+			return ;
+		}
+		while (ms()->env[++i])
+			printf("envs[%d]=%s\n", i, ms()->env[i]);
+	}
 	if (!list)
 	{
-		printf ("token list is empty\n\n");
+		printf ("list is empty\n\n");
 		return ;
 	}
-
 	while (list)
 	{
 		if (flag == 1)
@@ -28,12 +39,12 @@ void	print_list(t_list *list, int flag)// for test !!!!!!!!!!!!!!!!!!!!!!!!
 		else if (flag == 2)
 		{
 			env = list->content;
-			printf("env[%d]: name=$%s   value=%s\n", i, env->name, env->value);
+			printf("env_list[%d]: name=%s   value=%s\n", i, env->name, env->value);
 		}
 		else if (flag == 3)
 		{
 			env = list->content;
-			printf("local_var[%d]: name=$%s   value=%s\n", i, env->name, env->value);
+			printf("local_var[%d]: name=%s   value=%s\n", i, env->name, env->value);
 		}
 		i++;
 		list = list->next;
