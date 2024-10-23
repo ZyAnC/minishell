@@ -6,7 +6,7 @@
 /*   By: jingwu <jingwu@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/22 13:46:11 by jingwu            #+#    #+#             */
-/*   Updated: 2024/10/23 09:41:23 by jingwu           ###   ########.fr       */
+/*   Updated: 2024/10/23 09:49:21 by jingwu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 	Work with function delete_extra_pipes(), to delete extra pipes in the token list after local variable
 	checking. This function is just delete the pipes which are at the beiginning of the list.
 */
-static void	*del_beginning_pipes(t_list **list)
+static void	del_beginning_pipes(t_list **list)
 {
 	t_token	*current;
 	t_list	*tmp;

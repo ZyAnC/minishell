@@ -6,7 +6,7 @@
 /*   By: jingwu <jingwu@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 11:05:21 by jingwu            #+#    #+#             */
-/*   Updated: 2024/10/23 09:41:16 by jingwu           ###   ########.fr       */
+/*   Updated: 2024/10/23 09:50:11 by jingwu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,7 +127,7 @@ static void	del_vaild_variable_define(t_list **list)
 
 	if (!list)
 		return ;
-	del_beginning_locv(*list);
+	del_beginning_locv(list);
 	while (list)
 	{
 		token = (t_token *)((*list)->next->content);
