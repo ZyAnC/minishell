@@ -6,7 +6,7 @@
 /*   By: jingwu <jingwu@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 12:48:19 by jingwu            #+#    #+#             */
-/*   Updated: 2024/10/23 13:40:20 by jingwu           ###   ########.fr       */
+/*   Updated: 2024/10/23 14:29:19 by jingwu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,26 +147,20 @@ bool	pre_handle(void)
 		return (false);
 	merge(ms() ->tokens);
 	restruct_token();
-// printf("<------------  restruct token------------------->\n");//for testing
 	expander();
-// printf("<------------  after expander------------------->\n");//for testing
 	add_variable_type(ms()->tokens);
-// printf("<------------  after add vari type------------------->\n");//for testing
+// // printf("<------------  after add vari type------------------->\n");//for testing
+// printf("token list is:\n");//for testing !!!!!!!!!!!!!!!!!!!!!
+// print_list(ms()->tokens, 1);//for testing !!!!!!!!!!!!!!!!!!!!!
 	if (are_all_def_loc_var() == true)
 	{
- 		printf("<------------  are all def == true------------------->\n");//for testing
+//  		printf("<------------  are all def == true------------------->\n");//for testing
 // printf("local var is:\n");//for testing !!!!!!!!!!!!!!!!!!!!!
 // print_list(ms()->local_var, 3);//for testing !!!!!!!!!!!!!!!!!!!!!
 // printf("token list is:\n");//for testing !!!!!!!!!!!!!!!!!!!!!
 // print_list(ms()->tokens, 1);//for testing !!!!!!!!!!!!!!!!!!!!!
 		return (false);
 	}
-//  printf("<------------  are all def == false------------------->\n");//for testing
-// printf("local var is:\n");//for testing !!!!!!!!!!!!!!!!!!!!!
-// print_list(ms()->local_var, 3);//for testing !!!!!!!!!!!!!!!!!!!!!
-// printf("token list is:\n");//for testing !!!!!!!!!!!!!!!!!!!!!
-// print_list(ms()->tokens, 1);//for testing !!!!!!!!!!!!!!!!!!!!!
-
 	assign_token_index();
 	if (!parsing())
 		return (false);

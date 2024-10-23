@@ -6,7 +6,7 @@
 /*   By: jingwu <jingwu@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 11:05:21 by jingwu            #+#    #+#             */
-/*   Updated: 2024/10/23 13:42:37 by jingwu           ###   ########.fr       */
+/*   Updated: 2024/10/23 14:26:53 by jingwu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,37 +99,32 @@ static void	del_beginning_locv(t_list **list)
 		current = (t_token *)((*list)->content);
 		if (current->tk_type == TK_LOC_V && is_defining_var(current->str) == true)
 		{
-//			printf("delete str=%s\n",current->str);//for testing !!!!!!!!!!!!!!!!!!!!!
 			tmp = (*list);
 			(*list) = (*list)->next;
 			del_node(tmp);
-		// printf("del_beininng_locv are all token list is:\n");//for testing !!!!!!!!!!!!!!!!!!!!!
-		// print_list(ms()->tokens, 1);//for testing !!!!!!!!!!!!!!!!!!!!!
 		}
-
 		else
 			return ;
-
 	}
 }
 
-static void	del_end_locv(t_list *list)
-{
-	t_list	*end_node;
-	t_token	*token;
+// static void	del_end_locv(t_list *list)
+// {
+// 	t_list	*end_node;
+// 	t_token	*token;
 
-	if (!list || list->next)
-		return ;
-	while (list->next && list->next->next)
-		list = list->next;
-	token = ((t_token *)list->next->content);
-	if (token->tk_type == TK_LOC_V && is_defining_var(token->str) == true)
-	{
-		end_node = list->next;
-		list->next = NULL;
-		del_node(end_node);
-	}
-}
+// 	if (!list || list->next)
+// 		return ;
+// 	while (list->next && list->next->next)
+// 		list = list->next;
+// 	token = ((t_token *)list->next->content);
+// 	if (token->tk_type == TK_LOC_V && is_defining_var(token->str) == true)
+// 	{
+// 		end_node = list->next;
+// 		list->next = NULL;
+// 		del_node(end_node);
+// 	}
+// }
 
 /*
 	@function
@@ -146,38 +141,24 @@ static void	del_vaild_variable_define(t_list **list)
 	t_token	*token;
 	t_list	*delete;
 	t_list	*tmp;
-// printf("\ndel_valid_variab token list is:\n");//for testing !!!!!!!!!!!!!!!!!!!!!
-// print_list(ms()->tokens, 1);//for testing !!!!!!!!!!!!!!!!!!!!!
 
 	if (!list)
 		return ;
 	del_beginning_locv(list);
-
-// printf("\nafter beginning token list is:\n");//for testing !!!!!!!!!!!!!!!!!!!!!
-// print_list(ms()->tokens, 1);//for testing !!!!!!!!!!!!!!!!!!!!!
 	tmp = *list;
 	while (tmp && tmp->next)
 	{
 		token = (t_token *)(tmp->next->content);
 		if (token->tk_type == TK_LOC_V && is_defining_var(token->str) == true)
-		{//int i = 0;
-//			printf ("<--delete_str=%s--------%d-------->\n",token->str, i++);//for testing!!!!!!!!!!!!!!!!!11
-
+		{
 			delete = tmp->next;
 			tmp->next = delete->next;
 			del_node(delete);
-
-//			printf("\nafter delete one node token list is:\n");//for testing !!!!!!!!!!!!!!!!!!!!!
-//print_list(ms()->tokens, 1);//for testing !!!!!!!!!!!!!!!!!!!!!
 			continue ;
 		}
 		tmp = tmp->next;
 	}
-// printf("\nafter middle token list is:\n");//for testing !!!!!!!!!!!!!!!!!!!!!
-// print_list(ms()->tokens, 1);//for testing !!!!!!!!!!!!!!!!!!!!!
-	del_end_locv(*list);
-//printf("\nafter end token list is:\n");//for testing !!!!!!!!!!!!!!!!!!!!!
-print_list(ms()->tokens, 1);//for testing !!!!!!!!!!!!!!!!!!!!!
+//	del_end_locv(*list);// it seems don't need this one
 }
 
 /*
@@ -194,9 +175,10 @@ print_list(ms()->tokens, 1);//for testing !!!!!!!!!!!!!!!!!!!!!
 	type=2	4: name=123 | 1a=3			--> don't save any variable, delete "name=123", go to execution
 	type=3	5: name=123 | echo a		--> don't save any variable, delete "name=123", go to execution
 	type=3	6: name=123 | 1name=123 | echo a	--> don't save any variable, delete "name=123", go to execution
-
+	type=4	7: echo a | ls -l			--> don't need to do anything, go to execution
 	Why we delete valid defination in some conditions?
 	Becasue it will simplify the exection part, in these conditions, these valid defination don't need to
+
 	be exectued.
 
 	Logic summary:
@@ -214,33 +196,23 @@ bool	are_all_def_loc_var(void)
 	int		type;
 
 	type = checking_list_token_types(ms()->tokens);
-	if (type == 4)
-		return (false);
-// 	printf("type=%d\n", type);// for testing!!!!!!!!!!!!!!!!!!
-// 	printf("at the beininnggg are all token list is:\n");//for testing !!!!!!!!!!!!!!!!!!!!!
-// print_list(ms()->tokens, 1);//for testing !!!!!!!!!!!!!!!!!!!!!
-	if (is_there_invalid_defination(ms()->tokens) == true || type == 3)
-	{//printf("<-------------------------1------------------------>\n");// for testing!!!!!!!!!!!!!!!!!!
-		del_vaild_variable_define(&ms()->tokens);
-//		printf("<-----------------------2-------------------------->\n");// for testing!!!!!!!!!!!!!!!!
-		return (false);
-	}
-	if (type == 1)
+	if ((type == 1 || type == 2) && is_there_invalid_defination(ms()->tokens) == false)
 	{
-		tmp = ms()->tokens;
-		while (tmp)
+		if (type == 1)
 		{
-			token = (t_token *)(tmp->content);
-			add_node_to_list(&(ms()->local_var), token->str);
-			tmp = tmp->next;
+			tmp = ms()->tokens;
+			while (tmp)
+			{
+				token = (t_token *)(tmp->content);
+				add_node_to_list(&(ms()->local_var), token->str);
+				tmp = tmp->next;
+			}
 		}
 		return (true);
 	}
-//printf("after delete valid variable token list is:\n");//for testing !!!!!!!!!!!!!!!!!!!!!
-print_list(ms()->tokens, 1);//for testing !!!!!!!!!!!!!!!!!!!!!
+	else if (is_there_invalid_defination(ms()->tokens) == true || type == 3)
+		del_vaild_variable_define(&ms()->tokens);
 	if (type == 2 || type == 3)
 		delete_extra_pipes(&ms()->tokens);
-//printf("after delete extra pipe token list is:\n");//for testing !!!!!!!!!!!!!!!!!!!!!
-print_list(ms()->tokens, 1);//for testing !!!!!!!!!!!!!!!!!!!!!
-	return (true);
+	return (false);
 }

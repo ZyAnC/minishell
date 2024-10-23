@@ -6,7 +6,7 @@
 /*   By: jingwu <jingwu@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/22 13:46:11 by jingwu            #+#    #+#             */
-/*   Updated: 2024/10/23 13:24:06 by jingwu           ###   ########.fr       */
+/*   Updated: 2024/10/23 14:28:13 by jingwu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,14 @@ static void	del_beginning_pipes(t_list **list)
 	while (*list)
 	{
 		current = (t_token *)((*list)->content);
-		if (current->tk_type != TK_PIPE)
+		if (current->tk_type == TK_PIPE)
+		{
+			tmp = (*list);
+			(*list) = (*list)->next;
+			del_node(tmp);
+		}
+		else
 			return ;
-		tmp = (*list);
-		(*list) = (*list)->next;
-		del_node(tmp);
 	}
 }
 
@@ -39,9 +42,9 @@ static void	delete_end_pipe(t_list *list)
 {
 	t_list *end_node;
 
-	if (!list || list->next)
+	if (!list || !list->next)
 		return ;
-	while (list->next && list->next->next)
+	while (list && list->next && list->next->next)
 		list = list->next;
 	if (((t_token *)list->next->content)->tk_type == TK_PIPE)
 	{
@@ -66,7 +69,7 @@ void	delete_extra_pipes(t_list **list)
 	t_token	*next;
 	t_list	*tmp;
 	t_list	*newlist;
-printf("<---------------------delete---1----------------->");// for testing!!!!!!!!!!!!!!!!!!
+
 	if (!list)
 		return ;
 	del_beginning_pipes(list);
