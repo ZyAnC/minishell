@@ -6,7 +6,7 @@
 /*   By: jingwu <jingwu@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 07:56:08 by jingwu            #+#    #+#             */
-/*   Updated: 2024/10/22 10:45:15 by jingwu           ###   ########.fr       */
+/*   Updated: 2024/10/23 13:42:13 by jingwu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@
 	f_equal: when loop the str, if encounter a "=" then f_equal=true;
 	f_alp_uds: when loop the str, if encounter a alphabeta or "_", then
 				f_alp_uds=true;
-	
+
 	@return
 	true: is a valid variable defination
 	false: is an INVAILD variable defination
@@ -46,7 +46,7 @@ bool	is_defining_var(char *str)
 			f_alp_uds = true;
 		else if (!ft_isalpha(str[i]) && str[i] != '_'
 			&& !f_equal && !f_alp_uds)// the name start with non-alpha, non-'_', is illegal.
-			return (false);
+				return (false);
 		else if (!ft_isalnum(str[i]) && str[i] != '_'
 			&& !f_equal)// there is illegal character in the name.
 			return (false);

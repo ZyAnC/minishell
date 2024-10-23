@@ -12,7 +12,9 @@ There are bugs in these function:
 
 Going to test 'unset'
 
-del_vaild_variable_define // need re write this function.
+n=2 | 1c=2 | c=3
+
+
 
 ———————————— builtins
 Test   1: ✅ echo hello world

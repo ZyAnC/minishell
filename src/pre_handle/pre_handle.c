@@ -6,7 +6,7 @@
 /*   By: jingwu <jingwu@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 12:48:19 by jingwu            #+#    #+#             */
-/*   Updated: 2024/10/22 13:24:30 by jingwu           ###   ########.fr       */
+/*   Updated: 2024/10/23 13:40:20 by jingwu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,7 @@ static void	assign_token_index(void)
 static void	add_variable_type(t_list *list)
 {
 	t_token *token;
+	t_token *next;
 
 	if (!list)
 		return ;
@@ -99,20 +100,45 @@ static void	add_variable_type(t_list *list)
 	{
 		token = (t_token *)(list->content);
 		if (ft_strcmp(token->str, "export") == 0 && list->next)
-			if (((t_token *)(list->next->content))->tk_type == TK_WORD)
-				((t_token *)(list->next->content))->tk_type = TK_ENV_V;
+		{
+			next = (t_token *)(list->next->content);
+			if (ft_strchr(next->str, '='))
+				next->tk_type = TK_ENV_V;
+		}
 		if (ft_strchr(token->str, '=') && token->tk_type != TK_ENV_V)
 			token->tk_type = TK_LOC_V;
 		list = list->next;
 	}
 }
 
+/*
+	@function
+	In some condition to change a cmd's intypt to TK_NONE;
+	for "ls -l >in | cat", for the second part cmd "cat", the intype should be TK_NONE, not
+	TK_PIPE.
+	The rule is as long the former cmd has ">" or ">>" then the next cmd's intype is TK_NONE.
+*/
+void	recorrect_cmd_intype(t_cmd *list)
+{
+	bool	flag;
+
+	flag = false;
+	if (!list)
+		return ;
+	while (list)
+	{
+		if (flag == true)
+			list->intype = TK_NONE;
+		if (list->ct_out > 0)
+			flag = true;
+		else
+			flag =false;
+		list = list->next;
+	}
+}
+
 bool	pre_handle(void)
 {
-// 	printf("env is:\n");//for testing !!!!!!!!!!!!!!!!!!!!!
-// print_list(ms()->tokens, 4);//for testing !!!!!!!!!!!!!!!!!!!!!
-// printf("env_list is:\n");//for testing !!!!!!!!!!!!!!!!!!!!!
-// print_list(ms()->env_list, 2);//for testing !!!!!!!!!!!!!!!!!!!!!
 	if (!check_quote())
 		return (false);
 	if (!lexer())
@@ -121,25 +147,30 @@ bool	pre_handle(void)
 		return (false);
 	merge(ms() ->tokens);
 	restruct_token();
-	expander();// add token type TK_LOC_V
-printf("<------------  after expander------------------->\n");//for testing
-printf("token list is:\n");//for testing !!!!!!!!!!!!!!!!!!!!!
-print_list(ms()->tokens, 1);//for testing !!!!!!!!!!!!!!!!!!!!!
+// printf("<------------  restruct token------------------->\n");//for testing
+	expander();
+// printf("<------------  after expander------------------->\n");//for testing
 	add_variable_type(ms()->tokens);
-printf("<------------  after add vari type------------------->\n");//for testing
-printf("token list is:\n");//for testing !!!!!!!!!!!!!!!!!!!!!
-print_list(ms()->tokens, 1);//for testing !!!!!!!!!!!!!!!!!!!!!
+// printf("<------------  after add vari type------------------->\n");//for testing
 	if (are_all_def_loc_var() == true)
 	{
-		printf("<------------  after are all def------------------->\n");//for testing
-print_list(ms()->local_var, 3);//for testing !!!!!!!!!!!!!!!!!!!!!
-print_list(ms()->tokens, 1);//for testing !!!!!!!!!!!!!!!!!!!!!
+ 		printf("<------------  are all def == true------------------->\n");//for testing
+// printf("local var is:\n");//for testing !!!!!!!!!!!!!!!!!!!!!
+// print_list(ms()->local_var, 3);//for testing !!!!!!!!!!!!!!!!!!!!!
+// printf("token list is:\n");//for testing !!!!!!!!!!!!!!!!!!!!!
+// print_list(ms()->tokens, 1);//for testing !!!!!!!!!!!!!!!!!!!!!
 		return (false);
 	}
-print_list(ms()->local_var, 3);//for testing !!!!!!!!!!!!!!!!!!!!!
+//  printf("<------------  are all def == false------------------->\n");//for testing
+// printf("local var is:\n");//for testing !!!!!!!!!!!!!!!!!!!!!
+// print_list(ms()->local_var, 3);//for testing !!!!!!!!!!!!!!!!!!!!!
+// printf("token list is:\n");//for testing !!!!!!!!!!!!!!!!!!!!!
+// print_list(ms()->tokens, 1);//for testing !!!!!!!!!!!!!!!!!!!!!
+
 	assign_token_index();
 	if (!parsing())
 		return (false);
-print_cmd();//for testing !!!!!!!!!!!!!!!!!!!!!
+	recorrect_cmd_intype(ms()->cmds);
+//print_cmd();//for testing !!!!!!!!!!!!!!!!!!!!!
 	return (true);
 }

@@ -6,7 +6,7 @@
 /*   By: jingwu <jingwu@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/22 13:46:11 by jingwu            #+#    #+#             */
-/*   Updated: 2024/10/23 09:49:21 by jingwu           ###   ########.fr       */
+/*   Updated: 2024/10/23 13:24:06 by jingwu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,18 +35,18 @@ static void	del_beginning_pipes(t_list **list)
 	}
 }
 
-static void	delete_end_pipe(t_list **list)
+static void	delete_end_pipe(t_list *list)
 {
 	t_list *end_node;
 
-	if (!list || !(*list) || !(*list)->next)
+	if (!list || list->next)
 		return ;
-	while ((*list)->next && (*list)->next->next)
-		(*list) = (*list)->next;
-	if (((t_token *)(*list)->next->content)->tk_type == TK_PIPE)
+	while (list->next && list->next->next)
+		list = list->next;
+	if (((t_token *)list->next->content)->tk_type == TK_PIPE)
 	{
-		end_node = (*list)->next;
-		(*list)->next = NULL;
+		end_node = list->next;
+		list->next = NULL;
 		del_node(end_node);
 	}
 }
@@ -65,25 +65,27 @@ void	delete_extra_pipes(t_list **list)
 	t_token	*current;
 	t_token	*next;
 	t_list	*tmp;
-//printf("<---------------------delete---1----------------->");// for testing!!!!!!!!!!!!!!!!!!
+	t_list	*newlist;
+printf("<---------------------delete---1----------------->");// for testing!!!!!!!!!!!!!!!!!!
 	if (!list)
 		return ;
 	del_beginning_pipes(list);
-	while (*list)
+	newlist = *list;
+	while (newlist)
 	{
-		current = (t_token *)((*list)->content);
-		if ((*list)->next)
+		current = (t_token *)(newlist->content);
+		if (newlist->next)
 		{
-			next = (t_token *)((*list)->next->content);
+			next = (t_token *)(newlist->next->content);
 			if (current->tk_type == TK_PIPE && next->tk_type == TK_PIPE)
 			{
-				tmp = (*list)->next;
-				(*list)->next = tmp->next;
+				tmp = newlist->next;
+				newlist->next = tmp->next;
 				del_node(tmp);
 				continue ;
 			}
 		}
-		(*list) = (*list)->next;
+		newlist = newlist->next;
 	}
-	delete_end_pipe(&ms()->tokens);
+	delete_end_pipe(*list);
 }
