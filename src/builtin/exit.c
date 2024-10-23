@@ -73,55 +73,31 @@ int	isvalid(char *str)
 	   exit_code:	2
 	   exit bash?	yes
 */
+
+
 void	ft_exit(char **cmd)
 {
 	int	i;
 
-	i = ms()->cmds->ct_w;
-	if (isvalid(cmd[1])) // as long the cmd[1] is not a valid number, it goes into this branch.
-		ft_exit_tool(cmd[1]);
-	else if (i > 2 && !isvalid(cmd[1]))
+	i = 0;
+	while(cmd[i])
+		i++;
+	if (i > 2 && ft_isnum(cmd[1]))
 	{
 		ft_putstr_fd("exit\n", 1);
 		ft_putstr_fd("minishell: exit: too many arguments\n", 2);
+//		ms()->exit = 2;// should be 1, not 2
 		ms()->exit = 1;
-		return ;
 	}
-	else if (i <= 2)
+	else if (i > 2 && !ft_isnum(cmd[1]))
+		ft_exit_tool(cmd[1]);
+	if (i == 2 && isvalid(cmd[1]))
+		ft_exit_tool(cmd[1]);
+	else if (i == 2)
 	{
 		ft_putstr_fd("exit\n", 1);
-		ms()->exit = 0;
-		if (i == 2 && ft_atoi(cmd[1]) >= 0)
-			ms()->exit = ft_atoi(cmd[1]) % 256;
-		else
-			ms()->exit = ft_atoi(cmd[1]) + 256;
+		ms()->exit = ft_atoi(cmd[1]) % 256;
 	}
-	restart (true);
+	restart(1);
 }
-
-// void	ft_exit(char **cmd)
-// {
-// 	int	i;
-
-// 	i = 0;
-// 	while(cmd[i])
-// 		i++;
-// 	if (i > 2 && ft_isnum(cmd[1]))
-// 	{
-// 		ft_putstr_fd("exit\n", 1);
-// 		ft_putstr_fd("minishell: exit: too many arguments\n", 2);
-// //		ms()->exit = 2;// should be 1, not 2
-// 		ms()->exit = 1;
-// 	}
-// 	else if (i > 2 && !ft_isnum(cmd[1]))
-// 		ft_exit_tool(cmd[1]);
-// 	if (i == 2 && isvalid(cmd[1]))
-// 		ft_exit_tool(cmd[1]);
-// 	else if (i == 2)
-// 	{
-// 		ft_putstr_fd("exit\n", 1);
-// 		ms()->exit = ft_atoi(cmd[1]) % 256;
-// 	}
-// 	restart(1);
-// }
 

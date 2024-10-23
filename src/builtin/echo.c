@@ -4,7 +4,6 @@ int	ft_echo(char **cmd)
 {
 	int	i;
 	int	n;
-
 	i = 0;
 	n = 0;
 	if(!ft_strcmp(cmd[1], "-n"))

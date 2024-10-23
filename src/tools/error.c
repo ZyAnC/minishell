@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jingwu <jingwu@student.hive.fi>            +#+  +:+       +#+        */
+/*   By: yzheng <yzheng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 14:02:58 by yzheng            #+#    #+#             */
-/*   Updated: 2024/10/11 12:46:22 by jingwu           ###   ########.fr       */
+/*   Updated: 2024/10/23 13:28:00 by yzheng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	open_error(char *message)
 	if (!access(message, F_OK))
 		ex_error(message, PREMISSON, 126);
 	else
-		ex_error(message,NFILE,2);
+		ex_error(message,PREMISSON,1);
 	restart(0);
 }
 
@@ -33,7 +33,7 @@ void	ex_error(char *message, t_err_type type, int err_status)
 	else if  (type == NFILE)
 		ft_putstr_fd(" : No such file or directory", 2);
 	else if  (type == PREMISSON)
-		ft_putstr_fd("Permission denied", 2);
+		ft_putstr_fd(" : Permission denied", 2);
 	else if  (type == FORK)
 		ft_putstr_fd(" : fork failed", 2);
 	else if  (type == PIPE)
@@ -45,7 +45,7 @@ void	ex_error(char *message, t_err_type type, int err_status)
 	else if  (type == HOME)
 		ft_putstr_fd(" : HOME not set", 2);
 	ft_putchar_fd('\n', 2);
-	ms()->exit = err_status;
+	exit(err_status);
 }
 
 bool	print_error(char *err_type, int err_fd)

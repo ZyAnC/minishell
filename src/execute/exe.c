@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exe.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jingwu <jingwu@student.hive.fi>            +#+  +:+       +#+        */
+/*   By: yzheng <yzheng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 13:53:13 by yzheng            #+#    #+#             */
-/*   Updated: 2024/10/16 09:48:37 by jingwu           ###   ########.fr       */
+/*   Updated: 2024/10/23 13:39:40 by yzheng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,10 @@ static inline void	ft_execve_failed(char **shellcmd, char *path)
 			ex_error(shellcmd[0],COMMAND,127);
 	}
 	message = ft_strjoin(shellcmd[0]," : ");
+	if (errno == 13)
+		ex_error(message,ERR,126);
+	else if (errno == 2)
+		ex_error(message,ERR,127);
 	ex_error(message,ERR,1);
 	free(message);
 	if (path)
@@ -59,16 +63,16 @@ int		builtin(char **cmd)
 void	real_execute(t_cmd *cm)
 {
 	char	*path;
-
 	if(!builtin(cm->cmd))
 	{
 		path = findvalidcmd(cm->cmd);
 		if (!path)
 			ex_error(cm->cmd[0],COMMAND,127);
+
 		execve(path, cm->cmd, ms()->env);
 		ft_execve_failed(cm->cmd, path);
 	}
-	exit(0);
+	exit(ms()->exit);
 }
 
 void exe(t_cmd *cm)
@@ -93,8 +97,10 @@ void exe(t_cmd *cm)
 			pipeid = exe_pipe3(cm);
 			close(ms()->fd[0]);
 		}
+
 		cm = cm->next;
 	}
+
 	close_all(prev_fd);
 	while (wait(NULL) > 0);
 	signal_default();

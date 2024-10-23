@@ -3,14 +3,58 @@
 /*                                                        :::      ::::::::   */
 /*   variable_list.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jingwu <jingwu@student.hive.fi>            +#+  +:+       +#+        */
+/*   By: yzheng <yzheng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 07:56:08 by jingwu            #+#    #+#             */
-/*   Updated: 2024/10/15 11:31:10 by jingwu           ###   ########.fr       */
+/*   Updated: 2024/10/23 14:34:40 by yzheng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+/*
+	The syntax of defining  enviroment varible: name=value
+	Rule:
+	1. there is no space between "name", "=" and "value", like
+	   name =123, name= 123 are all wrong;
+	2. the variable name only start with either letter or '_', and only
+	   contains letter, '_' and number.
+	   like 2name=123, *name=123, na$me=123 are all wrong;
+
+	f_equal: when loop the str, if encounter a "=" then f_equal=true;
+	f_alp_uds: when loop the str, if encounter a alphabeta or "_", then
+				f_alp_uds=true;
+
+	@return
+	true: is a valid variable defination
+	false: is an INVAILD variable defination
+*/
+bool	is_defining_var(char *str)
+{
+	int		i;
+	bool	f_equal;
+	bool	f_alp_uds;
+
+	i = -1;
+	f_equal = false;
+	f_alp_uds = false;
+	while (str[++i])
+	{
+		if (str[i] == '=')
+			f_equal = true;
+		else if (str[i] == '_' || ft_isalpha(str[i]))
+			f_alp_uds = true;
+		else if (!ft_isalpha(str[i]) && str[i] != '_'
+			&& !f_equal && !f_alp_uds)// the name start with non-alpha, non-'_', is illegal.
+				return (false);
+		else if (!ft_isalnum(str[i]) && str[i] != '_'
+			&& !f_equal)// there is illegal character in the name.
+			return (false);
+	}
+	if (f_equal == false)
+		return (false);
+	return (true);
+}
 
 t_env	*new_variable(char *name, char *value)
 {

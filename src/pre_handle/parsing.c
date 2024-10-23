@@ -6,18 +6,20 @@
 /*   By: jingwu <jingwu@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 12:24:17 by jingwu            #+#    #+#             */
-/*   Updated: 2024/10/15 14:40:15 by jingwu           ###   ########.fr       */
+/*   Updated: 2024/10/22 13:18:32 by jingwu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+/*
+	TK_type between 6 to 10 are : 	TK_SINGLE_QT, TK_DOUBLE_QT, TK_WORD,TK_LOC_V, TK_ENV_V.
+*/
 static void	action(t_token *token, t_cmd **cmd, t_list *tmp, int end)
 {
 	if (is_dir(token))
 		process_re(cmd, tmp);
-	else if (token->tk_type == TK_WORD || token->tk_type == TK_DOUBLE_QT
-		|| token->tk_type == TK_SINGLE_QT || token->tk_type == TK_LOC_V)
+	else if (token->tk_type >= 6 && token->tk_type <= 10)
 			(*cmd)->cmd[(*cmd)->ct_w++] = ft_strdup(token->str);
 	if (token->idx == end && token->tk_type == TK_PIPE && (*cmd)->outype == TK_NONE)
 		(*cmd)->outype = TK_PIPE;

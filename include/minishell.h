@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jingwu <jingwu@student.hive.fi>            +#+  +:+       +#+        */
+/*   By: yzheng <yzheng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 11:00:09 by yzheng            #+#    #+#             */
-/*   Updated: 2024/10/21 14:36:14 by jingwu           ###   ########.fr       */
+/*   Updated: 2024/10/23 14:36:16 by yzheng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,9 +75,9 @@ void	close_all(int	prev_fd);
 void	check_infile(t_cmd *cm);
 char	*ft_strndup(char *src, int size);
 char	*replace_first_substring(char *str, char *old_sub, char *new_sub);
-
-int	ft_strcmp(char *s1, char *s2);
 void	set_fd(t_cmd *cm);
+int	ft_strcmp(char *s1, char *s2);
+void	set_error(char *message);
 /*For execute*/
 /*<-----pipe && redirect----->*/
 
@@ -145,6 +145,8 @@ void	process_re(t_cmd **cmd, t_list *tk_node);
 
 //variable_list.c
 bool	are_all_def_loc_var(void);
+
+void	delete_extra_pipes(t_list **list);
 
 /*..............................................signal....................................................*/
 void	signal_default(void);

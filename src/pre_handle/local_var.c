@@ -6,51 +6,26 @@
 /*   By: jingwu <jingwu@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 11:05:21 by jingwu            #+#    #+#             */
-/*   Updated: 2024/10/21 14:38:21 by jingwu           ###   ########.fr       */
+/*   Updated: 2024/10/23 14:26:53 by jingwu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 /*
-	The syntax of defining  enviroment varible: name=value
-	Rule:
-	1. there is no space between "name", "=" and "value", like
-	   name =123, name= 123 are all wrong;
-	2. the variable name only start with either letter or '_', and only
-	   contains letter, '_' and number.
-	   like 2name=123, *name=123, na$me=123 are all wrong;
-
-	f_equal: when loop the str, if encounter a "=" then f_equal=true;
-	f_alp_uds: when loop the str, if encounter a alphabeta or "_", then
-				f_alp_uds=true;
+	@function
+	work with checking_list_token_types() to return the type.
 */
-bool	is_defining_var(char *str)
+static int	return_value(int loc_v, int pipe, int others)
 {
-	int		i;
-	bool	f_equal;
-	bool	f_alp_uds;
-
-	i = -1;
-	f_equal = false;
-	f_alp_uds = false;
-	while (str[++i])
-	{
-		if (str[i] == '=')
-			f_equal = true;
-		else if (str[i] == '_' || ft_isalpha(str[i]))
-			f_alp_uds = true;
-		else if (!ft_isalpha(str[i]) && str[i] != '_'
-			&& !f_equal && !f_alp_uds)// the name start with non-alpha, non-'_', is illegal.
-			return (false);
-		else if (!ft_isalnum(str[i]) && str[i] != '_'
-			&& !f_equal)// there is illegal character in the name.
-			return (false);
-	}
-	if (f_equal == false)
-		return (false);
-//	add_node_to_list(&(ms()->local_var), str);
-	return (true);
+	if (loc_v == 0)
+		return (4);
+	else if (others > 0)
+		return (3);
+	else if (pipe > 0)
+		return (2);
+	else
+		return (1);
 }
 /*
 	@function
@@ -60,73 +35,159 @@ bool	is_defining_var(char *str)
 		1: only contain TK_LOC_V;
 		2: contain TK_LOC_V and TK_PIPE
 		3: contain at least one other token type except TK_LOC_V and TK_PIPE;
-		4: the list is empty;
+		4: there is no TK_LOC_V;
 */
 static int	checking_list_token_types(t_list *list)
 {
 	t_token	*token;
-	bool	just_loc_v;
+	int		loc_v;
+	int		pipe;
+	int		others;
 
-	just_loc_v = true;
+	loc_v = 0;
+	pipe = 0;
+	others = 0;
 	if (!list)
 		return (4);
 	while (list)
 	{
 		token = (t_token *)list->content;
 		if (token->tk_type != TK_LOC_V && token->tk_type != TK_PIPE)
-			return (3);
-		if (token->tk_type == TK_PIPE)
-			just_loc_v = false;
+			others++;
+		else if (token->tk_type == TK_PIPE)
+			pipe++;
+		else if (token->tk_type == TK_LOC_V)
+			loc_v++;
 		list = list->next;
 	}
-	if (just_loc_v == true)
-		return (1);
-	else
-		return (2);
+	return (return_value(loc_v, pipe, others));
 }
 
-// static void	delete_loc_var_node(void)
+/*
+	@function
+	While loop the token list, if found one TK_LOC_V type token is not valid defination variable,
+	then return true. If every TK_LOC_V type token is valid defination, then return false.
+
+	@return
+	true: there is at least one invalid variable defination
+	false: there is NO invalid variable defination
+*/
+static bool	is_there_invalid_defination(t_list *list)
+{
+	t_token	*token;
+
+	if (!list)
+		return (false);
+	while (list)
+	{
+		token = (t_token *)list->content;
+		if (token->tk_type == TK_LOC_V && is_defining_var(token->str) == false)
+			return (true);
+		list = list->next;
+	}
+	return (false);
+}
+static void	del_beginning_locv(t_list **list)
+{
+	t_token	*current;
+	t_list	*tmp;
+
+	if (!list || !*list)
+		return ;
+	while (*list)
+	{
+		current = (t_token *)((*list)->content);
+		if (current->tk_type == TK_LOC_V && is_defining_var(current->str) == true)
+		{
+			tmp = (*list);
+			(*list) = (*list)->next;
+			del_node(tmp);
+		}
+		else
+			return ;
+	}
+}
+
+// static void	del_end_locv(t_list *list)
 // {
-// 	t_list	*tmp;
+// 	t_list	*end_node;
 // 	t_token	*token;
 
-// 	tmp = ms()->tokens;
-// 		while (tmp)
-// 		{
-// 			token = (t_token *)(tmp->content);
-// 			if (token->tk_type == TK_LOC_V)
-// 				delete_token(token);
-// 			tmp = tmp->next;
-// 		}
-// 		tmp = ms()->tokens;
-// 		while (tmp)
-// 		{
-// 			token = (t_token *)(tmp->content);
-// 			if (token->tk_type == TK_PIPE)
-// 				delete_token(token);
-// 			else
-// 				break ;
-// 			tmp = tmp->next;
-// 		}
+// 	if (!list || list->next)
+// 		return ;
+// 	while (list->next && list->next->next)
+// 		list = list->next;
+// 	token = ((t_token *)list->next->content);
+// 	if (token->tk_type == TK_LOC_V && is_defining_var(token->str) == true)
+// 	{
+// 		end_node = list->next;
+// 		list->next = NULL;
+// 		del_node(end_node);
+// 	}
 // }
 
 /*
-	This funtion will loop the token list, to check if the input just
-	contains defining environment variable, there are three different
-	action based on the input.
-	1: name=123 a=3
-	2: name=123 | a=3
-	3: name=123 | echo a
+	@function
+	Delete the valid local variable defination in the token list. It is used when there is invalid
+	local variable defination in the token list. In this case, we need to delete the valid ones.
+	Need consider 3 conditions:
+	1. node is at the beginning; // need to do this part
+	2. node is at the middle of the list;
+	3. node is at the end of the list. // need to do this part
+	Thinking of pipe delete functions , to see if we can combine them together.
+*/
+static void	del_vaild_variable_define(t_list **list)
+{
+	t_token	*token;
+	t_list	*delete;
+	t_list	*tmp;
 
-	the corresponding action is:
-	1: saving the variable into local variable list, don't go to execution;
-	2: do nothing, don't go to the execution;
-	3: just execution "echo a" part; but now we didn't consider this contation.
+	if (!list)
+		return ;
+	del_beginning_locv(list);
+	tmp = *list;
+	while (tmp && tmp->next)
+	{
+		token = (t_token *)(tmp->next->content);
+		if (token->tk_type == TK_LOC_V && is_defining_var(token->str) == true)
+		{
+			delete = tmp->next;
+			tmp->next = delete->next;
+			del_node(delete);
+			continue ;
+		}
+		tmp = tmp->next;
+	}
+//	del_end_locv(*list);// it seems don't need this one
+}
 
+/*
 	type:
 		1: only contain TK_LOC_V;
 		2: contain TK_LOC_V and TK_PIPE
 		3: contain at least one other token type except TK_LOC_V and TK_PIPE;
+		4: there is no TK_LOC_V;
+
+	The different input cases and their actions:
+	type=1	1: name=123 a=3				--> saving variables, don't go to execution
+	type=1	2: name=23 1a=3				--> don't save any variable, delete "name=123", go to execution
+	type=2	3: name=123 | a=3			--> don't save any variable, don't go to execution
+	type=2	4: name=123 | 1a=3			--> don't save any variable, delete "name=123", go to execution
+	type=3	5: name=123 | echo a		--> don't save any variable, delete "name=123", go to execution
+	type=3	6: name=123 | 1name=123 | echo a	--> don't save any variable, delete "name=123", go to execution
+	type=4	7: echo a | ls -l			--> don't need to do anything, go to execution
+	Why we delete valid defination in some conditions?
+	Becasue it will simplify the exection part, in these conditions, these valid defination don't need to
+
+	be exectued.
+
+	Logic summary:
+	1. As long there is an INVAILD variable defination in the input or the type = 3, then:
+		- DON'T save any valid variable
+		- Delete all the valid variable definations
+		- Go to execution
+	2. if type = 1, add variables to the local variable list, restart the minishell;
+	3. if type = 2, restart the minishell
 */
 bool	are_all_def_loc_var(void)
 {
@@ -135,22 +196,23 @@ bool	are_all_def_loc_var(void)
 	int		type;
 
 	type = checking_list_token_types(ms()->tokens);
-	if (type == 2)
-		return (true);
-	if (type == 3)
+	if ((type == 1 || type == 2) && is_there_invalid_defination(ms()->tokens) == false)
 	{
-//		delete_loc_var_node();
-		return (false);
-	}
-	if (type == 1)
-	{
-		tmp = ms()->tokens;
-		while (tmp)
+		if (type == 1)
 		{
-			token = (t_token *)(tmp->content);
-			add_node_to_list(&(ms()->local_var), token->str);
-			tmp = tmp->next;
+			tmp = ms()->tokens;
+			while (tmp)
+			{
+				token = (t_token *)(tmp->content);
+				add_node_to_list(&(ms()->local_var), token->str);
+				tmp = tmp->next;
+			}
 		}
+		return (true);
 	}
-	return (true);
+	else if (is_there_invalid_defination(ms()->tokens) == true || type == 3)
+		del_vaild_variable_define(&ms()->tokens);
+	if (type == 2 || type == 3)
+		delete_extra_pipes(&ms()->tokens);
+	return (false);
 }
