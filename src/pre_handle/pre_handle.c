@@ -122,7 +122,6 @@ bool	pre_handle(void)
 	restruct_token();
 	expander();
 	add_variable_type(ms()->tokens);
-
 	if (are_all_def_loc_var() == true)
 	{
 // printf("<------------  are all def == true------------------->\n");//for testing

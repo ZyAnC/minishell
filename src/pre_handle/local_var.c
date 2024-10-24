@@ -107,7 +107,6 @@ static void	set_token_str_empty(t_list *list)
 		}
 		list = list->next;
 	}
-}
 
 /*
 	type:
