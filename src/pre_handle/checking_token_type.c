@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "minishell.h"
+#include "minishell.h"
 
 bool	is_pipe(t_token *token)
 {
@@ -39,6 +39,7 @@ bool	is_dir_or_pipe(t_token *token)
 		return (true);
 	return (false);
 }
+
 /*
 	Here the seperators contain:|, <,>,',", space, \0,
 */
@@ -51,4 +52,3 @@ bool	is_seperator(char c)
 		return (false);
 	return (true);
 }
-

@@ -18,6 +18,7 @@ static void	merge(t_list *list)
 	t_token	*next;
 	char	*tmp;
 	t_list	*delete;
+
 	while (list)
 	{
 		cur = list->content;
@@ -83,15 +84,16 @@ static void	assign_token_index(void)
 		list = list->next;
 	}
 }
+
 /*
 	@function
-	Change the environment variable's type to TK_ENV_V, and local variable's type to TK_LOC_V.
-	Before theirs types are TK_WORD.
+	Change the environment variable's type to TK_ENV_V, and local variable's
+	type to TK_LOC_V. Before theirs types are TK_WORD.
 */
 static void	add_variable_type(t_list *list)
 {
-	t_token *token;
-	t_token *next;
+	t_token	*token;
+	t_token	*next;
 
 	if (!list)
 		return ;
@@ -118,24 +120,16 @@ bool	pre_handle(void)
 		return (false);
 	if (!check_syntax())
 		return (false);
-	merge(ms() ->tokens);
+	merge(ms()->tokens);
 	restruct_token();
 	expander();
 	add_variable_type(ms()->tokens);
 	if (are_all_def_loc_var() == true)
-	{
-// printf("<------------  are all def == true------------------->\n");//for testing
-// printf("local var is:\n");//for testing !!!!!!!!!!!!!!!!!!!!!
-// print_list(ms()->local_var, 3);//for testing !!!!!!!!!!!!!!!!!!!!!
-// printf("token list is:\n");//for testing !!!!!!!!!!!!!!!!!!!!!
-// print_list(ms()->tokens, 1);//for testing !!!!!!!!!!!!!!!!!!!!!
 		return (false);
-	}
 	del_empty_node_extra_pipe(&ms()->tokens);
 	assign_token_index();
 	if (!parsing())
 		return (false);
 	recorrect_cmd_intype(ms()->cmds);
-//print_cmd();//for testing !!!!!!!!!!!!!!!!!!!!!
 	return (true);
 }

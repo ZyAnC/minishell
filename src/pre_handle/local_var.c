@@ -6,7 +6,7 @@
 /*   By: jingwu <jingwu@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 11:05:21 by jingwu            #+#    #+#             */
-/*   Updated: 2024/10/24 11:35:18 by jingwu           ###   ########.fr       */
+/*   Updated: 2024/10/24 11:37:40 by jingwu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ static int	return_value(int loc_v, int pipe, int others)
 	else
 		return (1);
 }
+
 /*
 	@function
 	Checking the passed list's token types.
@@ -65,8 +66,9 @@ static int	checking_list_token_types(t_list *list)
 
 /*
 	@function
-	While loop the token list, if found one TK_LOC_V type token is not valid defination variable,
-	then return true. If every TK_LOC_V type token is valid defination, then return false.
+	While loop the token list, if found one TK_LOC_V type token is not valid
+	defination variable, then return true. If every TK_LOC_V type token is
+	valid defination, then return false.
 
 	@return
 	true: there is at least one invalid variable defination
@@ -90,12 +92,12 @@ static bool	is_there_invalid_defination(t_list *list)
 
 /*
 	@function
-	Working with are_all_def_loc_var() function, set the token str to empty when it fullfills certain
-	conditions.
+	Working with are_all_def_loc_var() function, set the token str to empty
+	when it fullfills certain conditions.
 */
 static void	set_token_str_empty(t_list *list)
 {
-	t_token *token;
+	t_token	*token;
 
 	while (list)
 	{
@@ -108,6 +110,7 @@ static void	set_token_str_empty(t_list *list)
 		list = list->next;
 	}
 }
+
 /*
 	type:
 		1: only contain TK_LOC_V;
@@ -116,24 +119,31 @@ static void	set_token_str_empty(t_list *list)
 		4: there is no TK_LOC_V;
 
 	The different input cases and their actions:
-	type=1	1: name=123 a=3				--> saving variables, don't go to execution
-	type=1	2: name=23 1a=3				--> don't save any variable, empty "name=123", go to execution
-	type=2	3: name=123 | a=3			--> don't save any variable, don't go to execution
-	type=2	4: name=123 | 1a=3			--> don't save any variable, empty "name=123", go to execution
-	type=3	5: name=123 | echo a		--> don't save any variable, empty "name=123", go to execution
-	type=3	6: name=123 | 1name=123 | echo a	--> don't save any variable, empty "name=123", go to execution
-	type=4	7: echo a | ls -l			--> don't need to do anything, go to execution
+	type=1	1: name=123 a=3		--> saving variables, don't go to execution
+	type=1	2: name=23 1a=3		--> don't save any variable,
+									empty "name=123", go to execution
+	type=2	3: name=123 | a=3	--> don't save any variable,
+									don't go to execution
+	type=2	4: name=123 | 1a=3	--> don't save any variable,
+									empty "name=123", go to execution
+	type=3	5: name=123 | echo a	--> don't save any variable,
+									empty "name=123", go to execution
+	type=3	6: name=123 | 1name=123 | echo a	--> don't save any variable,
+											empty "name=123", go to execution
+	type=4	7: echo a | ls -l	--> don't need to do anything, go to execution
 
 	Why we set valid defination str to empty in some conditions?
-	In subsequent process, we will delete these empty tokens. Becasue other process will generate
-	empty token too. So we combine the delete together.
+	In subsequent process, we will delete these empty tokens. Becasue other
+	process will generate empty token too. So we combine the delete together.
 
 	Logic summary:
-	1. As long there is an INVAILD variable defination in the input or the type = 3, then:
+	1. As long there is an INVAILD variable defination in the input or the
+	   type = 3, then:
 		- DON'T save any valid variable
 		- Delete all the valid variable definations
 		- Go to execution
-	2. if type = 1, add variables to the local variable list, restart the minishell;
+	2. if type = 1, add variables to the local variable list, restart the
+	   minishell;
 	3. if type = 2, restart the minishell
 */
 bool	are_all_def_loc_var(void)
@@ -143,7 +153,8 @@ bool	are_all_def_loc_var(void)
 	int		type;
 
 	type = checking_list_token_types(ms()->tokens);
-	if ((type == 1 || type == 2) && is_there_invalid_defination(ms()->tokens) == false)
+	if ((type == 1 || type == 2)
+		&& is_there_invalid_defination(ms()->tokens) == false)
 	{
 		if (type == 1)
 		{

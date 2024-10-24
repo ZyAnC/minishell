@@ -14,8 +14,9 @@
 
 /*
 	@function
-	Work with function delete_extra_pipes(), to delete extra pipes in the token list after local variable
-	checking. This function is just delete the pipes which are at the beiginning of the list.
+	Work with function delete_extra_pipes(), to delete extra pipes in the
+	token list after local variable checking. This function is just delete
+	the pipes which are at the beiginning of the list.
 */
 static void	del_beginning_pipes(t_list **list)
 {
@@ -40,7 +41,7 @@ static void	del_beginning_pipes(t_list **list)
 
 static void	delete_end_pipe(t_list *list)
 {
-	t_list *end_node;
+	t_list	*end_node;
 
 	if (!list || !list->next)
 		return ;
@@ -56,8 +57,9 @@ static void	delete_end_pipe(t_list *list)
 
 /*
 	@function
-	After checking the local variables, in some conditions, the valid variable definations will be deleted.
-	Then it might leave extra pipe token in the list, so we need to delete these extra pipes
+	After checking the local variables, in some conditions, the valid variable
+	definations will be deleted. Then it might leave extra pipe token in the
+	list, so we need to delete these extra pipes
 	The node might be in three places:
 	1. at the beginnings;
 	2. in the middle;
@@ -112,16 +114,17 @@ static void	del_beginning_empty_str(t_list **list)
 			return ;
 	}
 }
+
 /*
 	@function
-	Before create cmd list, we need to delete the empty tokens and extra pipes that
-	generated during pre-process.
+	Before create cmd list, we need to delete the empty tokens and extra pipes
+	that generated during pre-process.
 	empty tokens:
-	- input "$n | echo a", if there is no variable name is 'n', then it will generate
-	  an empty token, after delete this empty, it leaves extra pipes;
-	- input "n=2 | 1c=3 | a=b", because there is an invalid local variable define in
-	  the input, in this case, in the pre-process (are_all_def_loc_var()) will set
-	  the valid token n=2 and a=b to empty str.
+	- input "$n | echo a", if there is no variable name is 'n', then it will
+	  generate an empty token, after delete this empty, it leaves extra pipes;
+	- input "n=2 | 1c=3 | a=b", because there is an invalid local variable
+	  define in the input, in this case, in the pre-process
+	  (are_all_def_loc_var()) will set the valid token n=2 and a=b to empty str.
 */
 void	del_empty_node_extra_pipe(t_list **list)
 {

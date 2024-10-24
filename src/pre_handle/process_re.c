@@ -15,7 +15,8 @@
 static void	handle_in_re(t_cmd **cmd, t_list *tk_node)
 {
 	(*cmd)->intype = TK_IN_RE;
-	(*cmd)->infile[(*cmd)->ct_in++] = ft_strdup(((t_token *)((tk_node)->content))->arg);
+	(*cmd)->infile[(*cmd)->ct_in++]
+		= ft_strdup(((t_token *)((tk_node)->content))->arg);
 	if ((*cmd)->ct_in == (*cmd)->ifnum)
 		(*cmd)->inf = ft_strdup(((t_token *)((tk_node)->content))->arg);
 }
@@ -23,13 +24,15 @@ static void	handle_in_re(t_cmd **cmd, t_list *tk_node)
 static void	handle_hdoc(t_cmd **cmd, t_list *tk_node)
 {
 	(*cmd)->intype = TK_HDOC;
-	(*cmd)->limiter[(*cmd)->ct_del++] = ft_strdup(((t_token *)((tk_node)->content))->arg);
+	(*cmd)->limiter[(*cmd)->ct_del++]
+		= ft_strdup(((t_token *)((tk_node)->content))->arg);
 }
 
 static void	handle_out_re(t_cmd **cmd, t_list *tk_node)
 {
-	(*cmd)->outype = ((t_token *)(tk_node->content)) ->tk_type;
-	(*cmd)->outfile[(*cmd)->ct_out++] = ft_strdup(((t_token *)((tk_node)->content))->arg);
+	(*cmd)->outype = ((t_token *)(tk_node->content))->tk_type;
+	(*cmd)->outfile[(*cmd)->ct_out++]
+		= ft_strdup(((t_token *)((tk_node)->content))->arg);
 	if ((*cmd)->ct_out == (*cmd)->ofnum)
 		(*cmd)->of = ft_strdup(((t_token *)((tk_node)->content))->arg);
 }

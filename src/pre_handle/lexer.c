@@ -17,7 +17,7 @@
 */
 static bool	is_meta_char(char c)
 {
-	if(c == '|' || c == '<' || c == '>')
+	if (c == '|' || c == '<' || c == '>')
 		return (true);
 	else
 		return (false);
@@ -54,12 +54,12 @@ static int	read_words(int i)
 	int	j;
 
 	j = 0;
-	if (ms() ->input[i] == '"')
-		j = find_match("\"", &ms() ->input[i + 1]) + 2;
-	else if (ms() ->input[i] == '\'')
-		j = find_match("'", &ms() ->input[i + 1]) + 2;
+	if (ms()->input[i] == '"')
+		j = find_match("\"", &ms()->input[i + 1]) + 2;
+	else if (ms()->input[i] == '\'')
+		j = find_match("'", &ms()->input[i + 1]) + 2;
 	else
-		j = find_match("<>'\"| ", &ms() ->input[i]);
+		j = find_match("<>'\"| ", &ms()->input[i]);
 	return (j);
 }
 
@@ -71,9 +71,12 @@ static int	read_words(int i)
 		token: 2 tokens '>>' and '<';
 	and so on and so forth.
 
-	test cases: (for case 2 and 3 , in our minishell will both consider them as wrong token)
-	1. "echo "hello" >>> file.txt" -----> bash: syntax error near unexpected token `>'
-	3. echo hello ||| echo dog ----> bash: syntax error near unexpected token `|'
+	test cases: (for case 2 , in our minishell will consider it as wrong
+	token)
+	1. "echo "hello" >>> file.txt" -----> bash: syntax error near unexpected
+	   token `>'
+	2. echo hello ||| echo dog ----> bash: syntax error near unexpected
+	   token `|'
 */
 static int	read_meta_char(int i)
 {
@@ -85,13 +88,14 @@ static int	read_meta_char(int i)
 	else if (!ft_strncmp(&(ms()->input[i]), "<<", 2))
 		j = add_token(ft_strdup("<<"), TK_HDOC, false);
 	else if (!ft_strncmp(&(ms()->input[i]), ">>", 2))
-		j =  add_token(ft_strdup(">>"), TK_APPEND, false);
-	else if (ms() ->input[i] == '<')
+		j = add_token(ft_strdup(">>"), TK_APPEND, false);
+	else if (ms()->input[i] == '<')
 		j = add_token(ft_strdup("<"), TK_IN_RE, false);
-	else if (ms() ->input[i] == '>')
+	else if (ms()->input[i] == '>')
 		j = add_token(ft_strdup(">"), TK_OUT_RE, false);
 	return (j);
 }
+
 /*
 	This function will read the input and seperate it into token and words.
 	Note:
@@ -107,7 +111,8 @@ bool	lexer(void)
 	while (ms()->input[i])
 	{
 		j = 0;
-		while(ms()->input[i] && (ms()->input[i] == ' ' || ms()->input[i] == '\t'))
+		while (ms()->input[i]
+			&& (ms()->input[i] == ' ' || ms()->input[i] == '\t'))
 			i++;
 		if (!ms()->input[i])
 			return (false);
@@ -121,4 +126,3 @@ bool	lexer(void)
 	}
 	return (true);
 }
-

@@ -1,13 +1,14 @@
 #include "./minishell.h"
 
-static	void ft_exit_tool(char *str)
+static void	ft_exit_tool(char *str)
 {
-		ft_putstr_fd("exit\n", 1);
-		ft_putstr_fd("minishell: exit: ", 2);
-		ft_putstr_fd(str, 2);
-		ft_putstr_fd(": numeric argument required\n", 2);
-		ms()->exit = 2;
+	ft_putstr_fd("exit\n", 1);
+	ft_putstr_fd("minishell: exit: ", 2);
+	ft_putstr_fd(str, 2);
+	ft_putstr_fd(": numeric argument required\n", 2);
+	ms()->exit = 2;
 }
+
 /*
 	@return
 	0: the str is not a number;
@@ -15,12 +16,12 @@ static	void ft_exit_tool(char *str)
 */
 static int	ft_isnum(char	*str)
 {
-	int i;
+	int	i;
 
 	i = 0;
-	while(str[i])
-		if(!ft_isdigit(str[i++]))
-			return(0);
+	while (str[i])
+		if (!ft_isdigit(str[i++]))
+			return (0);
 	return (1);
 }
 
@@ -49,6 +50,7 @@ int	isvalid(char *str)
 	else
 		return (ft_strcmp(str, "9223372036854775807") > 0);
 }
+
 /*
 	There are 4 different cases;
 	1. input:		exit
@@ -73,20 +75,17 @@ int	isvalid(char *str)
 	   exit_code:	2
 	   exit bash?	yes
 */
-
-
 void	ft_exit(char **cmd)
 {
 	int	i;
 
 	i = 0;
-	while(cmd[i])
+	while (cmd[i])
 		i++;
 	if (i > 2 && ft_isnum(cmd[1]))
 	{
 		ft_putstr_fd("exit\n", 1);
 		ft_putstr_fd("minishell: exit: too many arguments\n", 2);
-//		ms()->exit = 2;// should be 1, not 2
 		ms()->exit = 1;
 	}
 	else if (i > 2 && !ft_isnum(cmd[1]))
@@ -100,4 +99,3 @@ void	ft_exit(char **cmd)
 	}
 	restart(1);
 }
-

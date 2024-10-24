@@ -60,16 +60,17 @@ bool	check_syntax(void)
 
 	tk_list_manager(RESET);
 	if (is_pipe(tk_list_manager(CUR_CNT)))
-		return(print_error(PIPE_STX_ERR, 1));
+		return (print_error(PIPE_STX_ERR, 1));
 	while (tk_list_manager(CUR_CNT))
 	{
 		next_tk = tk_list_manager(NEXT_CNT);
-		if (is_dir(tk_list_manager(CUR_CNT)) && (!next_tk || is_dir_or_pipe(tk_list_manager(NEXT_CNT))))
-			return(stx_error(next_tk));
-		if(is_pipe(tk_list_manager(CUR_CNT)))
+		if (is_dir(tk_list_manager(CUR_CNT))
+			&& (!next_tk || is_dir_or_pipe(tk_list_manager(NEXT_CNT))))
+			return (stx_error(next_tk));
+		if (is_pipe(tk_list_manager(CUR_CNT)))
 		{
 			if (!next_tk || is_pipe(tk_list_manager(NEXT_CNT)))
-				return(print_error(PIPE_STX_ERR, 1));
+				return (print_error(PIPE_STX_ERR, 1));
 		}
 		tk_list_manager(NEXT);
 	}
