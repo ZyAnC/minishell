@@ -6,7 +6,7 @@
 /*   By: jingwu <jingwu@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/02 08:21:42 by jingwu            #+#    #+#             */
-/*   Updated: 2024/10/22 13:17:30 by jingwu           ###   ########.fr       */
+/*   Updated: 2024/10/24 09:17:23 by jingwu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,4 +69,30 @@ bool	allocate_mem(t_cmd **cmd)
 			return (false);
 	}
 	return (true);
+}
+
+/*
+	@function
+	In some condition to change a cmd's intypt to TK_NONE;
+	for "ls -l >in | cat", for the second part cmd "cat", the intype should be TK_NONE, not
+	TK_PIPE.
+	The rule is as long the former cmd has ">" or ">>" then the next cmd's intype is TK_NONE.
+*/
+void	recorrect_cmd_intype(t_cmd *list)
+{
+	bool	flag;
+
+	flag = false;
+	if (!list)
+		return ;
+	while (list)
+	{
+		if (flag == true)
+			list->intype = TK_NONE;
+		if (list->ct_out > 0)
+			flag = true;
+		else
+			flag =false;
+		list = list->next;
+	}
 }

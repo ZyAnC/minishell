@@ -6,7 +6,7 @@
 /*   By: jingwu <jingwu@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 08:43:11 by jingwu            #+#    #+#             */
-/*   Updated: 2024/10/22 13:05:16 by jingwu           ###   ########.fr       */
+/*   Updated: 2024/10/24 07:38:44 by jingwu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,10 @@ static void	expand(t_token *token)
 		2. echo $$name
 		3. echo "$name' abc"
 		4. echo 'abc $name out"put'
+	Rule:
+	If you can find the variable, then replace the value, otherwise, delete the token.
+	For example "$EMPTY echo hi", there is no EMPTY in the variable list, then delete it,
+	just pass "echo hi" to the execution part.
 */
 void	expander(void)
 {

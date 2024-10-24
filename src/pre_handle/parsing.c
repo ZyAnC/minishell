@@ -6,7 +6,7 @@
 /*   By: jingwu <jingwu@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 12:24:17 by jingwu            #+#    #+#             */
-/*   Updated: 2024/10/22 13:18:32 by jingwu           ###   ########.fr       */
+/*   Updated: 2024/10/24 08:55:07 by jingwu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ bool	parsing(void)
 	bool	sign;
 
 	if (!ms() ->tokens)
-		return (true);
+		return (false);
 	i = 0;
 	sign = true;
 	tmp = ms() ->tokens;
