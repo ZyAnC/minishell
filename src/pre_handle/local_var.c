@@ -6,7 +6,7 @@
 /*   By: jingwu <jingwu@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 11:05:21 by jingwu            #+#    #+#             */
-/*   Updated: 2024/10/24 09:14:39 by jingwu           ###   ########.fr       */
+/*   Updated: 2024/10/24 11:35:18 by jingwu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ static void	set_token_str_empty(t_list *list)
 		}
 		list = list->next;
 	}
-
+}
 /*
 	type:
 		1: only contain TK_LOC_V;
