@@ -6,7 +6,7 @@
 /*   By: jingwu <jingwu@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 12:48:19 by jingwu            #+#    #+#             */
-/*   Updated: 2024/10/23 14:29:19 by jingwu           ###   ########.fr       */
+/*   Updated: 2024/10/24 09:47:43 by jingwu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,6 @@ static void	restruct_token(void)
 	}
 }
 
-
 static void	assign_token_index(void)
 {
 	t_list	*list;
@@ -111,32 +110,6 @@ static void	add_variable_type(t_list *list)
 	}
 }
 
-/*
-	@function
-	In some condition to change a cmd's intypt to TK_NONE;
-	for "ls -l >in | cat", for the second part cmd "cat", the intype should be TK_NONE, not
-	TK_PIPE.
-	The rule is as long the former cmd has ">" or ">>" then the next cmd's intype is TK_NONE.
-*/
-void	recorrect_cmd_intype(t_cmd *list)
-{
-	bool	flag;
-
-	flag = false;
-	if (!list)
-		return ;
-	while (list)
-	{
-		if (flag == true)
-			list->intype = TK_NONE;
-		if (list->ct_out > 0)
-			flag = true;
-		else
-			flag =false;
-		list = list->next;
-	}
-}
-
 bool	pre_handle(void)
 {
 	if (!check_quote())
@@ -149,18 +122,17 @@ bool	pre_handle(void)
 	restruct_token();
 	expander();
 	add_variable_type(ms()->tokens);
-// // printf("<------------  after add vari type------------------->\n");//for testing
-// printf("token list is:\n");//for testing !!!!!!!!!!!!!!!!!!!!!
-// print_list(ms()->tokens, 1);//for testing !!!!!!!!!!!!!!!!!!!!!
+
 	if (are_all_def_loc_var() == true)
 	{
-//  		printf("<------------  are all def == true------------------->\n");//for testing
+// printf("<------------  are all def == true------------------->\n");//for testing
 // printf("local var is:\n");//for testing !!!!!!!!!!!!!!!!!!!!!
 // print_list(ms()->local_var, 3);//for testing !!!!!!!!!!!!!!!!!!!!!
 // printf("token list is:\n");//for testing !!!!!!!!!!!!!!!!!!!!!
 // print_list(ms()->tokens, 1);//for testing !!!!!!!!!!!!!!!!!!!!!
 		return (false);
 	}
+	del_empty_node_extra_pipe(&ms()->tokens);
 	assign_token_index();
 	if (!parsing())
 		return (false);

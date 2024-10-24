@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tool.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jingwu <jingwu@student.hive.fi>            +#+  +:+       +#+        */
+/*   By: yzheng <yzheng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/02 09:04:56 by yzheng            #+#    #+#             */
-/*   Updated: 2024/10/14 13:38:16 by jingwu           ###   ########.fr       */
+/*   Updated: 2024/10/23 14:15:34 by yzheng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,15 +50,35 @@ char	*ft_strndup(char *src, int size)
 	dest[i] = '\0';
 	return (dest);
 }
-
+void	set_error(char *message)
+{
+	if (!access(message, F_OK))
+	{
+		ft_putstr_fd("minishell: ", 2);
+		if(message)
+			ft_putstr_fd(message, 2);
+		ft_putstr_fd(" : Permission denied", 2);
+		ms()->exit = 1;
+	}
+	else
+	{
+		ft_putstr_fd("minishell: ", 2);
+		if(message)
+			ft_putstr_fd(message, 2);
+		ft_putstr_fd(" : No such file or directory", 2);
+		ms()->exit = 1;
+	}
+	ft_putchar_fd('\n', 2);
+}
 void	set_fd(t_cmd *cm)
 {
+
 	if (cm->intype == TK_IN_RE)
 		(ms()->in_fd) = open(cm->inf, O_RDONLY, 0444);
 	if (cm->intype == TK_PIPE)
 		(ms()->in_fd) = ms()->fd[0];
 	if (ms()->in_fd == -1)
-		open_error(cm->inf);
+		set_error(cm->inf);
 	else if (cm->outype  == TK_OUT_RE)
 		(ms()->out_fd) = open(cm->of, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	else if (cm->outype == TK_APPEND)
@@ -66,7 +86,7 @@ void	set_fd(t_cmd *cm)
 	else if (cm->outype == TK_NONE)
 		(ms()->out_fd) = STDOUT_FILENO;
 	if (ms()->out_fd == -1)
-		open_error(cm->of);
+		set_error(cm->of);
 }
 
 char *replace_first_substring(char *str, char *old_sub, char *new_sub)

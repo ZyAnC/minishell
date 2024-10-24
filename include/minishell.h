@@ -6,7 +6,7 @@
 /*   By: jingwu <jingwu@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 11:00:09 by yzheng            #+#    #+#             */
-/*   Updated: 2024/10/23 08:58:17 by jingwu           ###   ########.fr       */
+/*   Updated: 2024/10/24 09:45:28 by jingwu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,6 @@
 /*                                             err_type                                         */
 # define MEMORY_ERROR		"error: Could not allocate memory"
 # define UNQUOTED			"error: The input is quoted incorrectly"
-//# define ADD_TOKEN_FAILED	"error: Could not add a new token node to token"
 # define PIPE_STX_ERR		"minishell: syntax error near unexpected token `|'"
 # define NL_STX_ERR			"minishell: syntax error near unexpected token `newline'"
 # define IN_RE_STX_ERR		"minishell: syntax error near unexpected token `<'"
@@ -75,9 +74,9 @@ void	close_all(int	prev_fd);
 void	check_infile(t_cmd *cm);
 char	*ft_strndup(char *src, int size);
 char	*replace_first_substring(char *str, char *old_sub, char *new_sub);
-
-int	ft_strcmp(char *s1, char *s2);
 void	set_fd(t_cmd *cm);
+int	ft_strcmp(char *s1, char *s2);
+void	set_error(char *message);
 /*For execute*/
 /*<-----pipe && redirect----->*/
 
@@ -108,47 +107,39 @@ char	*get_env(char	*name);
 // add_cmd_utils.c
 void	count(t_cmd **cmd, t_list *tk_lt, int start, int end);
 bool	allocate_mem(t_cmd **cmd);
-
+void	recorrect_cmd_intype(t_cmd *list);
 // checking_token_type.c
 bool	is_pipe(t_token *token);
 bool	is_dir(t_token *token);
 bool	is_dir_or_pipe(t_token *token);
 bool	is_seperator(char c);
-bool	is_defining_var(char *str);
-
 // checking.c
-bool	check_syntax(void);
 bool	check_quote(void);
+bool	check_syntax(void);
 bool	check_mergerable(char *matcher, char *str, int index);
-
+// del_empty_node_extra_pipe.c
+void	del_empty_node_extra_pipe(t_list **list);
 // expander.c
 void	expander(void);
-
 // lexer.c
 bool	lexer(void);
-
+// local_var.c
+bool	are_all_def_loc_var(void);
 // operate_token.c
 t_token	*new_token(char *str, t_token_type tk_type, bool merge);
 int		add_token(char *str, t_token_type token, bool merge);
 t_token	*tk_list_manager(t_list_position psn);
-void	del_node(t_list *node);
 void	delete_token(t_token *token);
-
+void	del_node(t_list *node);
 // parsing.c
 bool	parsing(void);
-
 // pre_handle.c
 bool	pre_handle(void);
-
 // process_re.c
 void	process_re(t_cmd **cmd, t_list *tk_node);
 
-//variable_list.c
-bool	are_all_def_loc_var(void);
-
-void	delete_extra_pipes(t_list **list);
-
 /*..............................................signal....................................................*/
+
 void	signal_default(void);
 void	signal_heredoc(void);
 void	signal_child(void);
@@ -174,8 +165,11 @@ void	free_token_list(void);
 void	free_cmd_list(void);
 void	free_local_var_list(void);
 
-
-
+//variable_list.c
+bool	is_defining_var(char *str);
+t_env	*new_variable(char *name, char *value);
+char	*get_variable_value(char *env_name);
+void	add_node_to_list(t_list **list, char *str);
 
 
 // below are for testing!!!!!!!!!
