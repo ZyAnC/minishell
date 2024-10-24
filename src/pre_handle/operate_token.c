@@ -41,14 +41,15 @@ int	add_token(char *str, t_token_type token, bool merge)
 	node = new_token(str, token, merge);
 	if (!node)
 		return (-1);
-	ft_lstadd_back(&ms() ->tokens, (ft_lstnew(node)));
+	ft_lstadd_back(&ms()->tokens, (ft_lstnew(node)));
 	return (ft_strlen(str));
 }
 
 /*
 	@Why I need this function?
-	Becasue if I don't use it, then if I want to get the value of a t_token type data,
-	I need write "((t_token *)(ms() ->tokens))->str", it is too looooooong.
+	Becasue if I don't use it, then if I want to get the value of a t_token
+	type data, I need write "((t_token *)(ms() ->tokens))->str", it is too
+	looooooong.
 
 	psn == RESET
 		SET the tk_list to pointer to the head of list tokens;
@@ -64,7 +65,7 @@ t_token	*tk_list_manager(t_list_position psn)
 	static t_list	*tk_list = NULL;
 
 	if (psn == RESET)
-		tk_list = ms() ->tokens;
+		tk_list = ms()->tokens;
 	else if (psn == NEXT)
 		tk_list = tk_list->next;
 	else if (psn == CUR_CNT && tk_list)

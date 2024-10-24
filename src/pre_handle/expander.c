@@ -17,19 +17,20 @@
 	For example:
 		1. $cat, will just return "$cat" as the env_name;
 */
-static char *get_env_name(char *str)
+static char	*get_env_name(char *str)
 {
 	int		i;
 
 	i = 0;
-	if(str[i] == '$')
+	if (str[i] == '$')
 		i++;
 	if (str[i] == '?')
 		return (ft_strdup("$?"));
 	while (str[i] && (ft_isalnum(str[i]) || str[i] == '_'))
 		i++;
-	return (ft_substr(str, 0 , i));
+	return (ft_substr(str, 0, i));
 }
+
 /*
 	The function will replace name with value, then return the newstr.
 */
@@ -67,7 +68,7 @@ static void	expand(t_token *token)
 		if (!name)
 			return ;
 		if (!ft_strcmp(name, "$?"))
-			value = ft_itoa(ms() ->exit);
+			value = ft_itoa(ms()->exit);
 		else
 			value = get_variable_value(name);
 		tmp = token->str;
@@ -77,23 +78,26 @@ static void	expand(t_token *token)
 		free(tmp);
 	}
 }
+
 /*
 	@How to check if the env is needed expaned or not?
-	Rule: when env is quoted by double quote, or not quoted, they need to expand.
+	Rule: when env is quoted by double quote, or not quoted, they need to
+	expand.
 	The conditions need to be considerd:
 		1. echo $?
 		2. echo $$name
 		3. echo "$name' abc"
 		4. echo 'abc $name out"put'
 	Rule:
-	If you can find the variable, then replace the value, otherwise, delete the token.
-	For example "$EMPTY echo hi", there is no EMPTY in the variable list, then delete it,
-	just pass "echo hi" to the execution part.
+	If you can find the variable, then replace the value, otherwise, delete
+	the token.For example "$EMPTY echo hi", there is no EMPTY in the variable
+	list, then delete it,just pass "echo hi" to the execution part.
 */
 void	expander(void)
 {
 	t_token	*token;
 	char	*str;
+
 	tk_list_manager(RESET);
 	while (tk_list_manager(CUR_CNT))
 	{
