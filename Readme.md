@@ -466,7 +466,11 @@ node cmd[2]=
         ct_w=2
 ```
 ## Execution
-
+For execution part,the basic idea is "there is in then there should out on another side" so firstly set in_fd and out_fd base on intype and outype.if there was nothing then choose standard in and out.the divide it by different type,for example
+	ls   |   "in=none out=pipe" so we need create a pipe
+ 	ls      | ls    "if out!= pipe then we have 2 option only  cmd or with pipe"
+And you should noticed that redirect always have highest priority	
+ls > | cat  for this command we consider that ls > | outype = out which means redirect out and | cat will take nothing for redirect in  intype = none cause nothing pass to it through previous command
 ## knowledge sharing
 
 ### signal
