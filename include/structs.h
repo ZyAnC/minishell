@@ -6,7 +6,7 @@
 /*   By: yzheng <yzheng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 10:57:07 by jingwu            #+#    #+#             */
-/*   Updated: 2024/10/23 14:35:10 by yzheng           ###   ########.fr       */
+/*   Updated: 2024/10/28 15:14:35 by yzheng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,6 +123,8 @@ typedef struct s_ms
 	struct s_list	*env_list;
 	struct s_list	*local_var;
 	struct s_cmd	*cmds;
+	char			**file_error;
+	int				err;
 }	t_ms;
 
 /*
@@ -182,6 +184,8 @@ typedef struct s_cmd
 	int				ct_out;
 	int				ct_del;
 	int				ct_w;
+	int				prev_fd;
+	struct s_list    *iolist;
 	struct s_cmd	*next;
 }	t_cmd;
 

@@ -137,6 +137,6 @@ int main(int  ac, char **av, char **env)
 	init_ms(env);
 	signal_default();
 	buildshell();
-	return (0);
+	return (ms()->exit);
 }
 

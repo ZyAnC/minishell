@@ -6,22 +6,24 @@
 /*   By: jingwu <jingwu@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 12:24:17 by jingwu            #+#    #+#             */
-/*   Updated: 2024/10/22 13:18:32 by jingwu           ###   ########.fr       */
+/*   Updated: 2024/10/24 08:55:07 by jingwu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 /*
-	TK_type between 6 to 10 are : 	TK_SINGLE_QT, TK_DOUBLE_QT, TK_WORD,TK_LOC_V, TK_ENV_V.
+	TK_type between 6 to 10 are : 	TK_SINGLE_QT, TK_DOUBLE_QT, TK_WORD,
+	TK_LOC_V, TK_ENV_V.
 */
 static void	action(t_token *token, t_cmd **cmd, t_list *tmp, int end)
 {
 	if (is_dir(token))
 		process_re(cmd, tmp);
 	else if (token->tk_type >= 6 && token->tk_type <= 10)
-			(*cmd)->cmd[(*cmd)->ct_w++] = ft_strdup(token->str);
-	if (token->idx == end && token->tk_type == TK_PIPE && (*cmd)->outype == TK_NONE)
+		(*cmd)->cmd[(*cmd)->ct_w++] = ft_strdup(token->str);
+	if (token->idx == end && token->tk_type == TK_PIPE
+		&& (*cmd)->outype == TK_NONE)
 		(*cmd)->outype = TK_PIPE;
 }
 
@@ -44,7 +46,7 @@ static t_cmd	*new_cmd(int start, int end)
 	{
 		token = tmp->content;
 		if (token->idx >= start && token->idx <= end)
-			action(token, &cmd_nd, tmp,end);
+			action(token, &cmd_nd, tmp, end);
 		if (token->idx > end)
 			break ;
 		tmp = tmp->next;
@@ -59,12 +61,11 @@ static bool	add_cmd(t_cmd *new)
 
 	if (!new)
 		return (false);
-
-	if (!(ms() ->cmds))
-		ms() ->cmds = new;
+	if (!(ms()->cmds))
+		ms()->cmds = new;
 	else
 	{
-		tmp = ms() ->cmds;
+		tmp = ms()->cmds;
 		while (tmp->next != NULL)
 			tmp = tmp->next;
 		tmp->next = new;
@@ -73,7 +74,8 @@ static bool	add_cmd(t_cmd *new)
 }
 
 /*
-	This function will group tokens seperated by '|', then add them into cmd_list;
+	This function will group tokens seperated by '|', then add them into
+	cmd_list;
 */
 bool	parsing(void)
 {
@@ -82,11 +84,11 @@ bool	parsing(void)
 	int		i;
 	bool	sign;
 
-	if (!ms() ->tokens)
-		return (true);
+	if (!ms()->tokens)
+		return (false);
 	i = 0;
 	sign = true;
-	tmp = ms() ->tokens;
+	tmp = ms()->tokens;
 	while (tmp)
 	{
 		token = (t_token *)(tmp->content);
@@ -96,7 +98,7 @@ bool	parsing(void)
 			i = token->idx + 1;
 		}
 		if (!tmp->next)
-			sign = add_cmd(new_cmd(i, ((t_token *)tmp->content) ->idx));
+			sign = add_cmd(new_cmd(i, ((t_token *)tmp->content)->idx));
 		if (!sign)
 			return (print_error(ADD_CMD_ERR, 1));
 		tmp = tmp->next;

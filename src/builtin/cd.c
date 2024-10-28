@@ -41,6 +41,7 @@ void	cddir(char	*path)
 		ex_error(" cd: ",HOME, 2);
 	dir = ft_strjoin("OLDPWD=",ms()->cwd);
 	update_dir(dir, "OLDPWD", 6);
+
 	free(dir);
 	chdir(path);
 	free(ms()->cwd);

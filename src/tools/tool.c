@@ -6,7 +6,7 @@
 /*   By: yzheng <yzheng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/02 09:04:56 by yzheng            #+#    #+#             */
-/*   Updated: 2024/10/23 14:15:34 by yzheng           ###   ########.fr       */
+/*   Updated: 2024/10/28 19:11:03 by yzheng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ char	*ft_strndup(char *src, int size)
 	dest[i] = '\0';
 	return (dest);
 }
-void	set_error(char *message)
+int	set_errors(char *message)
 {
 	if (!access(message, F_OK))
 	{
@@ -69,24 +69,83 @@ void	set_error(char *message)
 		ms()->exit = 1;
 	}
 	ft_putchar_fd('\n', 2);
+	return (0);
 }
-void	set_fd(t_cmd *cm)
+
+int	check_files(t_cmd *cm)
 {
+	int	fd;
+
+	fd = 0;
+	while(cm->iolist)
+	{
+
+		if(ft_atoi(((t_env *)(cm->iolist)->content)->name) == 2)
+		{
+			fd = open(((t_env *)(cm->iolist)->content)->value, O_RDONLY , 0444);
+			if (fd == -1)
+				return(set_errors(((t_env *)(cm->iolist)->content)->value));
+		}
+		else if(ft_atoi(((t_env *)(cm->iolist)->content)->name) == 3)
+		{
+			fd = open(((t_env *)(cm->iolist)->content)->value,  O_WRONLY | O_CREAT | O_TRUNC, 0644);
+			if (fd == -1)
+				return(set_errors(((t_env *)(cm->iolist)->content)->value));
+		}
+		else if(ft_atoi(((t_env *)(cm->iolist)->content)->name) == 5)
+		{
+			fd = open(((t_env *)(cm->iolist)->content)->value,  O_WRONLY | O_CREAT | O_APPEND, 0644);
+			if (fd == -1)
+				return(set_errors(((t_env *)(cm->iolist)->content)->value));
+		}
+		close(fd);
+		cm->iolist =  cm->iolist->next;
+	}
+	return (1);
+}
+int	set_fd(t_cmd *cm)
+{
+	int	i;
+	int	ofd;
+	i = 0;
+	ofd = 0;
+	if (ms()->in_fd == -1)
+		ms()->in_fd = STDIN_FILENO;
+	check_files(cm);
 
 	if (cm->intype == TK_IN_RE)
 		(ms()->in_fd) = open(cm->inf, O_RDONLY, 0444);
 	if (cm->intype == TK_PIPE)
 		(ms()->in_fd) = ms()->fd[0];
-	if (ms()->in_fd == -1)
-		set_error(cm->inf);
-	else if (cm->outype  == TK_OUT_RE)
+	else if (ms()->in_fd == -1)
+	{
+
+		close_inout();
+		return(1);
+	}
+
+	while(i < cm->ofnum)
+	{
+		ofd =open(cm->outfile[i++], O_WRONLY | O_CREAT | O_TRUNC, 0644);
+		if(ofd == -1)
+		{
+			close_inout();
+			return(0);
+		}
+		close(ofd);
+	}
+	if (cm->outype  == TK_OUT_RE)
 		(ms()->out_fd) = open(cm->of, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	else if (cm->outype == TK_APPEND)
 		(ms()->out_fd) = open(cm->of, O_WRONLY | O_CREAT | O_APPEND, 0644);
 	else if (cm->outype == TK_NONE)
 		(ms()->out_fd) = STDOUT_FILENO;
 	if (ms()->out_fd == -1)
-		set_error(cm->of);
+		{
+			close_inout();
+			return(1);
+		}
+	return(1);
 }
 
 char *replace_first_substring(char *str, char *old_sub, char *new_sub)

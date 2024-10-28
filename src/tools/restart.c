@@ -6,7 +6,7 @@
 /*   By: yzheng <yzheng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 12:08:50 by yzheng            #+#    #+#             */
-/*   Updated: 2024/10/23 12:06:49 by yzheng           ###   ########.fr       */
+/*   Updated: 2024/10/28 19:22:12 by yzheng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,10 @@ void restart(int ex)
 
 void	close_inout()
 {
+	if (ms()->in_fd == -1)
+		ms()->in_fd = 0;
+	if (ms()->out_fd == -1)
+		ms()->out_fd = 1;
 	if (ms()->in_fd != 0)
 		close(ms()->in_fd);
 	if (ms()->out_fd != 1)

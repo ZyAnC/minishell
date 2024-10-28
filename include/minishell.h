@@ -6,7 +6,7 @@
 /*   By: yzheng <yzheng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 11:00:09 by yzheng            #+#    #+#             */
-/*   Updated: 2024/10/23 14:36:16 by yzheng           ###   ########.fr       */
+/*   Updated: 2024/10/28 18:24:12 by yzheng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ void	close_all(int	prev_fd);
 void	check_infile(t_cmd *cm);
 char	*ft_strndup(char *src, int size);
 char	*replace_first_substring(char *str, char *old_sub, char *new_sub);
-void	set_fd(t_cmd *cm);
+int	set_fd(t_cmd *cm);
 int	ft_strcmp(char *s1, char *s2);
 void	set_error(char *message);
 /*For execute*/
@@ -145,8 +145,8 @@ void	process_re(t_cmd **cmd, t_list *tk_node);
 
 //variable_list.c
 bool	are_all_def_loc_var(void);
-
-void	delete_extra_pipes(t_list **list);
+void	del_empty_node_extra_pipe(t_list **list);
+void	recorrect_cmd_intype(t_cmd *list);
 
 /*..............................................signal....................................................*/
 void	signal_default(void);
@@ -174,8 +174,8 @@ void	free_token_list(void);
 void	free_cmd_list(void);
 void	free_local_var_list(void);
 
-
-
+int	check_files(t_cmd *cm);
+void	check_file(t_cmd *cm);
 
 
 // below are for testing!!!!!!!!!

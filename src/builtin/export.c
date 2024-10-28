@@ -37,81 +37,77 @@ char **sort_env()
 		env_copy[i] = ms()->env[i];
 	}
 	bubble_sort(env_copy, count);
-	return(env_copy);
+	return (env_copy);
 }
 
+bool	ft_valid_character(char *str)
+{
+	int		i;
 
-int	ft_valid_character(char *str)
+	i = -1;
+	while (str[++i])
+	{
+		if (!ft_isalnum(str[i]) && str[i] != '_')
+			return (false);
+	}
+	return (true);
+}
+
+// void	update_env(int	i, char	*str)
+// {
+// 	free(ms()->env[i]);
+// 	ms()->env[i] = ft_strdup(str);
+// }
+
+int	count_array_size(char **str)
 {
 	int	i;
-	int	flag;
 
-	flag = 1;
 	i = 0;
-	if (!str)
-		return (1);
-	while(str[i])
+	if (str)
 	{
-		if ((str[i] >= 'A' && str[i] <= 'Z')
-		|| (str[i] >= 'a' && str[i] <= 'z')
-		|| str[i] == '_'
-		|| (str[i] >= '0' && str[i] <= '9'))
-		{
+		while (str[i])
 			i++;
-		}
-		else
-		{
-			flag = 0;
-			break;
-		}
 	}
-	free(str);
-	return(flag);
+	return (i);
 }
-
-void		update_env(int	i, char	*str, t_list *tmp)
+/*
+	add a new env to ms()->env.
+*/
+void	add_env(char *str)
 {
-	free(ms()->env[i]);
-	ms()->env[i] = ft_strdup(str);
-	tmp->content = ft_strdup(str);
-}
-
-void	add_env(char	*str)
-{
-//	t_list	*new;
 	int		i;
 	int		j;
+	char	**new_env;
 
-	// new = ft_lstnew(str);
-	// ft_lstadd_back(&ms()->env_list, new);
-	add_node_to_list(&ms()->env_list, str);
-	i = 0;
-	while(ms()->env[i])
-		i++;
-	char **new_env = malloc((i + 2) * sizeof(char *));
+	i = count_array_size(ms()->env);
+
+	new_env = malloc((i + 2) * sizeof(char *));
 	if (new_env == NULL)
 		restart(1);
 	j = -1;
 	while (++j < i)
 		new_env[j] = ms()->env[j];
 	new_env[i] = ft_strdup(str);
+
 	new_env[i+1] = NULL;
 	if (new_env[i] == NULL)
 		restart(1);
 	free(ms()->env);
-	i  = 0;
-	while(new_env[i])
+	i = -1;
+	while (new_env[++i])
 	{
 		ms()->env[i] = ft_strdup(new_env[i]);
-		if(!ms()->env[i])
+		if (!ms()->env[i])
 			restart(1);
-		i++;
 	}
+
+
+
 	free(new_env);
 }
 
-//#if 0
-void		update_or_add(char	*str)
+void	update_or_add(char	*str)
 {
 	int		i;
 	char	*name;
@@ -120,27 +116,39 @@ void		update_or_add(char	*str)
 
 	tmp = ms()->env_list;
 	size = 0;
-	while(str[size] != '=')
+	while (str[size] != '=')
 		size++;
 	name = ft_strndup(str,size);
+
 	i = 0;
+
 	while (ms()->env[i] && !ft_strnstr(ms()->env[i], name, size))
-			i++;
-	while(tmp && !ft_strnstr(tmp->content, name, size))
-		tmp = tmp->next;
-	if(!ms()->env[i])
+	{
+		i++;
+	}
+
+	if (!ms()->env[i])
 		add_env(str);
 	else
-		update_env(i, str,tmp);
+	{
+
+		free(ms()->env[i]);
+		ms()->env[i] = ft_strdup(str);
+	}
+
+	add_node_to_list(&ms()->env_list, str);// in add_node_to_list() it will check if the env exist or not
+
+
+
 	free(name);
 }
-//#endif
 
 char	*lastequal(char	*str)
 {
 	int length;
 	char *last_equal;
 	char *result;
+
 	last_equal = ft_strrchr(str, '=');
 	if (last_equal != NULL)
 	{
@@ -149,15 +157,29 @@ char	*lastequal(char	*str)
 		if (result == NULL)
 		{
 			perror("Failed to allocate memory");
-			return(NULL);
+			return (NULL);
 		}
 		strncpy(result, str, length);
 		result[length] = '\0';
 	}
 	else
-		return(NULL);
+		return (NULL);
 	return (result);
 }
+
+/*
+	1. input: export a-
+	   output: bash: export: `a-': not a valid identifier
+	2. input: export a 1
+	   output: bash: export: `1': not a valid identifier
+	3. input: export aa
+	   output:(nothing, restart shell, don't add env)
+	4. input: export a=123
+	   output: (nothing, restart shell, add a=123 to env and env_list)
+	5. input: export 1 2
+	   output: bash: export: `1': not a valid identifier
+			   bash: export: `2': not a valid identifier
+*/
 int	ft_export(char	**cmd)
 {
 	int	i;
@@ -165,24 +187,34 @@ int	ft_export(char	**cmd)
 
 	i = 1;
 	status = 1;
+
+
 	if (!cmd[1])
-		return(print_sorted_env());
-	while(cmd[i])
+		return (print_sorted_env());
+	while (cmd[i])
 	{
-		if ((cmd[i][0] >= 'A' && cmd[i][0] <= 'Z')
-		|| (cmd[i][0] >= 'a' && cmd[i][0] <= 'z') || cmd[i][0] == '_')
+
+		if (ft_isalpha(cmd[i][0]) || cmd[i][0] == '_')
 		{
-			if (!ft_valid_character(lastequal(cmd[i])))
+			if (ft_strchr(cmd[i], '='))
+			{
+				if (!ft_valid_character(lastequal(cmd[i])))
+					status = export_err(cmd[i]);
+				else
+					update_or_add(cmd[i]);
+			}
+			else if (!ft_valid_character(cmd[i]))
 				status = export_err(cmd[i]);
-			else
-				update_or_add(cmd[i]);
 		}
 		else
 			status = export_err(cmd[i]);
-		i++;
 
+
+		i++;
 	}
 	if (status)
 		ms()->exit = 0;
+
+
 	return (1);
 }
