@@ -6,12 +6,12 @@
 /*   By: jingwu <jingwu@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 12:48:19 by jingwu            #+#    #+#             */
-/*   Updated: 2024/10/24 09:47:43 by jingwu           ###   ########.fr       */
+/*   Updated: 2024/11/05 14:06:00 by jingwu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
+#if 1 // for testing!!!!!!!!!!!!!!!!!!!
 static void	merge(t_list *list)
 {
 	t_token	*cur;
@@ -60,6 +60,7 @@ static void	restruct_token(void)
 			if (!(tmp->next)->next)
 			{
 				tmp->next = NULL;
+				del_node(delete);
 				break ;
 			}
 			tmp->next = (tmp->next)->next;
@@ -84,6 +85,7 @@ static void	assign_token_index(void)
 		list = list->next;
 	}
 }
+
 
 /*
 	@function
@@ -111,6 +113,7 @@ static void	add_variable_type(t_list *list)
 		list = list->next;
 	}
 }
+#endif // for testing!!!!!!!!!!!!!!!!!!!
 
 bool	pre_handle(void)
 {
@@ -131,5 +134,7 @@ bool	pre_handle(void)
 	if (!parsing())
 		return (false);
 	recorrect_cmd_intype(ms()->cmds);
+	// printf("<----------after parsing------------>\n");
+	// print_cmd();//for testing!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	return (true);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yzheng <yzheng@student.hive.fi>            +#+  +:+       +#+        */
+/*   By: jingwu <jingwu@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 11:00:09 by yzheng            #+#    #+#             */
-/*   Updated: 2024/10/28 18:24:12 by yzheng           ###   ########.fr       */
+/*   Updated: 2024/11/05 14:54:47 by jingwu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ bool	stx_error(t_token *node);
 /*For shell*/
 void	restart(int exit);
 
-void	test();
+
 /*For	tools*/
 void	close_inout();
 void	pp_free(char **fly);
@@ -75,16 +75,16 @@ void	close_all(int	prev_fd);
 void	check_infile(t_cmd *cm);
 char	*ft_strndup(char *src, int size);
 char	*replace_first_substring(char *str, char *old_sub, char *new_sub);
-int	set_fd(t_cmd *cm);
-int	ft_strcmp(char *s1, char *s2);
-void	set_error(char *message);
+
+int		ft_strcmp(char *s1, char *s2);
+
 /*For execute*/
 /*<-----pipe && redirect----->*/
 
 pid_t	exe_pipe(t_cmd *cm);
 pid_t	exe_pipe2(t_cmd *cm);
 pid_t	exe_pipe3(t_cmd *cm);
-void	type_hdoc(t_cmd *cm);
+pid_t	type_hdoc(t_cmd *cm);
 pid_t	type_outpipe(t_cmd *cm, int	*prev_fd);
 /*<-----exe----->*/
 char	*findvalidcmd(char **shellcmd);
@@ -101,8 +101,10 @@ int	ft_export(char	**cmd);
 int	print_sorted_env();
 char **sort_env();
 char	*get_env(char	*name);
-
-
+/*<------redirect------->*/
+int	set_errors(char *message);
+int	check_files(t_list *cm);
+int		set_fd(t_cmd *cm);
 /*                                             pre_handle                                               */
 
 // add_cmd_utils.c
@@ -157,6 +159,8 @@ void	handle_sigint(int signal);
 void	handle_heredoc(int signal);
 
 /*..............................................tools..............................................*/
+// exe_tools.c
+int	count_cm(t_cmd *head);
 // utils.c
 bool	is_pipe(t_token *token);
 bool	is_dir(t_token *token);
@@ -173,9 +177,9 @@ void	ft_free_str(void *pointer);
 void	free_token_list(void);
 void	free_cmd_list(void);
 void	free_local_var_list(void);
+void	free_env(t_env *env);
+// void    free_token(t_token *token);
 
-int	check_files(t_cmd *cm);
-void	check_file(t_cmd *cm);
 
 
 // below are for testing!!!!!!!!!
@@ -183,4 +187,5 @@ void	check_file(t_cmd *cm);
 # define RESET_C		"\033[0m"
 void	print_list(t_list *list, int flag); // for testing!!!!!!!!!!!11
 void	print_cmd(void);// for testing!!!!!!!!!!!11
+
 # endif

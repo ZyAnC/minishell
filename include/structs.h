@@ -6,7 +6,7 @@
 /*   By: yzheng <yzheng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 10:57:07 by jingwu            #+#    #+#             */
-/*   Updated: 2024/10/28 15:14:35 by yzheng           ###   ########.fr       */
+/*   Updated: 2024/10/29 15:31:17 by yzheng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,6 +107,8 @@ typedef struct s_token
 */
 typedef struct s_ms
 {
+	int				heredoc_count;
+	int				limiter_count;
 	int				in_fd;
 	int				out_fd;
 	int				fd[2];

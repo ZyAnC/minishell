@@ -6,12 +6,22 @@
 /*   By: yzheng <yzheng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 12:08:50 by yzheng            #+#    #+#             */
-/*   Updated: 2024/10/28 19:22:12 by yzheng           ###   ########.fr       */
+/*   Updated: 2024/11/05 18:19:44 by yzheng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-
 #include "./minishell.h"
+
+static void	print_sig_info(void)
+{
+	if (ms()->exit == 131)
+		ft_putstr_fd("Quit (core dumped)\n", STDERR_FILENO);
+	else if (ms()->exit == 139)
+		ft_putstr_fd("Segmentation fault (core dumped)\n", STDERR_FILENO);
+	else if (ms()->exit == 130)
+		ft_putstr_fd("\n", STDERR_FILENO);
+}
+
 void free_list(t_list *head)
 {
 	t_list *temp;
@@ -25,11 +35,8 @@ void free_list(t_list *head)
 	}
 }
 void restart(int ex)
-{//old code
-	// if(!ms()->prompt)
-	// 	free(ms()->prompt);
-	// if(!ms()->input)
-	// 	free(ms()->input);
+{
+
 	if (ms()->prompt)
 		free(ms()->prompt);
 	if(ms()->input)
@@ -38,27 +45,27 @@ void restart(int ex)
 	ms()->fd[1] = -1;
 	ms()->in_fd = STDIN_FILENO;
 	ms()->out_fd = STDOUT_FILENO;
-	free_token_list();
+//	free_token_list();
+	ft_lstclear((&ms()->tokens), (void (*)(void *))delete_token);
 	free_cmd_list();
+	if(!ex)
+		print_sig_info();
 	if(ex)
 	{
 		free(ms()->cwd);
 		pp_free(ms()->env);
 		free_local_var_list();
-//		printf("inside_exit, exit_code=%d\n", ms()->exit);//for testing!!!!!
+		ft_lstclear((&ms()->env_list), (void (*)(void *))free_env);
 		exit(ms()->exit);
 	}
 }
 
 void	close_inout()
 {
-	if (ms()->in_fd == -1)
-		ms()->in_fd = 0;
-	if (ms()->out_fd == -1)
-		ms()->out_fd = 1;
-	if (ms()->in_fd != 0)
+
+	if (ms()->in_fd != 0 && ms()->in_fd != -1)
 		close(ms()->in_fd);
-	if (ms()->out_fd != 1)
+	if (ms()->out_fd != 1  && ms()->out_fd != -1)
 		close(ms()->out_fd);
 }
 

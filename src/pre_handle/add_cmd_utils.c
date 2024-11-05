@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   add_cmd_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jingwu <jingwu@student.hive.fi>            +#+  +:+       +#+        */
+/*   By: yzheng <yzheng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/02 08:21:42 by jingwu            #+#    #+#             */
-/*   Updated: 2024/10/24 09:17:23 by jingwu           ###   ########.fr       */
+/*   Updated: 2024/11/05 11:30:28 by yzheng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ bool	allocate_mem(t_cmd **cmd)
 		if (!(*cmd)->cmd)
 			return (false);
 	}
-	if ((*cmd)->herenum)
+	if ((*cmd)->herenum > 0)
 	{
 		(*cmd)->limiter = ft_calloc(((*cmd)->herenum + 1), sizeof(char *));
 		if (!(*cmd)->limiter)
