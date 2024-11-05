@@ -6,7 +6,7 @@
 /*   By: yzheng <yzheng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 13:53:13 by yzheng            #+#    #+#             */
-/*   Updated: 2024/11/05 17:35:28 by yzheng           ###   ########.fr       */
+/*   Updated: 2024/11/05 20:37:21 by yzheng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ static inline void	ft_execve_failed(char **shellcmd, char *path)
 int	builtin(char **cmd)
 {
 	int	size;
-
 
 	size = ft_strlen(cmd[0]);
 	if (size == 3 && !ft_strncmp(cmd[0], "env", 3))
@@ -114,19 +113,17 @@ void	exe(t_cmd *cm)
 	while (cm)
 	{
 		i = set_fd(cm);
-		if(!cm->cmd)
+		if (!cm->cmd)
 			break ;
 		if (b == 1 && cm->outype == TK_NONE)
-			if (ft_strncmp(cm->cmd[0], "echo", 4)
-				&& ft_strncmp(cm->cmd[0], "pwd", 3) && builtin(cm->cmd))
+			if (ft_strncmp(cm->cmd[0], "echo", 4) && ft_strncmp(cm->cmd[0],
+					"pwd", 3) && builtin(cm->cmd))
 				break ;
 		pipeid = exe_heart(i, cm, &prev_fd);
 		cm = cm->next;
 	}
 	close_all(prev_fd);
-	signal_ignore();
 	while (wait(NULL) > 0)
 		;
 	signal_default();
-
 }

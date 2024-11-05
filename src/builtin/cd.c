@@ -6,7 +6,7 @@
 /*   By: yzheng <yzheng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/02 15:09:48 by yzheng            #+#    #+#             */
-/*   Updated: 2024/11/05 18:24:07 by yzheng           ###   ########.fr       */
+/*   Updated: 2024/11/05 20:02:55 by yzheng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ void	update_dir(char *dir, char *name, int size)
 			break ;
 		head = head->next;
 	}
-
 	free(ms()->env[i]);
 	ms()->env[i] = ft_strdup(dir);
 	ft_free_str(((t_env *)head->content)->value);
@@ -58,14 +57,13 @@ void	cddir(char *path)
 	chdir(path);
 	free(ms()->cwd);
 	(ms()->cwd) = getcwd(NULL, 2048);
-
 	if (!(ms()->cwd))
 	{
 		ft_putstr_fd("minishell: cd: error retrieving current directory\n", 2);
 		ms()->exit = 1;
 		dir = ft_strdup(get_env("OLDPWD"));
 		free(ms()->cwd);
-		(ms()->cwd) = ft_strjoin(dir+7, "/..");
+		(ms()->cwd) = ft_strjoin(dir + 7, "/..");
 		free(dir);
 	}
 	dir = "PWD=";
@@ -95,7 +93,7 @@ int	ft_cd(char **cmd)
 	int			i;
 
 	i = checkcd(cmd);
-	if(!cmd[1])
+	if (!cmd[1])
 		return (1);
 	if (!ft_strcmp(cmd[1], "~"))
 		cddir(ms()->env[i] + 5);

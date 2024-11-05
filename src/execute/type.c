@@ -6,13 +6,13 @@
 /*   By: yzheng <yzheng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/02 09:53:18 by yzheng            #+#    #+#             */
-/*   Updated: 2024/11/05 15:42:53 by yzheng           ###   ########.fr       */
+/*   Updated: 2024/11/05 20:51:22 by yzheng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*replace_env(char	*envname, char	*src)
+char	*replace_env(char *envname, char *src)
 {
 	int		i;
 	int		j;
@@ -37,7 +37,7 @@ char	*replace_env(char	*envname, char	*src)
 	return (dest);
 }
 
-static	char	*checkdollar(char	*doc_in)
+static char	*checkdollar(char *doc_in)
 {
 	char	*dc;
 	int		i;
@@ -81,18 +81,10 @@ void	getdoc(char *av, int hfd)
 	}
 }
 
-pid_t	type_hdoc(t_cmd *cm)
+void	heredoc(t_cmd *cm)
 {
-
-	pid_t	pid;
-
-	pid = fork();
-	if (pid == -1)
-		ex_error("Fork", FORK, EXIT_FAILURE);
-	if (pid == 0)
-	{
-		signal_heredoc();
-		ms()->limiter_count = 0;
+	signal_heredoc();
+	ms()->limiter_count = 0;
 	while (cm->herenum--)
 	{
 		(ms()->hfd) = open("here_doc", O_CREAT | O_RDWR | O_TRUNC, 0644);
@@ -107,23 +99,31 @@ pid_t	type_hdoc(t_cmd *cm)
 		cm->inf = "here_doc";
 		set_fd(cm);
 	}
-	exit(0);
-	}
-
-	return (pid);
-
 }
 
-pid_t	type_outpipe(t_cmd *cm, int	*prev_fd)
+pid_t	type_hdoc(t_cmd *cm)
 {
-	pid_t	pipeid;
+	pid_t	pid;
+	int		pipefd[2];
 
-	if (pipe(ms()->fd) == -1)
+	if (pipe(pipefd) == -1)
 		ex_error("Pipe", PIPE, EXIT_FAILURE);
-	pipeid = exe_pipe(cm);
-	close(ms()->fd[1]);
-	if (*prev_fd != -1)
-		close(*prev_fd);
-	*prev_fd = ms()->fd[0];
-	return (pipeid);
+	pid = fork();
+	if (pid == -1)
+		ex_error("Fork", FORK, EXIT_FAILURE);
+	if (pid == 0)
+	{
+		heredoc(cm);
+		close(pipefd[0]);
+		write(pipefd[1], &ms()->heredoc_count, sizeof(ms()->heredoc_count));
+		write(pipefd[1], &ms()->limiter_count, sizeof(ms()->limiter_count));
+		close(pipefd[1]);
+		exit(0);
+	}
+	close(pipefd[1]);
+	wait(NULL);
+	read(pipefd[0], &ms()->heredoc_count, sizeof(ms()->heredoc_count));
+	read(pipefd[0], &ms()->limiter_count, sizeof(ms()->limiter_count));
+	close(pipefd[0]);
+	return (pid);
 }

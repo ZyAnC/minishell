@@ -6,13 +6,13 @@
 /*   By: yzheng <yzheng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 16:54:18 by yzheng            #+#    #+#             */
-/*   Updated: 2024/11/05 15:29:45 by yzheng           ###   ########.fr       */
+/*   Updated: 2024/11/05 20:15:16 by yzheng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	get_status(pid_t	pid)
+void	get_status(pid_t pid)
 {
 	int	status;
 
@@ -60,8 +60,8 @@ pid_t	exe_pipe2(t_cmd *cm)
 	{
 		signal_child();
 		check_infile(cm);
-		if (dup2(ms()->out_fd, STDOUT_FILENO) == -1
-			|| dup2(ms()->in_fd, STDIN_FILENO) == -1)
+		if (dup2(ms()->out_fd, STDOUT_FILENO) == -1 || dup2(ms()->in_fd,
+				STDIN_FILENO) == -1)
 		{
 			close_inout();
 			exit(1);
