@@ -6,7 +6,7 @@
 /*   By: jingwu <jingwu@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 13:53:13 by yzheng            #+#    #+#             */
-/*   Updated: 2024/11/11 13:53:31 by jingwu           ###   ########.fr       */
+/*   Updated: 2024/11/12 13:47:18 by jingwu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static inline void	ft_execve_failed(char **shellcmd, char *path)
 	if (!access(shellcmd[0], F_OK) && !access(shellcmd[0], X_OK))
 	{
 		if (path)
-			free(path);
+			ft_free_str(path);
 		if (ft_strchr(shellcmd[0], '/'))
 			ex_error(shellcmd[0], DIRECTORY, 126);
 		else
@@ -31,9 +31,9 @@ static inline void	ft_execve_failed(char **shellcmd, char *path)
 	else if (errno == 2)
 		ex_error(message, ERR, 127);
 	ex_error(message, ERR, 1);
-	free(message);
+	ft_free_str(message);
 	if (path)
-		free(path);
+		ft_free_str(path);
 }
 
 static int	builtin(char **cmd)

@@ -6,13 +6,13 @@
 /*   By: jingwu <jingwu@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 10:54:19 by jingwu            #+#    #+#             */
-/*   Updated: 2024/11/12 11:50:09 by jingwu           ###   ########.fr       */
+/*   Updated: 2024/11/12 14:13:55 by jingwu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static char	*replace_wave(char *str)
+static char	*replace_wave(char *str, bool flag)
 {
 	char	*value;
 	char	*newstr;
@@ -22,7 +22,8 @@ static char	*replace_wave(char *str)
 	value = get_variable_value("HOME");
 	tmp = ft_strjoin(value, "/");
 	s = str;
-	s++;
+	if (flag == true)
+		s++;
 	s++;
 	newstr = ft_strjoin(tmp, s);
 	ft_free_str(str);
@@ -48,15 +49,18 @@ bool	handle_wave_sign(t_list *list)
 {
 	t_token	*token;
 
-	while(list)
+	while (list)
 	{
 		token = (t_token *)list->content;
 		if (token->tk_type != TK_DOUBLE_QT && token->tk_type != TK_SINGLE_QT
-			&& token->str && !ft_strncmp(token->str, "~/", 2))
+			&& token->str)
 		{
-			token->str = replace_wave(token->str);
-			if(!token->str)
-				return (print_error("Replace wave sign error!" ,2));
+			if (!ft_strncmp(token->str, "~/", 2))
+				token->str = replace_wave(token->str, true);
+			else if (!ft_strncmp(token->str, "~", 1))
+				token->str = replace_wave(token->str, false);
+			if (!token->str)
+				return (print_error("Replace wave sign error!", 2));
 		}
 		list = list->next;
 	}

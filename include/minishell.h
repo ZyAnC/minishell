@@ -6,7 +6,7 @@
 /*   By: jingwu <jingwu@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 11:00:09 by yzheng            #+#    #+#             */
-/*   Updated: 2024/11/12 11:22:22 by jingwu           ###   ########.fr       */
+/*   Updated: 2024/11/12 13:57:36 by jingwu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ void	restart(int exit);
 
 /*For	tools*/
 void	close_inout(void);
-void	pp_free(char **fly);
+void	pp_ft_free_str(char **fly);
 void	close_all(int prev_fd);
 void	check_infile(t_cmd *cm);
 char	*ft_strndup(char *src, int size);
@@ -184,10 +184,5 @@ void	ft_free_str(void *pointer);
 void	free_cmd_list(void);
 void	free_local_var_list(void);
 void	free_env(t_env *env);
-
-
-// for testing!!!!!!!!!!!!!!!!!!!!!!!
-void	print_list(t_list *list, int flag);// for testing!!!!!!!!!!!!!!!!!!!!!!!
-void	print_cmd(void);// for test !!!!!!!!!!!!!!!!!!!!!!!!
 
 #endif

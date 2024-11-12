@@ -6,7 +6,7 @@
 /*   By: jingwu <jingwu@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 20:21:20 by yzheng            #+#    #+#             */
-/*   Updated: 2024/11/11 13:54:51 by jingwu           ###   ########.fr       */
+/*   Updated: 2024/11/12 13:47:18 by jingwu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ static void	initenv(char **env)
 		if (ms()->env[i] == NULL)
 		{
 			while (i)
-				free(ms()->env[i--]);
+				ft_free_str(ms()->env[i--]);
 			exit(1);
 		}
 		i++;

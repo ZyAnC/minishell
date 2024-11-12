@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirect.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yzheng <yzheng@student.hive.fi>            +#+  +:+       +#+        */
+/*   By: jingwu <jingwu@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 17:20:57 by yzheng            #+#    #+#             */
-/*   Updated: 2024/11/12 10:46:22 by yzheng           ###   ########.fr       */
+/*   Updated: 2024/11/12 14:14:32 by jingwu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,6 @@ static int	set_fd_in(t_cmd *cm)
 		ms()->in_fd = -1;
 	if (ms()->in_fd == -1)
 	{
-
 		close_inout();
 		return (0);
 	}

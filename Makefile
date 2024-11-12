@@ -23,8 +23,7 @@ SRCS =	main.c \
 		add_cmd_utils.c checking_token_type.c checking.c del_empty_node_extra_pipe.c \
 		expander.c lexer.c local_var.c operate_token.c parsing.c pre_handle.c process_re.c \
 		handle_signal.c signal.c \
-		error.c exe_tools.c free.c path.c restart.c tool.c variable_list.c handle_wave.c \
-		test_file.c
+		error.c exe_tools.c free.c path.c restart.c tool.c variable_list.c handle_wave.c
 
 OBJS = $(SRCS:.c=.o)
 
@@ -44,7 +43,7 @@ SRCS_B = $(SRCS_DIR_B)/main_bonus.c \
 		$(SRCS_B_PR)/checking_bonus.c $(SRCS_B_PR)/del_empty_node_extra_pipe_bonus.c \
 		$(SRCS_B_PR)/expander_bonus.c $(SRCS_B_PR)/lexer_bonus.c $(SRCS_B_PR)/local_var_bonus.c \
 		$(SRCS_B_PR)/operate_token_bonus.c $(SRCS_B_PR)/parsing_bonus.c $(SRCS_B_PR)/pre_handle_bonus.c \
-		$(SRCS_B_PR)/process_re_bonus.c \
+		$(SRCS_B_PR)/process_re_bonus.c $(SRCS_B_PR)/handle_wave_bonus.c\
 		$(SRCS_B_SI)/handle_signal_bonus.c $(SRCS_B_SI)/signal_bonus.c \
 		$(SRCS_B_TO)/error_bonus.c $(SRCS_B_TO)/exe_tools_bonus.c $(SRCS_B_TO)/free_bonus.c \
 		$(SRCS_B_TO)/path_bonus.c $(SRCS_B_TO)/restart_bonus.c $(SRCS_B_TO)/tool_bonus.c \

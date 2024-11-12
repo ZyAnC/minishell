@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   restart.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yzheng <yzheng@student.hive.fi>            +#+  +:+       +#+        */
+/*   By: jingwu <jingwu@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 12:08:50 by yzheng            #+#    #+#             */
-/*   Updated: 2024/11/12 10:23:43 by yzheng           ###   ########.fr       */
+/*   Updated: 2024/11/12 13:53:42 by jingwu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,9 @@ static void	print_sig_info(void)
 void	restart(int ex)
 {
 	if (ms()->prompt)
-		free(ms()->prompt);
+		ft_free_str(ms()->prompt);
 	if (ms()->input)
-		free(ms()->input);
+		ft_free_str(ms()->input);
 	ms()->fd[0] = -1;
 	ms()->fd[1] = -1;
 	ms()->in_fd = STDIN_FILENO;
@@ -38,8 +38,8 @@ void	restart(int ex)
 		print_sig_info();
 	if (ex)
 	{
-		free(ms()->cwd);
-		pp_free(ms()->env);
+		ft_free_str(ms()->cwd);
+		pp_ft_free_str(ms()->env);
 		free_local_var_list();
 		ft_lstclear((&ms()->env_list), (void (*)(void *))free_env);
 		exit(ms()->exit);

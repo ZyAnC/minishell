@@ -6,7 +6,7 @@
 /*   By: jingwu <jingwu@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 12:48:19 by jingwu            #+#    #+#             */
-/*   Updated: 2024/11/12 11:29:45 by jingwu           ###   ########.fr       */
+/*   Updated: 2024/11/12 13:58:31 by jingwu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ static void	merge(t_list *list)
 		next = (list->next)->content;
 		tmp = cur->str;
 		cur->str = ft_strjoin(cur->str, next->str);
-		free(tmp);
+		ft_free_str(tmp);
 		if (!next->merge)
 			cur->merge = next->merge;
 		delete = list->next;
@@ -126,7 +126,6 @@ bool	pre_handle(void)
 		return (false);
 	del_empty_node_extra_pipe(&ms()->tokens);
 	assign_token_index();
-print_list(ms()->tokens, 1);// for testing!
 	if (!parsing())
 		return (false);
 	recorrect_cmd_intype(ms()->cmds);
