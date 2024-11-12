@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   redirect.c                                         :+:      :+:    :+:   */
+/*   redirect_bonus.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yzheng <yzheng@student.hive.fi>            +#+  +:+       +#+        */
+/*   By: jingwu <jingwu@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 17:20:57 by yzheng            #+#    #+#             */
-/*   Updated: 2024/11/12 10:46:22 by yzheng           ###   ########.fr       */
+/*   Updated: 2024/11/11 13:53:39 by jingwu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./minishell.h"
+#include "minishell_bonus.h"
 
 int	set_errors(char *message)
 {
@@ -80,15 +80,12 @@ static int	set_fd_in(t_cmd *cm)
 		(ms()->in_fd) = open(cm->inf, O_RDONLY, 0444);
 	if (cm->intype == TK_PIPE)
 		(ms()->in_fd) = ms()->fd[0];
-	if (cm->intype == TK_NONE && cm->inf)
-		ms()->in_fd = -1;
 	if (ms()->in_fd == -1)
 	{
-
 		close_inout();
-		return (0);
+		return (1);
 	}
-	return (1);
+	return (0);
 }
 
 static int	set_fd_out(t_cmd *cm)
@@ -114,8 +111,8 @@ int	set_fd(t_cmd *cm)
 
 	i = 0;
 	ofd = 0;
-	if (!set_fd_in(cm))
-		return (0);
+	if (set_fd_in(cm))
+		return (1);
 	while (i < cm->ofnum)
 	{
 		ofd = open(cm->outfile[i++], O_WRONLY | O_CREAT | O_APPEND, 0644);

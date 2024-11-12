@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   restart.c                                          :+:      :+:    :+:   */
+/*   restart_bonus.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yzheng <yzheng@student.hive.fi>            +#+  +:+       +#+        */
+/*   By: jingwu <jingwu@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 12:08:50 by yzheng            #+#    #+#             */
-/*   Updated: 2024/11/12 10:23:43 by yzheng           ###   ########.fr       */
+/*   Updated: 2024/11/11 13:54:40 by jingwu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./minishell.h"
+#include "minishell_bonus.h"
 
 static void	print_sig_info(void)
 {
@@ -52,7 +52,6 @@ void	close_inout(void)
 		close(ms()->in_fd);
 	if (ms()->out_fd != 1 && ms()->out_fd != -1)
 		close(ms()->out_fd);
-	ms()->in_fd = STDIN_FILENO;
 }
 
 void	close_all(int prev_fd)

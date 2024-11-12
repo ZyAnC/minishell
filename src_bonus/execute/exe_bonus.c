@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exe.c                                              :+:      :+:    :+:   */
+/*   exe_bonus.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yzheng <yzheng@student.hive.fi>            +#+  +:+       +#+        */
+/*   By: jingwu <jingwu@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 13:53:13 by yzheng            #+#    #+#             */
-/*   Updated: 2024/11/12 10:46:08 by yzheng           ###   ########.fr       */
+/*   Updated: 2024/11/11 13:53:31 by jingwu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./minishell.h"
+#include "minishell_bonus.h"
 
 static inline void	ft_execve_failed(char **shellcmd, char *path)
 {
@@ -78,13 +78,10 @@ void	real_execute(t_cmd *cm)
 
 static int	exe_heart(int i, t_cmd *cm, int *prev_fd, int b)
 {
-
 	if (i)
 	{
 		if (cm->herenum > 0)
 			type_hdoc(cm);
-		if(!cm->cmd)
-			return(1);
 		if (ms()->exit == 130 && ms()->hstatus == 1)
 			return (1);
 		if (cm->outype == TK_PIPE)
@@ -118,9 +115,9 @@ void	exe(t_cmd *cm)
 	while (cm)
 	{
 		i = set_fd(cm);
-		if (!cm->cmd && cm->intype != TK_HDOC)
+		if (!cm->cmd)
 			break ;
-		if (b == 1 && cm->outype == TK_NONE && cm->intype != TK_HDOC)
+		if (b == 1 && cm->outype == TK_NONE)
 			if (ft_strncmp(cm->cmd[0], "echo", 4) && ft_strncmp(cm->cmd[0],
 					"pwd", 3) && builtin(cm->cmd))
 				break ;

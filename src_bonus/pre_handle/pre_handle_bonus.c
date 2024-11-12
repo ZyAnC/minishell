@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pre_handle.c                                       :+:      :+:    :+:   */
+/*   pre_handle_bonus.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jingwu <jingwu@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 12:48:19 by jingwu            #+#    #+#             */
-/*   Updated: 2024/11/12 11:29:45 by jingwu           ###   ########.fr       */
+/*   Updated: 2024/11/11 13:54:12 by jingwu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "minishell_bonus.h"
 
 static void	merge(t_list *list)
 {
@@ -117,8 +117,6 @@ bool	pre_handle(void)
 	if (!check_syntax())
 		return (false);
 	merge(ms()->tokens);
-	if (!handle_wave_sign(ms()->tokens))
-		return (false);
 	restruct_token();
 	expander();
 	add_variable_type(ms()->tokens);
@@ -126,7 +124,6 @@ bool	pre_handle(void)
 		return (false);
 	del_empty_node_extra_pipe(&ms()->tokens);
 	assign_token_index();
-print_list(ms()->tokens, 1);// for testing!
 	if (!parsing())
 		return (false);
 	recorrect_cmd_intype(ms()->cmds);

@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cd.c                                               :+:      :+:    :+:   */
+/*   cd_bonus.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yzheng <yzheng@student.hive.fi>            +#+  +:+       +#+        */
+/*   By: jingwu <jingwu@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/02 15:09:48 by yzheng            #+#    #+#             */
-/*   Updated: 2024/11/12 09:50:34 by yzheng           ###   ########.fr       */
+/*   Updated: 2024/11/11 13:53:02 by jingwu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "minishell_bonus.h"
 
 char	*get_env(char *name)
 {
@@ -72,7 +72,6 @@ static void	cddir(char *path)
 	free(dir);
 }
 
-
 static int	checkcd(char **cmd)
 {
 	int	i;
@@ -81,12 +80,7 @@ static int	checkcd(char **cmd)
 	while (cmd[i])
 		i++;
 	if (i > 2)
-	{
-		ft_putstr_fd("minishell: ", 2);
-		ft_putstr_fd(cmd[0], 2);
-		ft_putstr_fd(" : too many arguments\n", 2);
-		return(-1);
-	}
+		ex_error(cmd[0], TOOMUCH, 1);
 	i = 0;
 	while (ms()->env[i] && !ft_strnstr(ms()->env[i], "HOME", 4))
 		i++;
@@ -99,8 +93,6 @@ int	ft_cd(char **cmd)
 	int			i;
 
 	i = checkcd(cmd);
-	if(i == -1)
-		return(1);
 	if (!cmd[1] || !ft_strcmp(cmd[1], "~"))
 		cddir(ms()->env[i] + 5);
 	else if (!cmd[1])

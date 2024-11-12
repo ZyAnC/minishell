@@ -1,17 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   minishell_bonus.h                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jingwu <jingwu@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 11:00:09 by yzheng            #+#    #+#             */
-/*   Updated: 2024/11/12 11:22:22 by jingwu           ###   ########.fr       */
+/*   Updated: 2024/11/11 13:55:04 by jingwu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#ifndef MINISHELL_BONUS_H
+# define MINISHELL_BONUS_H
 
 /*
 	<stdbool.h>	bool type;
@@ -23,7 +23,7 @@
 */
 # include "../libft/libft/libft.h"
 # include "../libft/printf/printf.h"
-# include "./structs.h"
+# include "./structs_bonus.h"
 # include <errno.h>
 # include <fcntl.h>
 # include <readline/history.h>
@@ -156,8 +156,6 @@ bool	are_all_def_loc_var(void);
 void	del_empty_node_extra_pipe(t_list **list);
 void	recorrect_cmd_intype(t_cmd *list);
 
-bool	handle_wave_sign(t_list *list);
-
 /*..signal...*/
 void	signal_default(void);
 void	signal_heredoc(void);
@@ -184,10 +182,5 @@ void	ft_free_str(void *pointer);
 void	free_cmd_list(void);
 void	free_local_var_list(void);
 void	free_env(t_env *env);
-
-
-// for testing!!!!!!!!!!!!!!!!!!!!!!!
-void	print_list(t_list *list, int flag);// for testing!!!!!!!!!!!!!!!!!!!!!!!
-void	print_cmd(void);// for test !!!!!!!!!!!!!!!!!!!!!!!!
 
 #endif

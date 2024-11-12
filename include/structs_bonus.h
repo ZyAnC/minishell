@@ -1,24 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   structs.h                                          :+:      :+:    :+:   */
+/*   structs_bonus.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jingwu <jingwu@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 10:57:07 by jingwu            #+#    #+#             */
-/*   Updated: 2024/11/11 08:46:28 by jingwu           ###   ########.fr       */
+/*   Updated: 2024/11/11 13:55:59 by jingwu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef STRUCTS_H
-# define STRUCTS_H
+#ifndef STRUCTS_BONUS_H
+# define STRUCTS_BONUS_H
 
-# include "minishell.h"
+# include "minishell_bonus.h"
 # include <stdbool.h>
 
 /*
 	TK_LOC_V: for defining local variable command, like if input is
-	"echo a | name=sherry" then for 'name=sherry' the type of the token 
+	"echo a | name=sherry" then for 'name=sherry' the type of the token
 	is TK_LOC_V.
 	For this type,we do NOT put them into cmd list.
 */

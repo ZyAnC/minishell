@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   add_cmd_utils.c                                    :+:      :+:    :+:   */
+/*   add_cmd_utils_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yzheng <yzheng@student.hive.fi>            +#+  +:+       +#+        */
+/*   By: jingwu <jingwu@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/02 08:21:42 by jingwu            #+#    #+#             */
-/*   Updated: 2024/11/12 10:42:38 by yzheng           ###   ########.fr       */
+/*   Updated: 2024/11/11 13:53:46 by jingwu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "minishell_bonus.h"
 
 /*
 	The function will count the amount of <, >, >> and <<.

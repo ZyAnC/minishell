@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   singal.c                                           :+:      :+:    :+:   */
+/*   signal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yzheng <yzheng@student.hive.fi>            +#+  +:+       +#+        */
+/*   By: jingwu <jingwu@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/04 08:14:19 by jingwu            #+#    #+#             */
-/*   Updated: 2024/11/05 20:51:57 by yzheng           ###   ########.fr       */
+/*   Updated: 2024/11/11 11:44:25 by jingwu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,14 +28,22 @@ void	signal_default(void)
 
 void	signal_heredoc(void)
 {
-	printf("haaaahh\n");
 	signal(SIGQUIT, SIG_IGN);
 	signal(SIGINT, handle_heredoc);
 }
 
+void	handle_child(int signal)
+{
+	if (signal == SIGINT)
+	{
+		(ms()->exit) = 130;
+		exit(130);
+	}
+}
+
 void	signal_child(void)
 {
-	signal(SIGINT, SIG_DFL);
+	signal(SIGINT, handle_child);
 	signal(SIGQUIT, SIG_DFL);
 }
 
