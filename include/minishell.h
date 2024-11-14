@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yzheng <yzheng@student.hive.fi>            +#+  +:+       +#+        */
+/*   By: jingwu <jingwu@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 11:00:09 by yzheng            #+#    #+#             */
-/*   Updated: 2024/11/13 09:28:09 by yzheng           ###   ########.fr       */
+/*   Updated: 2024/11/12 13:57:36 by jingwu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,8 +107,7 @@ void	real_execute(t_cmd *cm);
 void	exe(t_cmd *cm);
 int		ft_env(void);
 void	heredoc(t_cmd *cm);
-int		builtin(char **cmd);
-void	real_execute(t_cmd *cm);
+
 /*<------redirect------->*/
 int		set_errors(char *message);
 int		set_fd(t_cmd *cm);

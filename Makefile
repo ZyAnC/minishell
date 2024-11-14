@@ -19,7 +19,7 @@ VPATH = $(SRCS_DIR) $(addprefix $(SRCS_DIR)/, $(SRCS_SUBDIR))
 
 SRCS =	main.c \
 		cd.c echo.c env.c exit.c export_tools.c export.c unset.c \
-		exe.c heredoc.c pipe_redirect.c redirect.c type.c exe_check.c\
+		exe.c heredoc.c pipe_redirect.c redirect.c type.c \
 		add_cmd_utils.c checking_token_type.c checking.c del_empty_node_extra_pipe.c \
 		expander.c lexer.c local_var.c operate_token.c parsing.c pre_handle.c process_re.c \
 		handle_signal.c signal.c \
