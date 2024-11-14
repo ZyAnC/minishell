@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exe.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jingwu <jingwu@student.hive.fi>            +#+  +:+       +#+        */
+/*   By: yzheng <yzheng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 13:53:13 by yzheng            #+#    #+#             */
-/*   Updated: 2024/11/12 14:17:08 by jingwu           ###   ########.fr       */
+/*   Updated: 2024/11/14 09:50:28 by yzheng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,13 @@ void	real_execute(t_cmd *cm)
 	}
 	exit(ms()->exit);
 }
+void	exe_signal_check(int b)
+{
+	if (ms()->exit == 130 && b > 1)
+		printf("\n");
+	if (ms()->exit == 130 && b == 1)
+		restart(0);
+}
 
 static int	exe_heart(int i, t_cmd *cm, int *prev_fd, int b)
 {
@@ -98,31 +105,41 @@ static int	exe_heart(int i, t_cmd *cm, int *prev_fd, int b)
 			exe_pipe3(cm);
 			close(ms()->fd[0]);
 		}
-		if (ms()->exit == 130 && b > 1)
-			printf("\n");
-		if (ms()->exit == 130 && b == 1)
-			restart(0);
+		exe_signal_check(b);
 	}
 	return (1);
 }
-
-void	exe(t_cmd *cm)
+int	exe_check(t_cmd *cm, int i)
 {
-	int		prev_fd;
-	int		i;
-	int		b;
+	if (i == 1)
+	{
+		if (ft_strncmp(cm->cmd[0], "echo", 4) && ft_strncmp(cm->cmd[0], "pwd",
+				3) && builtin(cm->cmd))
+			return (1);
+	}
+	else if (i == 2)
+	{
+		if (!ft_strncmp(cm->cmd[0], "cat", 3) || !ft_strncmp(cm->cmd[0], "grep",
+				4))
+			return (1);
+	}
+	else if (i == 3)
+	{
+		if (cm && !ft_strncmp(cm->cmd[0], "cat", 3) && cm->intype == TK_PIPE)
+			return (1);
+	}
+	return (0);
+}
 
-	prev_fd = -1;
-	b = count_cm(cm);
+void	exe_loop(int i, int b, int *prev_fd, t_cmd *cm)
+{
 	while (cm)
 	{
 		i = set_fd(cm);
-		if (!i && (!ft_strncmp(cm->cmd[0], "cat", 3)
-				|| !ft_strncmp(cm->cmd[0], "grep", 4)))
+		if (!i && exe_check(cm, 2))
 		{
 			cm = cm->next;
-			if (cm && !ft_strncmp(cm->cmd[0], "cat", 3)
-				&& cm->intype == TK_PIPE)
+			if (exe_check(cm, 3))
 			{
 				ms()->exit = 0;
 				break ;
@@ -132,14 +149,23 @@ void	exe(t_cmd *cm)
 		if (!cm->cmd && cm->intype != TK_HDOC)
 			break ;
 		if (b == 1 && cm->outype == TK_NONE && cm->intype != TK_HDOC)
-			if (ft_strncmp(cm->cmd[0], "echo", 4) && ft_strncmp(cm->cmd[0],
-					"pwd", 3) && builtin(cm->cmd))
+			if (exe_check(cm, 1))
 				break ;
-		exe_heart(i, cm, &prev_fd, b);
+		exe_heart(i, cm, prev_fd, b);
 		if ((ms()->exit == 130 && ms()->hstatus == 1))
 			break ;
 		cm = cm->next;
 	}
+}
+void	exe(t_cmd *cm)
+{
+	int	prev_fd;
+	int	i;
+	int	b;
+
+	prev_fd = -1;
+	b = count_cm(cm);
+	exe_loop(i, b, &prev_fd, cm);
 	close_all(prev_fd);
 	exe_final();
 }
